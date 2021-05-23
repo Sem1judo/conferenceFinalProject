@@ -1,0 +1,89 @@
+<%--&lt;%&ndash;=========================================================================== --%>
+<%--Header (top area). --%>
+<%--===========================================================================&ndash;%&gt; --%>
+
+<%--<%@ page import="ua.com.semkov.db.Role" %>--%>
+<%--<%@ include file="/WEB-INF/jspf/directive/page.jspf" %>--%>
+<%--<%@ include file="/WEB-INF/jspf/directive/taglib.jspf" %>--%>
+
+<%--<tr>--%>
+<%--<td id="header">--%>
+
+<%--<c:if test="${not empty user}">--%>
+<%--&lt;%&ndash;=========================================================================== --%>
+<%--This is the user menu. --%>
+<%--===========================================================================&ndash;%&gt; --%>
+
+<%--<div id="leftHeader">--%>
+
+<%--	<c:choose>--%>
+
+<%--&lt;%&ndash;=========================================================================== --%>
+<%--This way we define the ADMIN MENU. --%>
+<%--===========================================================================&ndash;%&gt; --%>
+<%--		<c:when test="${userRole.name == 'moderator' }">--%>
+<%--			<a href="controller?command=listEvents">--%>
+<%--				<fmt:message key="header_jspf.anchor.all_events"/>--%>
+<%--			</a> &nbsp;--%>
+<%--			<a href="controller?command=listTopics">--%>
+<%--				<fmt:message key="header_jspf.anchor.all_topics"/>--%>
+<%--			</a> &nbsp;--%>
+<%--		</c:when>--%>
+
+<%--		--%>
+<%--&lt;%&ndash;=========================================================================== --%>
+<%--This way we define the USER MENU.--%>
+<%--===========================================================================&ndash;%&gt; --%>
+<%--		<c:when test="${userRole.name == 'client'}">--%>
+<%--			<a href="controller?command=listMenu">--%>
+<%--				<fmt:message key="header_jspf.anchor.menu"/>--%>
+<%--			</a> &nbsp;--%>
+<%--		</c:when>--%>
+<%--	</c:choose>--%>
+<%--	--%>
+<%--&lt;%&ndash;=========================================================================== --%>
+<%--This way we define the settings anchor.--%>
+<%--===========================================================================&ndash;%&gt; --%>
+<%--	<a href="controller?command=viewSettings">--%>
+<%--		<fmt:message key="header_jspf.anchor.settings"/>--%>
+<%--	</a> &nbsp;--%>
+<%--</div>--%>
+
+<%--&lt;%&ndash;=========================================================================== --%>
+<%--This way we define the menu located at the right of header. --%>
+<%--===========================================================================&ndash;%&gt; --%>
+<%--<div id="rightHeader" >--%>
+
+<%--&lt;%&ndash;=========================================================================== --%>
+<%--Type user name if the user object is presented in the current session.  --%>
+<%--===========================================================================&ndash;%&gt; --%>
+<%--	<c:out value="${user.firstName} ${user.lastName}"/>--%>
+<%--	--%>
+<%--&lt;%&ndash;=========================================================================== --%>
+<%--Type user role name if the user object is presented in the current session.  --%>
+<%--===========================================================================&ndash;%&gt; --%>
+<%--	<c:if test="${not empty userRole}">--%>
+<%--		<c:out value="(${userRole.name})"/>--%>
+<%--	</c:if>--%>
+
+<%--&lt;%&ndash;=========================================================================== --%>
+<%--Type link to logout  --%>
+<%--===========================================================================&ndash;%&gt; --%>
+<%--	<a href="controller?command=logout">--%>
+<%--		<fmt:message key="header_jspf.anchor.logout"/>--%>
+<%--	</a> 	--%>
+
+<%--</div>--%>
+<%--</c:if>--%>
+
+<%--<c:if test="${empty user and title ne 'Login'}">--%>
+<%--	<div id="rightHeader">--%>
+<%--		<a href="login.jsp">--%>
+<%--			<fmt:message key="header_jspf.anchor.login"/>--%>
+<%--		</a>--%>
+<%--	</div>--%>
+<%--</c:if>--%>
+
+<%--	</td>--%>
+<%--</tr>--%>
+
