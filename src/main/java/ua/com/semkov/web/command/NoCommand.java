@@ -13,7 +13,7 @@ import ua.com.semkov.Path;
 /**
  * No command.
  * 
- * @author D.Kolesnikov
+ * @author S.Semkov
  * 
  */
 public class NoCommand extends Command {

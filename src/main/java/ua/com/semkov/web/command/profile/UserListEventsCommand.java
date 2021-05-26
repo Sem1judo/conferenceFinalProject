@@ -1,12 +1,10 @@
-package ua.com.semkov.web.command.speakerCommand;
+package ua.com.semkov.web.command.profile;
 
 import org.apache.log4j.Logger;
 import ua.com.semkov.Path;
-import ua.com.semkov.db.dao.impl.UsersEventsDaoImpl;
 import ua.com.semkov.db.entity.Event;
 import ua.com.semkov.db.entity.User;
 import ua.com.semkov.exceptions.ServiceException;
-import ua.com.semkov.service.impl.EventServiceImpl;
 import ua.com.semkov.service.impl.UsersEventsServiceImpl;
 import ua.com.semkov.web.command.Command;
 
@@ -16,17 +14,16 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-
 /**
- * List events conducted by speaker .
+ * List events for speaker and  user .
  *
  * @author S.Semkov
  */
-public class SpeakerListEventsCommand extends Command {
+public class UserListEventsCommand extends Command {
 
     private static final long serialVersionUID = 1863978251529586513L;
 
-    private static final Logger log = Logger.getLogger(SpeakerListEventsCommand.class);
+    private static final Logger log = Logger.getLogger(UserListEventsCommand.class);
 
     private final UsersEventsServiceImpl usersEventsService = new UsersEventsServiceImpl();
 
@@ -35,7 +32,7 @@ public class SpeakerListEventsCommand extends Command {
     public String execute(HttpServletRequest request,
                           HttpServletResponse response) throws IOException, ServletException {
 
-        log.debug("Commands SpeakerListEventsCommand starts");
+        log.debug("Commands UserListEventsCommand starts");
 
         User speaker = (User) request.getSession().getAttribute("user");
 

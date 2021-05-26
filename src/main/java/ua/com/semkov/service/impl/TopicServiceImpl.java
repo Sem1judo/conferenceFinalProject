@@ -24,6 +24,7 @@ public class TopicServiceImpl implements TopicService {
     private EventDaoImpl eventDao;
     private int noOfRecords;
 
+
     @Override
     public List<TopicDto> getTopicsDtoByEvent(Long eventId) throws ServiceException {
         List<Topic> topics;
@@ -101,7 +102,6 @@ public class TopicServiceImpl implements TopicService {
     }
 
 
-    @Override
     public List<TopicDto> getTopicsDto() throws ServiceException {
         List<Topic> topics = getTopics();
         List<TopicDto> topicDtos = new ArrayList<>();

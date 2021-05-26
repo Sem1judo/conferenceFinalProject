@@ -1,10 +1,11 @@
-package ua.com.semkov.web.command;
+package ua.com.semkov.web.command.clientCommand;
 
 import org.apache.log4j.Logger;
 import ua.com.semkov.Path;
 import ua.com.semkov.db.entity.Event;
 import ua.com.semkov.exceptions.ServiceException;
 import ua.com.semkov.service.impl.EventServiceImpl;
+import ua.com.semkov.web.command.Command;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -15,7 +16,7 @@ import java.util.List;
 /**
  * Lists menu items.
  * 
- * @author D.Kolesnikov
+ * @author S.Semkov
  * 
  */
 public class ListMenuCommand extends Command {
@@ -34,7 +35,7 @@ public class ListMenuCommand extends Command {
 
 
 		int page = 1;
-		int recordsPerPage = 2;
+		int recordsPerPage = 5;
 
 
 		if (request.getParameter("page") != null)

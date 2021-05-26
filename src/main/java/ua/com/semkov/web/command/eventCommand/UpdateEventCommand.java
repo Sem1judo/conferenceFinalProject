@@ -8,6 +8,7 @@ import ua.com.semkov.exceptions.ServiceException;
 import ua.com.semkov.service.impl.EventServiceImpl;
 import ua.com.semkov.service.impl.TopicServiceImpl;
 import ua.com.semkov.web.command.Command;
+import ua.com.semkov.web.validation.EventValidation;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -16,6 +17,7 @@ import javax.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public class UpdateEventCommand extends Command {
@@ -30,32 +32,58 @@ public class UpdateEventCommand extends Command {
     public String execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
         log.debug("Command starts");
-        String forward = null;
 
         boolean isUpdate;
 
         HttpSession session = request.getSession();
 
         String id = request.getParameter("id");
+        if (id == null) {
+            id = (String) session.getAttribute("id");
+        }
 
-        Event event = null;
+        Event event;
         List<TopicDto> eventTopics = null;
+
+        String errorMessage;
+
         try {
             event = eventService.getEvent(Long.valueOf(id));
         } catch (ServiceException e) {
-            log.error("can't get event ", e);
+            errorMessage = "Event doesn't exist in db";
+            request.setAttribute("errorMessage", errorMessage);
+            log.error("errorMessage --> " + errorMessage, e);
+            return Path.REDIRECT + Path.PAGE__ERROR_PAGE;
         }
 
         String updated = request.getParameter("isUpdated");
         isUpdate = Boolean.parseBoolean(updated);
 
         if (event != null && isUpdate) {
+
             String title = request.getParameter("title");
             String location = request.getParameter("location");
             String description = request.getParameter("description");
             String start_time = request.getParameter("start_time");
             String end_time = request.getParameter("end_time");
             String organizedId = request.getParameter("organizer_id");
+
+            ArrayList<String> fields = new ArrayList<>();
+            fields.add(title);
+            fields.add(location);
+            fields.add(description);
+            fields.add(start_time);
+            fields.add(end_time);
+            fields.add(organizedId);
+
+            for (String field : fields) {
+                if (field == null || field.isEmpty()) {
+                    errorMessage = "All fields are required to be filled";
+                    request.setAttribute("errorMessage", errorMessage);
+                    log.error("errorMessage --> " + errorMessage);
+                    return Path.REDIRECT + Path.PAGE__ERROR_PAGE;
+                }
+            }
 
             event.setTitle(title);
             event.setLocation(location);
@@ -64,16 +92,24 @@ public class UpdateEventCommand extends Command {
             event.setEndTime(LocalDateTime.parse(end_time));
             event.setOrganizerId(Long.valueOf(organizedId));
 
+            if (EventValidation.isValidEvent(event)) {
+                try {
+                    eventService.updateEvent(event);
+                    eventTopics = topicService.getTopicsDtoByEvent(event.getId());
+                } catch (ServiceException e) {
+                    log.error("can't update event", e);
+                    errorMessage = "Can't update event";
+                    request.setAttribute("errorMessage", errorMessage);
+                    return Path.REDIRECT + Path.PAGE__ERROR_PAGE;
+                }
+            } else {
+                errorMessage = "Event is not valid";
+                request.setAttribute("errorMessage", errorMessage);
+                log.error("errorMessage --> " + errorMessage);
+                return Path.REDIRECT + Path.PAGE__ERROR_PAGE;
+            }
 
         }
-
-        try {
-            eventService.updateEvent(event);
-            eventTopics = topicService.getTopicsDtoByEvent(event.getId());
-        } catch (ServiceException e) {
-            log.error("can't update event", e);
-        }
-
 
         log.trace("updated event -- >" + event);
         log.trace("Event topics -- >" + eventTopics);

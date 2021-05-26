@@ -7,12 +7,14 @@ import ua.com.semkov.db.entity.Topic;
 import ua.com.semkov.exceptions.ServiceException;
 import ua.com.semkov.service.impl.TopicServiceImpl;
 import ua.com.semkov.web.command.Command;
+import ua.com.semkov.web.validation.TopicValidation;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class UpdateTopicCommand extends Command {
     private static final long serialVersionUID = 3331975151519536313L;
@@ -24,27 +26,27 @@ public class UpdateTopicCommand extends Command {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
-        log.debug("Command starts");
-
-
-        log.debug("Command starts");
+        log.debug("Command UpdateTopicCommand starts");
 
         boolean isUpdate;
 
         HttpSession session = request.getSession();
 
-
         String id = request.getParameter("id");
 
         Topic topic = null;
         TopicDto topicDto = null;
+        String errorMessage;
 
         try {
             topic = topicService.getTopicById(Long.valueOf(id));
-
         } catch (ServiceException e) {
             log.error("can't get topic by id ", e);
+            errorMessage = "Can't get topic";
+            request.setAttribute("errorMessage", errorMessage);
+            return Path.REDIRECT + Path.PAGE__ERROR_PAGE;
         }
+        log.trace("chosen topic ---> " + topic);
 
 
         String updated = request.getParameter("isUpdated");
@@ -56,19 +58,55 @@ public class UpdateTopicCommand extends Command {
             String userId = request.getParameter("speakerId");
             String eventId = request.getParameter("eventId");
 
-            System.out.println(id + "  " + name + "  " + description + "  " + userId + "  " + eventId);
+
+            ArrayList<String> fields = new ArrayList<>();
+            fields.add(name);
+            fields.add(description);
+            fields.add(userId);
+            fields.add(eventId);
+
+
+            for (String field : fields) {
+                if (field == null || field.isEmpty()) {
+                    errorMessage = "All fields are required to be filled";
+                    request.setAttribute("errorMessage", errorMessage);
+                    log.error("errorMessage --> " + errorMessage);
+                    return Path.REDIRECT + Path.PAGE__ERROR_PAGE;
+                }
+            }
+
             topic.setName(name);
             topic.setDescription(description);
             topic.setEventId(Long.valueOf(eventId));
             topic.setUserId(Long.valueOf(userId));
 
+            if (TopicValidation.isValidTopic(topic)) {
+                try {
+                    topicService.updateTopic(topic);
+                    topicDto = topicService.getTopicDtoById(topic.getId());
+                } catch (ServiceException e) {
+                    errorMessage = "Topic wasn't updated";
+                    request.setAttribute("errorMessage", errorMessage);
+                    log.error("errorMessage --> " + errorMessage, e);
+                    return Path.REDIRECT + Path.PAGE__ERROR_PAGE;
+                }
+            } else {
+                errorMessage = "Topic is not valid";
+                request.setAttribute("errorMessage", errorMessage);
+                log.error("errorMessage --> " + errorMessage);
+                return Path.REDIRECT + Path.PAGE__ERROR_PAGE;
+            }
+
         }
         try {
-            topicService.updateTopic(topic);
             topicDto = topicService.getTopicDtoById(topic.getId());
         } catch (ServiceException e) {
-            log.error("can't update event", e);
+            errorMessage = "TopicDto can't be loaded";
+            request.setAttribute("errorMessage", errorMessage);
+            log.error("errorMessage --> " + errorMessage);
+            return Path.REDIRECT + Path.PAGE__ERROR_PAGE;
         }
+
 
         log.trace("updated topic -- >" + topic);
         log.trace("set attribute topic DTO -- >" + topicDto);
@@ -78,7 +116,7 @@ public class UpdateTopicCommand extends Command {
         session.setAttribute("topic", topic);
 
 
-        log.debug("Commands finished");
+        log.debug("Commands UpdateTopicCommand finished");
         return Path.REDIRECT + Path.PAGE__TOPIC_EDIT;
     }
 }

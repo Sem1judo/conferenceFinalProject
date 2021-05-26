@@ -1,5 +1,6 @@
-package ua.com.semkov.web.command.topicCommand;
+package ua.com.semkov.web.command.speaker;
 
+import com.sun.xml.internal.bind.v2.model.core.ID;
 import org.apache.log4j.Logger;
 import ua.com.semkov.Path;
 import ua.com.semkov.db.entity.Topic;
@@ -11,27 +12,28 @@ import ua.com.semkov.web.validation.TopicValidation;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class CreateTopicCommand extends Command {
-    private static final long serialVersionUID = 1863978254019582513L;
+public class ProposeSpeakerTopicCommand extends Command {
+    private static final long serialVersionUID = 1863972254019582513L;
 
     private final TopicServiceImpl topicService = new TopicServiceImpl();
 
-    private static final Logger log = Logger.getLogger(CreateTopicCommand.class);
+    private static final Logger log = Logger.getLogger(ProposeSpeakerTopicCommand.class);
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
 
-        log.debug("Command starts");
+        log.debug("Command ProposeSpeakerTopicCommand starts");
+
 
         String name = request.getParameter("name");
         String description = request.getParameter("description");
         String userId = request.getParameter("user_id");
         String eventId = request.getParameter("event_id");
-
 
         ArrayList<String> fields = new ArrayList<>();
         fields.add(name);
@@ -67,10 +69,15 @@ public class CreateTopicCommand extends Command {
             return Path.REDIRECT + Path.PAGE__ERROR_PAGE;
         }
 
-        log.trace("created topic --> " + topic);
+        log.trace("obtained topic --> " + topic);
 
-        log.debug("Commands finished");
+        HttpSession session = request.getSession();
+        session.setAttribute("id", eventId);
 
-        return Path.REDIRECT + "controller?command=listTopics";
+
+        log.debug("Commands ProposeSpeakerTopicCommand finished");
+
+
+        return Path.REDIRECT + request.getContextPath() + "controller?command=updateEvent";
     }
 }

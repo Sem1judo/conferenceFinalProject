@@ -1,6 +1,7 @@
 package ua.com.semkov.db.dao.impl;
 
 import org.apache.log4j.Logger;
+import ua.com.semkov.db.entity.User;
 import ua.com.semkov.exceptions.DAOException;
 import ua.com.semkov.db.dao.AbstractDao;
 import ua.com.semkov.db.entity.Event;
@@ -14,7 +15,7 @@ public class EventDaoImpl extends AbstractDao<Event> {
     private static final Logger log = Logger.getLogger(EventDaoImpl.class.getName());
 
     private static final String SQL__FIND_ALL_EVENTS =
-            "SELECT * FROM events";
+            "SELECT * FROM events ORDER BY start_time";
 
     private static final String SQL__INSERT_EVENT =
             "INSERT INTO events (" +
@@ -34,7 +35,7 @@ public class EventDaoImpl extends AbstractDao<Event> {
             "SET title=?, description=?, location=?, start_time=?, end_time=?, organizer_id=? " +
             "WHERE id =?";
 
-    private static final String SQL__FIND_ALL_EVENTS_PAGINATION = " SELECT * FROM events OFFSET ? LIMIT ?;";
+    private static final String SQL__FIND_ALL_EVENTS_PAGINATION = " SELECT * FROM events OFFSET ? LIMIT ? ;";
     private static final String SQL__GET_TOTAL_COUNT = "SELECT COUNT(*) AS total FROM events";
 
 
@@ -87,9 +88,12 @@ public class EventDaoImpl extends AbstractDao<Event> {
     @Override
     public Event mapRow(ResultSet rs) {
         TopicDaoImpl topicDao = new TopicDaoImpl();
+        UsersEventsDaoImpl usersEventsDao = new UsersEventsDaoImpl();
         List<Topic> topics = null;
+        List<User> users = null;
         try {
             topics = topicDao.getAllTopicsByEventId(rs.getLong("id"));
+            users = usersEventsDao.getAllUsersByEventId(rs.getLong("id"));
         } catch (DAOException | SQLException e) {
             log.error("can't take topics when mapping event", e);
         }
@@ -103,6 +107,7 @@ public class EventDaoImpl extends AbstractDao<Event> {
                     .description(rs.getString("description"))
                     .location(rs.getString("location"))
                     .topics(topics)
+                    .users(users)
                     .build();
 
         } catch (SQLException e) {

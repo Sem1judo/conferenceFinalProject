@@ -17,6 +17,8 @@
 </head>
 
 <body class=" bg-warning">
+<%@ include file="../jspf/header.jspf" %>
+
 <div class="container w-25 my-3">
     <div class=" card d-block border-0 ">
         <form action="${pageContext.request.contextPath}/controller" method="post">
@@ -68,5 +70,6 @@
         </form>
     </div>
 </div>
+<%@ include file="../jspf/footer.jspf" %>
 </body>
 </html>

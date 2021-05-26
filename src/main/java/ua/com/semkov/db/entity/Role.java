@@ -9,7 +9,7 @@ import java.io.Serializable;
  * @author S.Semkov
  */
 public enum Role implements Serializable {
-    ADMIN, MODERATOR, CLIENT;
+    MODERATOR, SPEAKER, CLIENT;
 
     public static Role getRole(User user) {
         int roleId = user.getRoleId();

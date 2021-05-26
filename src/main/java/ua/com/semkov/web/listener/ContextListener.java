@@ -14,7 +14,7 @@ import org.apache.log4j.PropertyConfigurator;
 /**
  * Context listener.
  * 
- * @author D.Kolesnikov
+ * @author S.Semkov
  * 
  */
 public class ContextListener implements ServletContextListener {
@@ -23,7 +23,7 @@ public class ContextListener implements ServletContextListener {
 
 	public void contextDestroyed(ServletContextEvent event) {
 		log("Servlet context destruction starts");
-		// do nothing
+
 		log("Servlet context destruction finished");
 	}
 

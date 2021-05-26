@@ -159,6 +159,7 @@ public abstract class AbstractDao<K> implements InterfaceDao<K> {
         return entity;
     }
 
+
     /**
      * Insert entity.
      *
@@ -166,11 +167,16 @@ public abstract class AbstractDao<K> implements InterfaceDao<K> {
      */
     @Override
     public int insertEntityReturningId(K k) throws DAOException {
+        Connection con = null;
+        PreparedStatement ps = null;
         int id = 0;
-        try (Connection con = DBManager.getInstance().getConnection();
-             PreparedStatement ps = con.prepareStatement(getQueryInsertEntity()
-                     , Statement.RETURN_GENERATED_KEYS)) {
+        try {
+            con = DBManager.getInstance().getConnection();
+            con.setAutoCommit(false);
+            con.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 
+            ps = con.prepareStatement(getQueryInsertEntity()
+                    , Statement.RETURN_GENERATED_KEYS);
             setRowPS(k, ps);
 
             int affectedRows = ps.executeUpdate();
@@ -178,15 +184,23 @@ public abstract class AbstractDao<K> implements InterfaceDao<K> {
                 try (ResultSet rs = ps.getGeneratedKeys()) {
                     if (rs.next()) {
                         id = rs.getInt(1);
+                        con.commit();
                     }
                 } catch (SQLException ex) {
+                    rollback(con);
                     log.error("Creating  failed, no ID obtained.", ex);
                 }
-            } else log.error("Creating  failed, no rows affected");
 
+            } else {
+                rollback(con);
+                log.error("Creating  failed, no rows affected");
+            }
         } catch (SQLException ex) {
             log.error("Inserting  failed", ex);
             throw new DAOException("Inserting event failed", ex);
+        } finally {
+            close(ps);
+            close(con);
         }
         return id;
     }
@@ -199,32 +213,62 @@ public abstract class AbstractDao<K> implements InterfaceDao<K> {
      */
     @Override
     public void updateEntityById(K k) throws DAOException {
-        try (Connection con = DBManager.getInstance().getConnection();
-             PreparedStatement ps = con.prepareStatement(getQueryUpdateById())) {
+        Connection con = null;
+        PreparedStatement ps = null;
+        try {
+            con = DBManager.getInstance().getConnection();
+            con.setAutoCommit(false);
+            con.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+
+            ps = con.prepareStatement(getQueryUpdateById());
 
             setRowPS(k, ps);
             setIdPS(k, ps);
 
             ps.executeUpdate();
+
+            con.commit();
         } catch (SQLException ex) {
+            rollback(con);
             log.error("Updating event failed", ex);
             throw new DAOException("Updating event failed", ex);
+        } finally {
+            close(ps);
+            close(con);
         }
     }
 
-    //
+    /**
+     * Update entity.
+     *
+     * @param K k to update.
+     */
     @Override
     public void updateEntityBySpecificName(K k) throws DAOException {
-        try (Connection con = DBManager.getInstance().getConnection();
-             PreparedStatement ps = con.prepareStatement(getQueryUpdateSpecificName())) {
+        Connection con = null;
+        PreparedStatement ps = null;
+        try {
+            con = DBManager.getInstance().getConnection();
+            con.setAutoCommit(false);
+            con.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+
+            ps = con.prepareStatement(getQueryUpdateSpecificName());
+
+            int rowsAdded = ps.executeUpdate();
 
             setRowPS(k, ps);
             setIdPS(k, ps);
 
-            ps.executeUpdate();
+            if (rowsAdded > 0) {
+                con.commit();
+            } else throw new SQLException("updated entity is null");
         } catch (SQLException ex) {
+            rollback(con);
             log.error("Updating event failed", ex);
             throw new DAOException("Updating event failed", ex);
+        } finally {
+            close(ps);
+            close(con);
         }
     }
 
@@ -259,5 +303,15 @@ public abstract class AbstractDao<K> implements InterfaceDao<K> {
             }
         }
     }
+
+    public void rollback(Connection con) {
+        try {
+            con.rollback();
+            con.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+
 
 }

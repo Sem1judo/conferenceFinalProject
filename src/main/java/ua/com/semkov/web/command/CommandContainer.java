@@ -4,13 +4,17 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import org.apache.log4j.Logger;
+import ua.com.semkov.web.command.clientCommand.JoinUserEventsCommand;
+import ua.com.semkov.web.command.clientCommand.ListMenuCommand;
 import ua.com.semkov.web.command.eventCommand.CreateEventCommand;
 import ua.com.semkov.web.command.eventCommand.DeleteEventCommand;
 import ua.com.semkov.web.command.eventCommand.ListEventsCommand;
 import ua.com.semkov.web.command.eventCommand.UpdateEventCommand;
-import ua.com.semkov.web.command.speakerCommand.SpeakerListEventsCommand;
+import ua.com.semkov.web.command.profile.UserListEventsCommand;
+import ua.com.semkov.web.command.speaker.ProposeSpeakerTopicCommand;
 import ua.com.semkov.web.command.topicCommand.CreateTopicCommand;
 import ua.com.semkov.web.command.topicCommand.DeleteTopicCommand;
+import ua.com.semkov.web.command.topicCommand.ListTopicsCommand;
 import ua.com.semkov.web.command.topicCommand.UpdateTopicCommand;
 
 /**
@@ -32,7 +36,9 @@ public class CommandContainer {
         commands.put("noCommand", new NoCommand());
         commands.put("viewSettings", new ViewSettingsCommand());
         commands.put("updateSettings", new UpdateSettingsCommand());
-        commands.put("speakerProfileListEvents", new SpeakerListEventsCommand());
+        commands.put("profileListEvents", new UserListEventsCommand());
+        commands.put("joinEvent", new JoinUserEventsCommand());
+        commands.put("proposeTopicSpeaker", new ProposeSpeakerTopicCommand());
 
 
         // client commands

@@ -18,8 +18,9 @@ public class UsersEventsDaoImpl {
 
 
     private EventDaoImpl eventDao;
+    private UserDaoImpl userDao;
 
-    private static final String SQL__GET_ALL_EVENTS_BY_SPEAKER_ID =
+    private static final String SQL__GET_ALL_EVENTS_BY_USER_ID =
             "SELECT * FROM users_events WHERE user_id = ?";
 
     public static final String ADD_USER_EVENT = " INSERT INTO users_events (user_id, event_id) " +
@@ -27,12 +28,15 @@ public class UsersEventsDaoImpl {
             "FROM users u , events e " +
             "WHERE u.id = ? AND e.id = ?";
 
+    public static final String SQL__GET_USERS_BY_EVENT_ID =
+            "SELECT * FROM users_events WHERE event_id = ?";
+
 
     public List<Event> getAllEventsByUser(User user) throws DAOException {
         ResultSet rs = null;
         List<Event> events = new ArrayList<>(0);
         try (Connection con = DBManager.getInstance().getConnection();
-             PreparedStatement stmt = con.prepareStatement(SQL__GET_ALL_EVENTS_BY_SPEAKER_ID)) {
+             PreparedStatement stmt = con.prepareStatement(SQL__GET_ALL_EVENTS_BY_USER_ID)) {
 
             stmt.setLong(1, user.getId());
 
@@ -48,6 +52,28 @@ public class UsersEventsDaoImpl {
             close(rs);
         }
         return events;
+    }
+
+    public List<User> getAllUsersByEventId(Long id) throws DAOException {
+        ResultSet rs = null;
+        List<User> users = new ArrayList<>(0);
+        try (Connection con = DBManager.getInstance().getConnection();
+             PreparedStatement stmt = con.prepareStatement(SQL__GET_USERS_BY_EVENT_ID)) {
+
+            stmt.setLong(1, id);
+
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+                userDao = new UserDaoImpl();
+                users.add(userDao.getById((rs.getLong("user_id"))));
+            }
+        } catch (SQLException e) {
+            log.error("Cannot obtain a list from the database", e);
+            throw new DAOException("Getting list from database failed", e);
+        } finally {
+            close(rs);
+        }
+        return users;
     }
 
     public void setEventsForUser(User user, Event... events) throws DAOException {

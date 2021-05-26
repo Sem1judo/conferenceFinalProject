@@ -1,11 +1,12 @@
 package ua.com.semkov.web.command;
 
 import org.apache.log4j.Logger;
+import ua.com.semkov.db.entity.Role;
 import ua.com.semkov.db.entity.User;
 import ua.com.semkov.service.impl.UserServiceImpl;
 import ua.com.semkov.Path;
-import ua.com.semkov.db.Role;
 import ua.com.semkov.exceptions.ServiceException;
+import ua.com.semkov.web.validation.UserValidation;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
@@ -52,13 +53,12 @@ public class RegistrationCommand extends Command {
         fields.add(phone);
         fields.add(firstName);
         fields.add(lastName);
+        fields.add(login);
 
 
         // error handler
         String errorMessage;
 
-
-        System.out.println(fields);
 
         for (String field : fields) {
             if (field == null || field.isEmpty()) {
@@ -74,16 +74,24 @@ public class RegistrationCommand extends Command {
                 .firstName(firstName)
                 .lastName(lastName).build();
 
-        try {
-            userService.registration(user);
-            log.trace("Inserted user : user --> " + user);
-        } catch (ServiceException e) {
-            log.error("Problem with registration user", e);
+
+        if (UserValidation.isValidUser(user)) {
+            try {
+                userService.registration(user);
+                log.trace("Inserted user : user --> " + user);
+            } catch (ServiceException e) {
+                log.error("Problem with registration user", e);
+            }
+
+        } else {
+            errorMessage = "User not valid";
+            log.error("errorMessage --> " + errorMessage);
+            request.setAttribute("errorMessage", errorMessage);
+            return Path.REDIRECT + Path.PAGE__ERROR_PAGE;
         }
 
         Role userRole = Role.getRole(user);
         log.trace("userRole --> " + userRole);
-
 
         setUserSessionAndCookies(response, session, user, userRole, log);
 

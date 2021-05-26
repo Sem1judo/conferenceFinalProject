@@ -7,23 +7,20 @@
 
 <html>
 <head>
-    <link rel="stylesheet" type="text/css" media="screen" href="../../style/st4.css"/>
 
-    <%--===========================================================================
-    If you define http-equiv attribute, set the content type and the charset the same
-    as you set them in a page directive.
-    ===========================================================================--%>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <title>Create topic</title>
 
 </head>
 
 <body>
-<hr>
-<body>
+
+<%@ include file="../jspf/header.jspf" %>
+
 <div class="text-center">
     <a href="" class="btn btn-default btn-rounded mb-4" data-toggle="modal"
        data-target="#createTopic"><fmt:message key="topic.createTopic"/></a>
@@ -72,7 +69,8 @@
                             ID</label>
                     </div>
                     <div class="modal-footer d-flex justify-content-center">
-                        <button class="btn btn-deep-orange"><fmt:message key="list_orders_jsp.table.header.create"/></button>
+                        <button class="btn btn-deep-orange"><fmt:message
+                                key="list_orders_jsp.table.header.create"/></button>
                     </div>
                 </form>
             </div>

@@ -12,79 +12,43 @@ import java.sql.SQLException;
 /**
  * DB manager. Works with PostgreSQL.
  * Only the required DAO methods are defined!
- * 
+ *
  * @author S.Semkov
- * 
  */
 public class DBManager {
-	
-	private static final Logger log = Logger.getLogger(DBManager.class);
+
+    private static final Logger log = Logger.getLogger(DBManager.class);
 
 
-	private static DBManager instance;
+    private static DBManager instance;
 
-	public static synchronized DBManager getInstance() {
-		if (instance == null)
-			instance = new DBManager();
-		return instance;
-	}
-	
-	/**
-	 * Returns a DB connection from the Pool Connections. Before using this
-	 * method you must configure the Date Source and the Connections Pool in your
-	 * WEB_APP_ROOT/META-INF/context.xml file.
-	 * 
-	 * @return A DB connection.
-	 */
-	public Connection getConnection() throws SQLException {
-		Connection con = null;
-		try {
-			Context initContext = new InitialContext();
-			Context envContext  = (Context)initContext.lookup("java:/comp/env");
-			// conference - the name of data source
-			DataSource ds = (DataSource)envContext.lookup("jdbc/conference");
-			con = ds.getConnection();
-		} catch (NamingException ex) {
-			log.error("Cannot obtain a connection from the pool", ex);
-		}
-		return con;
-	}
+    public static synchronized DBManager getInstance() {
+        if (instance == null)
+            instance = new DBManager();
+        return instance;
+    }
 
-	private DBManager() {
-	}
+    /**
+     * Returns a DB connection from the Pool Connections. Before using this
+     * method you must configure the Date Source and the Connections Pool in your
+     * WEB_APP_ROOT/META-INF/context.xml file.
+     *
+     * @return A DB connection.
+     */
+    public Connection getConnection() throws SQLException {
+        Connection con = null;
+        try {
+            Context initContext = new InitialContext();
+            Context envContext = (Context) initContext.lookup("java:/comp/env");
+            // conference - the name of data source
+            DataSource ds = (DataSource) envContext.lookup("jdbc/conference");
+            con = ds.getConnection();
+        } catch (NamingException ex) {
+            log.error("Cannot obtain a connection from the pool", ex);
+        }
+        return con;
+    }
 
-
-	// //////////////////////////////////////////////////////////
-	// DB util methods
-	// //////////////////////////////////////////////////////////
-
-	/**
-	 * Commits and close the given connection.
-	 * 
-	 * @param con
-	 *            Connection to be committed and closed.
-	 */
-	public void commitAndClose(Connection con) {
-		try {
-			con.commit();
-			con.close();
-		} catch (SQLException ex) {
-			ex.printStackTrace();
-		}
-	}
-
-	/**
-	 * Rollbacks and close the given connection.
-	 * 
-	 * @param con
-	 *            Connection to be rollbacked and closed.
-	 */
-	public void rollbackAndClose(Connection con) {
-		try {
-			con.rollback();
-			con.close();
-		} catch (SQLException ex) {
-			ex.printStackTrace();
-		}
-	}
+    private DBManager() {
+    }
 }

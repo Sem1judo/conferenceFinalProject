@@ -133,6 +133,13 @@
         <listener-class>ua.com.semkov.web.listener.ContextListener</listener-class>
     </listener>
 
+    <listener>
+        <listener-class>ua.com.semkov.web.listener.AppContextAttributeListener</listener-class>
+    </listener>
+    <listener>
+        <listener-class>ua.com.semkov.web.listener.SessionListener</listener-class>
+    </listener>
+
 
     <!--============================================================
         Error page

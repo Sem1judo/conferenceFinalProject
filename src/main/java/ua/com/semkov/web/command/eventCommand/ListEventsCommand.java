@@ -32,15 +32,21 @@ public class ListEventsCommand extends Command {
     public String execute(HttpServletRequest request,
                           HttpServletResponse response) throws IOException, ServletException {
 
-        log.debug("Commands starts");
+        log.debug("Commands ListEventsCommand starts");
 
 
         int page = 1;
-        int recordsPerPage = 2;
+        int recordsPerPage = 5;
+
+        String sort = "byStartTime";
 
 
         if (request.getParameter("page") != null)
             page = Integer.parseInt(request.getParameter("page"));
+
+        if (request.getParameter("sort") != null) {
+            sort = request.getParameter("sort");
+        }
 
         List<Event> events = null;
 
@@ -54,16 +60,18 @@ public class ListEventsCommand extends Command {
         int noOfRecords = eventService.getNoOfRecords();
         int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / recordsPerPage);
 
-        log.trace("Set the request attribute: events --> " + events);
         log.trace("Set the request attribute: noOfPages(total number of events) --> " + noOfPages);
+        log.trace("Set the request attribute sort: --> " + sort);
         log.trace("Set the request attribute founded events: --> " + events);
+
 
         request.setAttribute("events", events);
         request.setAttribute("noOfPages", noOfPages);
         request.setAttribute("currentPage", page);
+        request.setAttribute("sort", sort);
 
 
-        log.debug("Commands finished");
+        log.debug("Commands ListEventsCommand finished");
 
         return Path.PAGE__LIST_EVENTS;
     }

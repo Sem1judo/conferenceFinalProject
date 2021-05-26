@@ -13,8 +13,6 @@ public interface TopicService {
 
     List<TopicDto> getTopicsDtoByEvent(Long eventId) throws ServiceException;
 
-    List<TopicDto> getTopicsDto() throws ServiceException;
-
     List<TopicDto> getTopicsDtoPagination(int start, int noOfRecords) throws ServiceException;
 
     TopicDto getTopicDtoById(Long id) throws ServiceException;

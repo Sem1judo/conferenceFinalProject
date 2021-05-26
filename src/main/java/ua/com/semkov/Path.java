@@ -26,7 +26,7 @@ public final class Path {
     public static final String COMMAND_LIST_EVENTS = "/controller?command=listEvents";
     public static final String COMMAND__LIST_TOPICS = "/controller?command=listTopics";
     public static final String COMMAND__LIST_MENU = "/controller?command=listMenu";
-    public static final String COMMAND__SPEAKER_LIST_EVENTS = "/controller?command=speakerProfileListEvents";
+    public static final String COMMAND__PROFILE_LIST_EVENTS = "/controller?command=profileListEvents";
 
 
 }

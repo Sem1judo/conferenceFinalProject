@@ -25,7 +25,7 @@ public class ListTopicsCommand extends Command {
     private static final long serialVersionUID = 1863978254601586513L;
 
     private static final Logger log = Logger.getLogger(ListTopicsCommand.class);
-    private static final Comparator<TopicDto> compareById = new CompareById();
+
 
     private final TopicServiceImpl topicService = new TopicServiceImpl();
 
@@ -36,48 +36,32 @@ public class ListTopicsCommand extends Command {
         log.debug("Commands starts");
 
         int page = 1;
-        int recordsPerPage = 2;
-
+        int recordsPerPage = 5;
+        List<TopicDto> topicDtos = null;
 
         if (request.getParameter("page") != null)
             page = Integer.parseInt(request.getParameter("page"));
 
-        List<TopicDto> topicDtos = null;
-        System.out.println(topicDtos);
         try {
             topicDtos = topicService.getTopicsDtoPagination((page - 1) * recordsPerPage,
                     recordsPerPage);
-
         } catch (ServiceException e) {
             log.error("Problem getting topics DTO", e);
         }
-
 
         int noOfRecords = topicService.getNoOfRecords();
         int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / recordsPerPage);
 
         log.trace("Set the request attribute: topics --> " + topicDtos);
-        log.trace("Set the request attribute: noOfPages(total number of events) --> " + noOfPages);
+        log.trace("Set the request attribute: noOfPages(total number of topics) --> " + noOfPages);
 
         request.setAttribute("topics", topicDtos);
         request.setAttribute("noOfPages", noOfPages);
         request.setAttribute("currentPage", page);
 
-
         log.debug("Commands finished");
-
 
         return Path.PAGE__LIST_TOPICS;
     }
-
-    private static class CompareById implements Comparator<TopicDto>, Serializable {
-        private static final long serialVersionUID = -2573481565177573183L;
-
-        public int compare(TopicDto o1, TopicDto o2) {
-            return o1.getId().compareTo(o2.getId());
-        }
-
-    }
-
 
 }

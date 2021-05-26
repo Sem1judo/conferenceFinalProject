@@ -1,18 +1,16 @@
 package ua.com.semkov.web.command;
 
 import org.apache.log4j.Logger;
+import ua.com.semkov.db.entity.Role;
 import ua.com.semkov.db.entity.User;
 import ua.com.semkov.service.impl.UserServiceImpl;
 import ua.com.semkov.Path;
-import ua.com.semkov.db.Role;
 import ua.com.semkov.exceptions.ServiceException;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.servlet.jsp.jstl.core.Config;
 import java.io.IOException;
 
 /**
@@ -67,18 +65,19 @@ public class LoginCommand extends Command {
             request.setAttribute("errorMessage", errorMessage);
             log.error("errorMessage --> " + errorMessage);
             return forward;
+
         } else {
             Role userRole = Role.getRole(user);
             log.trace("userRole --> " + userRole);
 
             if (userRole == Role.MODERATOR)
-                forward =  Path.COMMAND_LIST_EVENTS;
+                forward = Path.COMMAND_LIST_EVENTS;
 
             if (userRole == Role.CLIENT)
-                forward =  Path.COMMAND__LIST_MENU;
+                forward = Path.COMMAND__LIST_MENU;
 
             if (userRole == Role.SPEAKER)
-                forward =  Path.COMMAND__SPEAKER_LIST_EVENTS;
+                forward = Path.COMMAND__PROFILE_LIST_EVENTS;
 
             RegistrationCommand.setUserSessionAndCookies(response, session, user, userRole, log);
 

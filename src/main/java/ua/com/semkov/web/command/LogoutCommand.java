@@ -15,7 +15,7 @@ import ua.com.semkov.Path;
 /**
  * Logout command.
  *
- * @author D.Kolesnikov
+ * @author S.Semkov
  */
 public class LogoutCommand extends Command {
 

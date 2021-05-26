@@ -13,7 +13,7 @@ import ua.com.semkov.Path;
 /**
  * View settings command.
  * 
- * @author D.Kolesnikov
+ * @author S.Semkov
  * 
  */
 public class ViewSettingsCommand extends Command {

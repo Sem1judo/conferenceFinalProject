@@ -9,7 +9,7 @@ import java.util.List;
  *
  * @author S.Semkov
  */
-public class Event  implements Serializable {
+public class Event implements Serializable {
 
     private static final long serialVersionUID = -6889036215149495688L;
 
@@ -21,6 +21,15 @@ public class Event  implements Serializable {
     private LocalDateTime endTime;
     private Long organizerId;
     private List<Topic> topics;
+    private List<User> users;
+
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
+    }
 
     public List<Topic> getTopics() {
         return topics;
@@ -105,6 +114,7 @@ public class Event  implements Serializable {
         private String description = "Exhilarating event";
         private String location = "online";
         private List<Topic> topics;
+        private List<User> users;
 
         public Builder id(Long idVal) {
             id = idVal;
@@ -113,6 +123,11 @@ public class Event  implements Serializable {
 
         public Builder topics(List<Topic> topicsVal) {
             topics = topicsVal;
+            return this;
+        }
+
+        public Builder users(List<User> usersVal) {
+            users = usersVal;
             return this;
         }
 
@@ -141,6 +156,7 @@ public class Event  implements Serializable {
         description = builder.description;
         location = builder.location;
         topics = builder.topics;
+        users = builder.users;
     }
 
     @Override

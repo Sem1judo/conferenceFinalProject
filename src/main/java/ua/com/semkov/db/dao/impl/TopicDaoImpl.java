@@ -42,7 +42,7 @@ public class TopicDaoImpl extends AbstractDao<Topic> {
     public static final String SQL__GET_ALL_TOPICS_BY_USER_ID = "SELECT id, name, description, user_id, event_id " +
             " FROM topics WHERE user_id = ?";
 
-    private static final String SQL__FIND_ALL_TOPICS_PAGINATION = " SELECT * FROM topics OFFSET ? LIMIT ?;";
+    private static final String SQL__FIND_ALL_TOPICS_PAGINATION = " SELECT * FROM topics OFFSET ? LIMIT ? ;";
     private static final String SQL__GET_TOTAL_COUNT = "SELECT COUNT(*) AS total FROM topics";
 
 

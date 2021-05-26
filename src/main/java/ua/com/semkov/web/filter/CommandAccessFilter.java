@@ -19,7 +19,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
 
 import ua.com.semkov.Path;
-import ua.com.semkov.db.Role;
+import ua.com.semkov.db.entity.Role;
 
 /**
  * Security filter. Disabled by default. Uncomment Security filter

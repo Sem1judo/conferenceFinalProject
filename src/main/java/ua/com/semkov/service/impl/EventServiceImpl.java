@@ -4,9 +4,8 @@ import org.apache.log4j.Logger;
 import ua.com.semkov.exceptions.*;
 import ua.com.semkov.service.EventService;
 import ua.com.semkov.db.dao.impl.EventDaoImpl;
-import ua.com.semkov.db.dao.impl.TopicDaoImpl;
 import ua.com.semkov.db.entity.Event;
-import ua.com.semkov.db.entity.Topic;
+
 
 import java.util.List;
 
@@ -69,22 +68,6 @@ public class EventServiceImpl implements EventService {
             throw new ServiceException("problem with getting event", e);
         }
         return event;
-    }
-
-    @Override
-    public List<Topic> getTopicsByEventId(Event event) throws ServiceException {
-        List<Topic> topics;
-
-        eventDao = new EventDaoImpl();
-        TopicDaoImpl topicDao = new TopicDaoImpl();
-        try {
-            topics = topicDao.getAll();
-            event.setTopics(topics);
-        } catch (DAOException e) {
-            log.error("problem with getting topics with event by id", e);
-            throw new ServiceException("problem with getting topics with event by id", e);
-        }
-        return event.getTopics();
     }
 
     @Override
