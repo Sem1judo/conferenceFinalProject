@@ -20,18 +20,18 @@
 <body>
 <%@ include file="../jspf/header.jspf" %>
 
-<h1><fmt:message key="list_events_jsp.table_title.event"/></h1>
+<h1><fmt:message key="list_event"/></h1>
 <table class="table table-striped table-hover">
     <tr>
-        <th><fmt:message key="list_orders_jsp.table.header.title"/></th>
-        <th><fmt:message key="list_orders_jsp.table.header.description"/></th>
-        <th><fmt:message key="list_orders_jsp.table.header.location"/></th>
-        <th><fmt:message key="list_orders_jsp.table.header.startTime"/></th>
-        <th><fmt:message key="list_orders_jsp.table.header.endTime"/></th>
+        <th><fmt:message key="list_jsp.table.header.title"/></th>
+        <th><fmt:message key="list_jsp.table.header.description"/></th>
+        <th><fmt:message key="list_jsp.table.header.location"/></th>
+        <th><fmt:message key="list_jsp.table.header.startTime"/></th>
+        <th><fmt:message key="list_jsp.table.header.endTime"/></th>
         <th><fmt:message key="list_orders_jsp.table.header.organizerId"/></th>
         <c:if test="${userRole.name == 'moderator' }">
-            <th><fmt:message key="list_orders_jsp.table.header.update"/></th>
-            <th><fmt:message key="list_orders_jsp.table.header.delete"/></th>
+            <th><fmt:message key="list_jsp.table.header.update"/></th>
+            <th><fmt:message key="list_jsp.table.header.delete"/></th>
         </c:if>
     </tr>
     <tr>
@@ -50,7 +50,7 @@
                     <td><input name="organizer_id" value="${event.organizerId}" type="text"></td>
                     <td>
                         <button type="submit"
-                                class="btn btn-dark btn-lg"><fmt:message key="list_orders_jsp.table.header.update"/>
+                                class="btn btn-dark btn-lg"><fmt:message key="list_jsp.table.header.update"/>
                         </button>
                     </td>
                 </form>
@@ -73,7 +73,7 @@
                     <input type="hidden" name="id" value="${event.id}">
                     <button type="submit"
                             class="btn btn-dark btn-lg">
-                        <fmt:message key="list_orders_jsp.table.header.delete"/>
+                        <fmt:message key="list_jsp.table.header.delete"/>
                     </button>
                 </td>
             </form>
@@ -115,7 +115,7 @@
                                    class="form-control validate">
                             <label data-error="wrong" data-success="right"
                                    for="description"><fmt:message
-                                    key="list_orders_jsp.table.header.description"/></label>
+                                    key="list_jsp.table.header.description"/></label>
                         </div>
                         <div class="md-form">
                             <i class="fas fa-pencil prefix grey-text"></i>
@@ -130,12 +130,12 @@
                             <input name="event_id" type="text" id="eventId" readonly value="${event.id}"
                                    class="form-control validate">
                             <label data-error="wrong" data-success="right" for="eventId"><fmt:message
-                                    key="list_events_jsp.table_title.event"/>
+                                    key="list_event"/>
                                 ID</label>
                         </div>
                         <div class="modal-footer d-flex justify-content-center">
                             <button class="btn btn-deep-orange"><fmt:message
-                                    key="list_orders_jsp.table.header.create"/></button>
+                                    key="list_btn.create"/></button>
                         </div>
                     </form>
                 </div>
@@ -147,8 +147,8 @@
 
 <table class="table table-striped table-hover">
     <tr>
-        <th><fmt:message key="list_orders_jsp.table.header.title"/></th>
-        <th><fmt:message key="list_orders_jsp.table.header.description"/></th>
+        <th><fmt:message key="list_jsp.table.header.title"/></th>
+        <th><fmt:message key="list_jsp.table.header.description"/></th>
         <th><fmt:message key="list_topics.speaker"/>
         <th>
             <fmt:message key="login_jsp.label.email"/>
@@ -159,7 +159,7 @@
     <c:choose>
         <c:when test="${fn:length(eventTopics) == 0}">
             <fmt:message
-                    key="list_orders_jsp.table.header.empty"/>
+                    key="list_jsp.table.header.empty"/>
         </c:when>
         <c:otherwise>
             <c:forEach var="topic" items="${eventTopics}">

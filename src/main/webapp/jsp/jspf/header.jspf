@@ -2,48 +2,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
-<style>
-    .nav_header-links {
-        list-style-type: none;
-        margin: 0;
-        padding: 0;
-        overflow: hidden;
-        background-color: #333;
-    }
-
-    .nav_link {
-        float: left;
-    }
-
-    .nav_link-right {
-        float: right;
-        color: white;
-    }
-
-    .nav-item {
-        display: block;
-        color: white;
-        text-align: center;
-        padding: 12px 12px;
-        text-decoration: none;
-        margin: 8px;
-    }
-
-    .nav-item:hover {
-        color: #fbc02d;
-        text-decoration: none;
-    }
-
-
-    .nav-item:hover:not(.active) {
-        background-color: #111;
-    }
-
-    .nav_link-user {
-        color: #fbc02d;
-    }
-
-</style>
+<head>
+    <link rel="stylesheet" type="text/css" href="../../style/header.css">
+</head>
 
 <%--===========================================================================
                  This is the menu.
@@ -52,12 +13,6 @@
     <c:if test="${not empty user}">
         <c:choose>
             <c:when test="${userRole.name == 'moderator' }">
-                <li class="nav_link">
-                    <a class="nav-item"
-                       href="${pageContext.request.contextPath}/controller?command=listEvents">
-                        <fmt:message key="header_jspf.anchor.all_events"/>
-                    </a>
-                </li>
                 <li class="nav_link">
                     <a class=" nav-item"
                        href="${pageContext.request.contextPath}/controller?command=listTopics">
@@ -68,24 +23,12 @@
             <c:when test="${userRole.name == 'client'}">
                 <li class="nav_link">
                     <a class="nav-item"
-                       href="${pageContext.request.contextPath}/controller?command=listMenu">
-                        <fmt:message key="list_events_jsp.table_title.event"/>
-                    </a>
-                </li>
-                <li class="nav_link">
-                    <a class="nav-item"
                        href="${pageContext.request.contextPath}/controller?command=profileListEvents">
                         <fmt:message key="header_jspf.anchor.profile"/>
                     </a>
                 </li>
             </c:when>
             <c:when test="${userRole.name == 'speaker'}">
-                <li class="nav_link">
-                    <a class="nav-item"
-                       href="${pageContext.request.contextPath}/controller?command=listEvents">
-                        <fmt:message key="header_jspf.anchor.all_events"/>
-                    </a>
-                </li>
                 <li class="nav_link">
                     <a class="nav-item"
                        href="${pageContext.request.contextPath}/controller?command=profileListEvents">
@@ -101,6 +44,12 @@
 
             </c:when>
         </c:choose>
+        <li class="nav_link">
+            <a class="nav-item"
+               href="${pageContext.request.contextPath}/controller?command=listEvents">
+                <fmt:message key="header_jspf.anchor.all_events"/>
+            </a>
+        </li>
         <li class="nav_link">
             <a class="nav-item" href="${pageContext.request.contextPath}/controller?command=viewSettings">
                 <fmt:message key="header_jspf.anchor.settings"/>

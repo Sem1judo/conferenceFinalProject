@@ -7,7 +7,9 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 /**
  * DB manager. Works with PostgreSQL.
@@ -29,10 +31,6 @@ public class DBManager {
     }
 
     /**
-     * Returns a DB connection from the Pool Connections. Before using this
-     * method you must configure the Date Source and the Connections Pool in your
-     * WEB_APP_ROOT/META-INF/context.xml file.
-     *
      * @return A DB connection.
      */
     public Connection getConnection() throws SQLException {
@@ -51,4 +49,67 @@ public class DBManager {
 
     private DBManager() {
     }
+
+    public void closeConnection(Connection con, Statement st, ResultSet rs) {
+        try {
+            if (con != null) {
+                con.setAutoCommit(true);
+                con.close();
+            }
+        } catch (SQLException e) {
+            log.error("Attempting to close closed connection", e);
+        }
+        try {
+            if (rs != null) {
+                rs.close();
+            }
+        } catch (SQLException e) {
+            log.error("ResultSet close error!", e);
+        }
+        try {
+            if (st != null) {
+                st.close();
+            }
+        } catch (SQLException e) {
+            log.error("Statement close error!", e);
+        }
+    }
+
+    public void close(Connection con, Statement st) {
+        try {
+            if (con != null) {
+                con.setAutoCommit(true);
+                con.close();
+            }
+        } catch (SQLException e) {
+            log.error("Attempting to close closed connection", e);
+        }
+        try {
+            if (st != null) {
+                st.close();
+            }
+        } catch (SQLException e) {
+            log.error("Statement close error!", e);
+        }
+    }
+
+    public void rollback(Connection con) {
+        try {
+            con.rollback();
+            con.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void close(AutoCloseable closeable) {
+        if (closeable != null) {
+            try {
+                closeable.close();
+            } catch (Exception e) {
+                log.error("Problem with closing ", e);
+            }
+        }
+    }
+
 }

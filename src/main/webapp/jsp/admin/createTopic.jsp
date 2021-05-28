@@ -70,7 +70,7 @@
                     </div>
                     <div class="modal-footer d-flex justify-content-center">
                         <button class="btn btn-deep-orange"><fmt:message
-                                key="list_orders_jsp.table.header.create"/></button>
+                                key="list_btn.create"/></button>
                     </div>
                 </form>
             </div>

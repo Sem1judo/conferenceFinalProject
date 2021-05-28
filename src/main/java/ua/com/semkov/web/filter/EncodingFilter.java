@@ -14,45 +14,29 @@ import org.apache.log4j.Logger;
 
 /**
  * Encoding filter.
- * 
+ *
  * @author S.Semkov
- * 
  */
 public class EncodingFilter implements Filter {
 
-	private static final Logger log = Logger.getLogger(EncodingFilter.class);
+    private static final Logger log = Logger.getLogger(EncodingFilter.class);
 
-	private String encoding;
+    private static final String DEFAULT_ENCODING = "UTF-8";
 
-	public void destroy() {
-		log.debug("Filter destruction starts");
-		// do nothing
-		log.debug("Filter destruction finished");
-	}
+    public void init(FilterConfig fConfig) throws ServletException {
+        log.debug("Filter initialization starts");
+    }
 
-	public void doFilter(ServletRequest request, ServletResponse response,
-			FilterChain chain) throws IOException, ServletException {
-		
-		log.debug("Filter starts");
-		
-		HttpServletRequest httpRequest = (HttpServletRequest)request;
-		log.trace("Request uri --> " + httpRequest.getRequestURI());
-		
-		String requestEncoding = request.getCharacterEncoding();
-		if (requestEncoding == null) {
-			log.trace("Request encoding = null, set encoding --> " + encoding);
-			request.setCharacterEncoding(encoding);
-		}
-		
-		log.debug("Filter finished");		
-		chain.doFilter(request, response);
-	}
+    @Override
+    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse,
+                         FilterChain filterChain) throws IOException, ServletException {
+        servletRequest.setCharacterEncoding(DEFAULT_ENCODING);
+        filterChain.doFilter(servletRequest, servletResponse);
+    }
 
-	public void init(FilterConfig fConfig) throws ServletException {
-		log.debug("Filter initialization starts");
-		encoding = fConfig.getInitParameter("encoding");
-		log.trace("Encoding from web.xml --> " + encoding);
-		log.debug("Filter initialization finished");
-	}
+    public void destroy() {
+        log.debug("Filter destruction finished");
+    }
+
 
 }

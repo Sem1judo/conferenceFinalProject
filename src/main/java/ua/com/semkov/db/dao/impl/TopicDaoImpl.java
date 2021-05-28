@@ -113,7 +113,7 @@ public class TopicDaoImpl extends AbstractDao<Topic> {
             log.error("Getting by id failed", ex);
             throw new DAOException("Getting by id failed", ex);
         } finally {
-            close(rs);
+            DBManager.getInstance().close(rs);
         }
         return topics;
     }

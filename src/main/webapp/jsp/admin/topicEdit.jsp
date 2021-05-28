@@ -29,12 +29,12 @@
         <table class="table table-striped table-hover">
             <tr>
 
-                <th><fmt:message key="list_orders_jsp.table.header.title"/></th>
-                <th><fmt:message key="list_orders_jsp.table.header.description"/></th>
+                <th><fmt:message key="list_jsp.table.header.title"/></th>
+                <th><fmt:message key="list_jsp.table.header.description"/></th>
                 <th><fmt:message key="list_topics.speaker"/></th>
-                <th><fmt:message key="list_events_jsp.table_title.event"/></th>
+                <th><fmt:message key="list_event"/></th>
                 <c:if test="${userRole.name == 'moderator'}">
-                    <th><fmt:message key="list_orders_jsp.table.header.update"/></th>
+                    <th><fmt:message key="list_jsp.table.header.update"/></th>
                 </c:if>
             </tr>
             <tr>
@@ -75,7 +75,7 @@
                         <td>
                             <button type="submit"
                                     class="btn btn-dark btn-lg"><fmt:message
-                                    key="list_orders_jsp.table.header.update"/>
+                                    key="list_jsp.table.header.update"/>
                             </button>
                         </td>
                     </c:if>
@@ -87,7 +87,7 @@
                             <input type="hidden" name="id" value="${topic.id}">
                             <button type="submit"
                                     class="btn btn-dark btn-lg"><fmt:message
-                                    key="list_orders_jsp.table.header.delete"/>
+                                    key="list_jsp.table.header.delete"/>
                             </button>
                         </td>
                     </form>
@@ -131,7 +131,7 @@
                             <input name="description" type="text" id="desc"
                                    class="md-textarea form-control">
                             <label data-error="wrong" data-success="right" for="desc"><fmt:message
-                                    key="list_orders_jsp.table.header.description"/></label>
+                                    key="list_jsp.table.header.description"/></label>
                         </div>
                         <div class="md-form mb-4">
                             <i class="fas fa-lock prefix grey-text"></i>
@@ -147,12 +147,12 @@
                                    class="form-control validate">
                             <label data-error="wrong" data-success="right"
                                    for="event_id">ID <fmt:message
-                                    key="list_events_jsp.table_title.event"/></label>
+                                    key="list_event"/></label>
                         </div>
 
                         <div class="modal-footer d-flex justify-content-center">
                             <button class="btn btn-deep-orange"><fmt:message
-                                    key="list_orders_jsp.table.header.create"/></button>
+                                    key="list_btn.create"/></button>
                         </div>
                     </form>
                 </div>

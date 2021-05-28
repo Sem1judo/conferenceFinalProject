@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+    <USERS id='1' first_name='Charles' last_name='Xavier' email='university@gmail.com' password='UNIVERsity123' login='univer'
+    phone='3809627111204' registration_date='19:29:48' role='2' locale_name='ru' event_id='1'/>
+    <USERS id='2' first_name='Goeorg' last_name='Fonnover' email='emap@gmail.com' password='EpAm2021' login='epam'
+             phone='3809427412204' registration_date='21:30:00' role='2' locale_name='ru' event_id='2'/>
+    <USERS id='3' first_name='Pert' last_name='Novikov' email='pods@gmail.com' password='12345' login='pods'
+           phone='3804427112204' registration_date='22:30:00' role='2' locale_name='ru' event_id='2'/>
+
+    <EVENTS id='1' title='Java' description='Java is a high-level, class-based, object-oriented programming language that is designed to have as few implementation dependencies as possible'
+            location='online' start_time='2019-03-20' end_time='2019-04-20' organizer_id='1'/>
+    <EVENTS id='2' title='C++' description='C++ is a general-purpose programming language created by Bjarne Stroustrup as an extension of the C programming language, or "C with Classes'
+            location='online' start_time='2019-05-20' end_time='2019-06-20' organizer_id='2'/>
+    <EVENTS id='3' title='Python' description='Python is an interpreted, object-oriented, high-level programming language with dynamic semantics'
+            location='online' start_time='2019-05-20' end_time='2019-06-20' organizer_id='2'/>
+
+    <TOPICS id='1'  name='difference between java' description='yes' user_id='1' event_id='1'/>
+    <TOPICS id='2'  name='difference between java2' description='yes' user_id='2' event_id='1'/>
+    <TOPICS id='3'  name='difference between java3' description='yes' user_id='3' event_id='1'/>
+    <TOPICS id='4'  name='difference between java4' description='yes' user_id='1' event_id='1'/>
+    <TOPICS id='5'  name='c++ creation' description='yes' user_id='2' event_id='2'/>
+    <TOPICS id='6'  name='c++ code' description='yes' user_id='2' event_id='2'/>
+    <TOPICS id='7'  name='python syntax' description='no' user_id='3' event_id='3'/>
+
+</dataset>

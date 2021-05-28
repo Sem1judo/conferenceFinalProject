@@ -78,6 +78,6 @@ public class ProposeSpeakerTopicCommand extends Command {
         log.debug("Commands ProposeSpeakerTopicCommand finished");
 
 
-        return Path.REDIRECT + request.getContextPath() + "controller?command=updateEvent";
+        return Path.REDIRECT + Path.COMMAND__UPDATE_EVENT;
     }
 }

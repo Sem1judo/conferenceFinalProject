@@ -2,9 +2,9 @@ package ua.com.semkov.service.impl;
 
 
 import org.apache.log4j.Logger;
+import ua.com.semkov.db.dao.DAOProvider;
 import ua.com.semkov.db.entity.User;
 import ua.com.semkov.service.UserService;
-import ua.com.semkov.db.dao.AbstractDao;
 import ua.com.semkov.db.dao.impl.UserDaoImpl;
 import ua.com.semkov.exceptions.DAOException;
 import ua.com.semkov.exceptions.EntityAlreadyExistsDAOException;
@@ -19,7 +19,7 @@ public class UserServiceImpl implements UserService {
     private static final Logger log = Logger.getLogger(UserServiceImpl.class);
 
     private static final int MIN_EMAIL_LENGTH = 5;
-    private UserDaoImpl userDAO;
+    private UserDaoImpl userDao;
 
 
     public boolean isEmpty(String login, String password) {
@@ -29,11 +29,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUser(String login) throws ServiceException {
-        userDAO = new UserDaoImpl();
+
+        DAOProvider daoProvider = DAOProvider.getInstance();
+        userDao = daoProvider.getUserDao();
+
         User user;
 
         try {
-            user = userDAO.getBySpecificName(login);
+            user = userDao.getBySpecificName(login);
         } catch (DAOException e) {
             throw new ServiceException(e);
         }
@@ -43,11 +46,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserById(Long id) throws ServiceException {
-        userDAO = new UserDaoImpl();
+
+        DAOProvider daoProvider = DAOProvider.getInstance();
+        userDao = daoProvider.getUserDao();
         User user;
 
         try {
-            user = userDAO.getById(id);
+            user = userDao.getById(id);
         } catch (DAOException e) {
             throw new ServiceException("Problem with getting user", e);
         }
@@ -57,7 +62,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void registration(User data) throws ServiceException {
-        AbstractDao<User> userDAO = new UserDaoImpl();
+        DAOProvider daoProvider = DAOProvider.getInstance();
+        userDao = daoProvider.getUserDao();
 
         try {
             data.setPassword(Encoder.encrypt(data.getPassword()));
@@ -75,7 +81,7 @@ public class UserServiceImpl implements UserService {
                     .firstName(data.getFirstName())
                     .lastName(data.getLastName())
                     .build();
-            userDAO.insertEntityReturningId(user);
+            userDao.insertEntityReturningId(user);
         } catch (DAOException | NoSuchAlgorithmException e) {
             throw new ServiceException(e);
         }
@@ -85,10 +91,11 @@ public class UserServiceImpl implements UserService {
     public List<User> getUsers() throws ServiceException {
         List<User> allUsers;
 
-        AbstractDao<User> userDAO = new UserDaoImpl();
+        DAOProvider daoProvider = DAOProvider.getInstance();
+        userDao = daoProvider.getUserDao();
 
         try {
-            allUsers = userDAO.getAll();
+            allUsers = userDao.getAll();
         } catch (EntityAlreadyExistsDAOException e) {
             throw new EntityAlreadyExistsServiceException(e);
         } catch (DAOException e) {

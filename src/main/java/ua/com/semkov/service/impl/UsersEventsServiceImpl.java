@@ -2,6 +2,7 @@ package ua.com.semkov.service.impl;
 
 import org.apache.log4j.Logger;
 import ua.com.semkov.db.dao.impl.UsersEventsDaoImpl;
+import ua.com.semkov.db.dao.DAOProvider;
 import ua.com.semkov.db.entity.Event;
 import ua.com.semkov.db.entity.User;
 import ua.com.semkov.exceptions.DAOException;
@@ -14,12 +15,12 @@ public class UsersEventsServiceImpl {
 
     private UsersEventsDaoImpl usersEventsDao;
 
-    private int noOfRecords;
 
     public List<Event> getEventsEventsByUser(User user) throws ServiceException {
         List<Event> events;
 
-        usersEventsDao = new UsersEventsDaoImpl();
+        DAOProvider daoProvider = DAOProvider.getInstance();
+        usersEventsDao = daoProvider.getUsersEventsDao();
 
         try {
             events = usersEventsDao.getAllEventsByUser(user);
@@ -33,7 +34,9 @@ public class UsersEventsServiceImpl {
     }
 
     public void setEventsForUser(User user, Event... events) throws ServiceException {
-        usersEventsDao = new UsersEventsDaoImpl();
+        DAOProvider daoProvider = DAOProvider.getInstance();
+        usersEventsDao = daoProvider.getUsersEventsDao();
+
         try {
             usersEventsDao.setEventsForUser(user, events);
         } catch (DAOException e) {
@@ -46,7 +49,8 @@ public class UsersEventsServiceImpl {
 
         List<User> users;
 
-        usersEventsDao = new UsersEventsDaoImpl();
+        DAOProvider daoProvider = DAOProvider.getInstance();
+        usersEventsDao = daoProvider.getUsersEventsDao();
 
         try {
             users = usersEventsDao.getAllUsersByEventId(id);

@@ -1,6 +1,7 @@
 package ua.com.semkov.service.impl;
 
 import org.apache.log4j.Logger;
+import ua.com.semkov.db.dao.DAOProvider;
 import ua.com.semkov.exceptions.*;
 import ua.com.semkov.service.EventService;
 import ua.com.semkov.db.dao.impl.EventDaoImpl;
@@ -22,7 +23,8 @@ public class EventServiceImpl implements EventService {
     public List<Event> getEvents() throws ServiceException {
         List<Event> events;
 
-        eventDao = new EventDaoImpl();
+        DAOProvider daoProvider = DAOProvider.getInstance();
+        eventDao = daoProvider.getEventDao();
 
         try {
             events = eventDao.getAll();
@@ -40,7 +42,9 @@ public class EventServiceImpl implements EventService {
     public List<Event> getEventsPagination(int start, int noOfRecords) throws ServiceException {
         List<Event> events;
 
-        eventDao = new EventDaoImpl();
+        DAOProvider daoProvider = DAOProvider.getInstance();
+        eventDao = daoProvider.getEventDao();
+
         try {
             events = eventDao.getAllPagination(start, noOfRecords);
             this.noOfRecords = eventDao.getNoOfRecords();
@@ -60,7 +64,9 @@ public class EventServiceImpl implements EventService {
         log.trace("entered event id---> " + id);
         Event event;
 
-        eventDao = new EventDaoImpl();
+        DAOProvider daoProvider = DAOProvider.getInstance();
+        eventDao = daoProvider.getEventDao();
+
         try {
             event = eventDao.getById(id);
         } catch (DAOException e) {
@@ -74,7 +80,8 @@ public class EventServiceImpl implements EventService {
     public void createEvent(Event event) throws ServiceException {
         log.trace("entered event ---> " + event);
 
-        eventDao = new EventDaoImpl();
+        DAOProvider daoProvider = DAOProvider.getInstance();
+        eventDao = daoProvider.getEventDao();
 
         try {
             eventDao.insertEntityReturningId(event);
@@ -92,7 +99,8 @@ public class EventServiceImpl implements EventService {
     public void removeEvent(Long id) throws ServiceException {
         log.trace("entered event id---> " + id);
 
-        eventDao = new EventDaoImpl();
+        DAOProvider daoProvider = DAOProvider.getInstance();
+        eventDao = daoProvider.getEventDao();
 
         try {
             eventDao.deleteEntity(id);
@@ -106,7 +114,8 @@ public class EventServiceImpl implements EventService {
     public void updateEvent(Event event) throws ServiceException {
         log.trace("entered event ---> " + event);
 
-        eventDao = new EventDaoImpl();
+        DAOProvider daoProvider = DAOProvider.getInstance();
+        eventDao = daoProvider.getEventDao();
 
         try {
             eventDao.updateEntityById(event);

@@ -22,20 +22,20 @@
 
 
 <c:choose>
-    <c:when test="${fn:length(events) == 0}"><fmt:message key="list_orders_jsp.table.header.empty"/></c:when>
+    <c:when test="${fn:length(events) == 0}"><fmt:message key="list_jsp.table.header.empty"/></c:when>
 
     <c:otherwise>
 
         <table class="table table-striped table-hover">
             <tr>
-                <th><fmt:message key="list_orders_jsp.table.header.title"/></th>
-                <th><fmt:message key="list_orders_jsp.table.header.description"/></th>
-                <th><fmt:message key="list_orders_jsp.table.header.location"/></th>
-                <th><fmt:message key="list_orders_jsp.table.header.startTime"/></th>
-                <th><fmt:message key="list_orders_jsp.table.header.endTime"/></th>
+                <th><fmt:message key="list_jsp.table.header.title"/></th>
+                <th><fmt:message key="list_jsp.table.header.description"/></th>
+                <th><fmt:message key="list_jsp.table.header.location"/></th>
+                <th><fmt:message key="list_jsp.table.header.startTime"/></th>
+                <th><fmt:message key="list_jsp.table.header.endTime"/></th>
                 <th><fmt:message key="header_jspf.anchor.all_topics"/></th>
                 <c:if test="${userRole.name == 'moderator' or userRole.name == 'speaker' }">
-                    <th><fmt:message key="list_orders_jsp.table.header.details"/></th>
+                    <th><fmt:message key="list_jsp.table.header.details"/></th>
                 </c:if>
                 <c:if test="${userRole.name == 'client' }">
                     <th><fmt:message key="list_event.jsp.joinClient"/></th>
@@ -64,7 +64,7 @@
                         <c:choose>
                             <c:when test="${fn:length(event.topics) == 0}">
                                 <fmt:message
-                                        key="list_orders_jsp.table.header.empty"/>
+                                        key="list_jsp.table.header.empty"/>
                             </c:when>
                             <c:otherwise>
                                 <c:forEach var="topic" items="${event.topics}">
@@ -82,7 +82,7 @@
                                     <input type="hidden" name="id" value="${event.id}">
                                     <button type="submit"
                                             class="btn btn-dark btn-lg">
-                                        <fmt:message key="list_orders_jsp.table.header.details"/>
+                                        <fmt:message key="list_jsp.table.header.details"/>
                                     </button>
                                 </form>
                             </td>
@@ -95,7 +95,7 @@
                                     <input type="hidden" name="id" value="${event.id}">
                                     <button type="submit"
                                             class="btn btn-dark btn-lg">
-                                        <fmt:message key="list_orders_jsp.table.header.details"/>
+                                        <fmt:message key="list_jsp.table.header.details"/>
                                     </button>
                                 </form>
                             </td>
@@ -152,8 +152,8 @@
 <c:if test="${userRole.name == 'moderator'}">
     <div class="text-center">
         <a href="" class="btn btn-default btn-rounded mb-4" data-toggle="modal"
-           data-target="#createEvent"><fmt:message key="list_orders_jsp.table.header.create"/>
-            <fmt:message key="list_events_jsp.table_title.event"/></a>
+           data-target="#createEvent"><fmt:message key="list_btn.create"/>
+            <fmt:message key="list_event"/></a>
     </div>
     <div class="modal fade" id="createEvent" tabindex="-1" role="dialog"
          aria-labelledby="myModalLabel"
@@ -162,7 +162,7 @@
             <div class="modal-content">
                 <div class="modal-header text-center">
                     <h4 class="modal-title w-100 font-weight-bold"><fmt:message
-                            key="list_orders_jsp.table.header.creatingEvent"/></h4>
+                            key="list_event.creatingEvent"/></h4>
                     <button type="button" class="close" data-dismiss="modal"
                             aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -176,14 +176,14 @@
                             <input name="title" type="text" id="title"
                                    class="form-control validate">
                             <label data-error="wrong" data-success="right"
-                                   for="title"><fmt:message key="list_orders_jsp.table.header.title"/></label>
+                                   for="title"><fmt:message key="list_jsp.table.header.title"/></label>
                         </div>
                         <div class="md-form mb-5">
                             <i class="fas fa-envelope prefix grey-text"></i>
                             <input name="location" type="text" id="location"
                                    class="form-control validate">
                             <label data-error="wrong" data-success="right" for="location"><fmt:message
-                                    key="list_orders_jsp.table.header.location"/></label>
+                                    key="list_jsp.table.header.location"/></label>
                         </div>
 
                         <div class="md-form mb-4">
@@ -191,21 +191,21 @@
                             <input name="start_time" type="datetime-local" id="startTime"
                                    class="form-control validate">
                             <label data-error="wrong" data-success="right" for="startTime"><fmt:message
-                                    key="list_orders_jsp.table.header.startTime"/></label>
+                                    key="list_jsp.table.header.startTime"/></label>
                         </div>
                         <div class="md-form mb-4">
                             <i class="fas fa-lock prefix grey-text"></i>
                             <input name="end_time" type="datetime-local" id="endTime"
                                    class="form-control validate">
                             <label data-error="wrong" data-success="right"
-                                   for="endTime"><fmt:message key="list_orders_jsp.table.header.endTime"/></label>
+                                   for="endTime"><fmt:message key="list_jsp.table.header.endTime"/></label>
                         </div>
                         <div class="md-form">
                             <i class="fas fa-pencil prefix grey-text"></i>
                             <input name="description" type="text" id="desc"
                                    class="md-textarea form-control">
                             <label data-error="wrong" data-success="right" for="desc"><fmt:message
-                                    key="list_orders_jsp.table.header.description"/></label>
+                                    key="list_jsp.table.header.description"/></label>
                         </div>
                         <div class="md-form mb-4">
                             <i class="fas fa-lock prefix grey-text"></i>
@@ -218,7 +218,7 @@
 
                         <div class="modal-footer d-flex justify-content-center">
                             <button class="btn btn-deep-orange"><fmt:message
-                                    key="list_orders_jsp.table.header.create"/></button>
+                                    key="list_btn.create"/></button>
                         </div>
                     </form>
                 </div>

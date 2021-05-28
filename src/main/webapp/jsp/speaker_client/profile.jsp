@@ -35,7 +35,8 @@
                     </p>
                 </div>
                 <ul class="nav-pills nav-stacked">
-                    <li class="active"><a href="#"> <i class="fa fa-user"></i><fmt:message key="header_jspf.anchor.profile"/></a></li>
+                    <li class="active"><a href="#"> <i class="fa fa-user"></i><fmt:message
+                            key="header_jspf.anchor.profile"/></a></li>
                     <li><a href="#"> <i class="fa fa-calendar"></i><fmt:message key="profile.quantityEvents"/><span
                             class="label label-warning pull-right r-activity">${events.size()}</span></a></li>
                     <li><a href="#"> <i class="fa fa-edit"></i><fmt:message key="btn.change"/></a></li>
@@ -45,13 +46,12 @@
         <div class="profile-info col-md-9">
             <div class="panel">
                 <footer class="panel-footer">
-                    Something
+                    <h5><fmt:message key="profile.quote"/></h5>
                 </footer>
             </div>
             <div class="panel">
                 <div class="bio-graph-heading">
-                    Aliquam ac magna metus. Nam sed arcu non tellus fringilla fringilla ut vel ispum. Aliquam ac magna
-                    metus.
+                    <fmt:message key="profile.quote2"/>
                 </div>
                 <div class="panel-body bio-graph-info">
                     <h1><fmt:message key="profile.info"/></h1>
@@ -70,7 +70,8 @@
                         </div>
                         <div class="bio-row">
                             <p>
-                                <span><fmt:message key="profile.registrationDate"/></span>: ${p:formatLocalDateTime(user.registrationDate, 'dd-MM-yyyy HH:mm')}
+                                <span><fmt:message
+                                        key="profile.registrationDate"/></span>: ${p:formatLocalDateTime(user.registrationDate, 'dd-MM-yyyy HH:mm')}
                             </p>
                         </div>
                         <div class="bio-row">
@@ -94,7 +95,7 @@
             <div>
                 <c:choose>
                     <c:when test="${fn:length(events) == 0}"><fmt:message
-                            key="list_orders_jsp.table.header.empty"/>
+                            key="list_jsp.table.header.empty"/>
                     </c:when>
                     <c:otherwise>
                         <c:forEach var="event" items="${p:sortByTime(events)}">

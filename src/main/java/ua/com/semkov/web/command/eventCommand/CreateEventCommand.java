@@ -67,15 +67,15 @@ public class CreateEventCommand extends Command {
         log.trace("obtained event --> " + event);
 
         if (EventValidation.isValidEvent(event)) {
-            try {
-                eventService.createEvent(event);
-            } catch (ServiceException e) {
-                errorMessage = "Can't create event";
-                request.setAttribute("errorMessage", errorMessage);
-                log.error("errorMessage --> " + errorMessage, e);
-                return Path.REDIRECT + Path.PAGE__ERROR_PAGE;
+        try {
+            eventService.createEvent(event);
+        } catch (ServiceException e) {
+          errorMessage = "Can't create event";
+           request.setAttribute("errorMessage", errorMessage);
+          log.error("errorMessage --> " + errorMessage, e);
+            return Path.REDIRECT + Path.PAGE__ERROR_PAGE;
             }
-        } else {
+          } else {
             errorMessage = "Event  is not valid";
             request.setAttribute("errorMessage", errorMessage);
             log.error("errorMessage --> " + errorMessage);
@@ -84,7 +84,7 @@ public class CreateEventCommand extends Command {
 
         log.debug("Commands finished");
 
-        return Path.REDIRECT + Path.PAGE__LIST_EVENTS;
+        return Path.REDIRECT + Path.COMMAND_LIST_EVENTS;
 
     }
 }

@@ -49,6 +49,7 @@ public abstract class AbstractDao<K> implements InterfaceDao<K> {
 
     @Override
     public List<K> getAll() throws DAOException {
+        log.debug("Start method getAll()");
         List<K> entities = new ArrayList<>();
         try (Connection con = DBManager.getInstance().getConnection();
              Statement stmt = con.createStatement();
@@ -65,6 +66,7 @@ public abstract class AbstractDao<K> implements InterfaceDao<K> {
 
     @Override
     public List<K> getAllPagination(int start, int noOfRecords) throws DAOException {
+        log.debug("Start method getAllPagination()");
         ResultSet rs = null;
 
         List<K> entities = new ArrayList<>();
@@ -72,6 +74,7 @@ public abstract class AbstractDao<K> implements InterfaceDao<K> {
              PreparedStatement ps = con.prepareStatement(getQueryGetAllPagination());
              Statement stmt = con.createStatement()) {
 
+            log.trace("start index = " + start + " size of entities = " + noOfRecords);
             ps.setInt(1, start);
             ps.setInt(2, noOfRecords);
             rs = ps.executeQuery();
@@ -87,13 +90,17 @@ public abstract class AbstractDao<K> implements InterfaceDao<K> {
             log.error("Cannot obtain a list from the database", ex);
             throw new DAOException("Getting list from database failed", ex);
         } finally {
-            close(rs);
+            DBManager.getInstance().close(rs);
         }
 
         return entities;
     }
 
-
+    /**
+     * Returns size of list.
+     *
+     * @return size of list.
+     */
     public int getNoOfRecords() {
         return noOfRecords;
     }
@@ -108,11 +115,12 @@ public abstract class AbstractDao<K> implements InterfaceDao<K> {
 
     @Override
     public K getById(Long id) throws DAOException {
+        log.debug("Start method getById(Long id)");
         ResultSet rs = null;
         K entity = null;
         try (Connection con = DBManager.getInstance().getConnection();
              PreparedStatement ps = con.prepareStatement(getQueryGetById())) {
-            log.trace("entered event id ---> " + id);
+            log.trace("Entered event id ---> " + id);
 
             ps.setLong(1, id);
             rs = ps.executeQuery();
@@ -124,7 +132,7 @@ public abstract class AbstractDao<K> implements InterfaceDao<K> {
             log.error("Getting by id failed", ex);
             throw new DAOException("Getting by id failed", ex);
         } finally {
-            close(rs);
+            DBManager.getInstance().close(rs);
         }
         return entity;
     }
@@ -139,6 +147,7 @@ public abstract class AbstractDao<K> implements InterfaceDao<K> {
 
     @Override
     public K getBySpecificName(String name) throws DAOException {
+        log.debug("Start method getBySpecificName(String name)");
         ResultSet rs = null;
         K entity = null;
         try (Connection con = DBManager.getInstance().getConnection();
@@ -154,7 +163,7 @@ public abstract class AbstractDao<K> implements InterfaceDao<K> {
             log.error("Getting by name failed", ex);
             throw new DAOException("Getting by name failed", ex);
         } finally {
-            close(rs);
+            DBManager.getInstance().close(rs);
         }
         return entity;
     }
@@ -167,6 +176,8 @@ public abstract class AbstractDao<K> implements InterfaceDao<K> {
      */
     @Override
     public int insertEntityReturningId(K k) throws DAOException {
+        log.debug("Start method insertEntityReturningId(K k)");
+
         Connection con = null;
         PreparedStatement ps = null;
         int id = 0;
@@ -174,6 +185,8 @@ public abstract class AbstractDao<K> implements InterfaceDao<K> {
             con = DBManager.getInstance().getConnection();
             con.setAutoCommit(false);
             con.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+
+            log.trace("entity ---> " + k);
 
             ps = con.prepareStatement(getQueryInsertEntity()
                     , Statement.RETURN_GENERATED_KEYS);
@@ -187,20 +200,18 @@ public abstract class AbstractDao<K> implements InterfaceDao<K> {
                         con.commit();
                     }
                 } catch (SQLException ex) {
-                    rollback(con);
+                    DBManager.getInstance().rollback(con);
                     log.error("Creating  failed, no ID obtained.", ex);
                 }
-
             } else {
-                rollback(con);
+                DBManager.getInstance().rollback(con);
                 log.error("Creating  failed, no rows affected");
             }
         } catch (SQLException ex) {
             log.error("Inserting  failed", ex);
             throw new DAOException("Inserting event failed", ex);
         } finally {
-            close(ps);
-            close(con);
+            DBManager.getInstance().close(con, ps);
         }
         return id;
     }
@@ -213,12 +224,16 @@ public abstract class AbstractDao<K> implements InterfaceDao<K> {
      */
     @Override
     public void updateEntityById(K k) throws DAOException {
+        log.debug("Start method updateEntityById(K k)");
+
         Connection con = null;
         PreparedStatement ps = null;
         try {
             con = DBManager.getInstance().getConnection();
             con.setAutoCommit(false);
             con.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+
+            log.trace("entity ---> " + k);
 
             ps = con.prepareStatement(getQueryUpdateById());
 
@@ -229,12 +244,13 @@ public abstract class AbstractDao<K> implements InterfaceDao<K> {
 
             con.commit();
         } catch (SQLException ex) {
-            rollback(con);
+            if (con != null) {
+                DBManager.getInstance().rollback(con);
+            }
             log.error("Updating event failed", ex);
             throw new DAOException("Updating event failed", ex);
         } finally {
-            close(ps);
-            close(con);
+            DBManager.getInstance().close(con, ps);
         }
     }
 
@@ -245,6 +261,7 @@ public abstract class AbstractDao<K> implements InterfaceDao<K> {
      */
     @Override
     public void updateEntityBySpecificName(K k) throws DAOException {
+        log.debug("Start method updateEntityBySpecificName(K k)");
         Connection con = null;
         PreparedStatement ps = null;
         try {
@@ -252,23 +269,26 @@ public abstract class AbstractDao<K> implements InterfaceDao<K> {
             con.setAutoCommit(false);
             con.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 
+            log.trace("entity ---> " + k);
+
             ps = con.prepareStatement(getQueryUpdateSpecificName());
 
-            int rowsAdded = ps.executeUpdate();
+            ps.executeUpdate();
 
             setRowPS(k, ps);
             setIdPS(k, ps);
 
-            if (rowsAdded > 0) {
-                con.commit();
-            } else throw new SQLException("updated entity is null");
+            ps.executeUpdate();
+
+            con.commit();
         } catch (SQLException ex) {
-            rollback(con);
+            if (con != null) {
+                DBManager.getInstance().rollback(con);
+            }
             log.error("Updating event failed", ex);
             throw new DAOException("Updating event failed", ex);
         } finally {
-            close(ps);
-            close(con);
+            DBManager.getInstance().close(con, ps);
         }
     }
 
@@ -280,10 +300,12 @@ public abstract class AbstractDao<K> implements InterfaceDao<K> {
      */
     @Override
     public void deleteEntity(Long id) throws DAOException {
+        log.debug("Start method updateEntityBySpecificName(K k)");
 
         try (Connection con = DBManager.getInstance().getConnection();
              PreparedStatement ps = con.prepareStatement(getQueryDelete())) {
 
+            log.trace("entity ID---> " + id);
             ps.setLong(1, id);
             ps.executeUpdate();
 
@@ -294,24 +316,6 @@ public abstract class AbstractDao<K> implements InterfaceDao<K> {
 
     }
 
-    public void close(AutoCloseable closeable) {
-        if (closeable != null) {
-            try {
-                closeable.close();
-            } catch (Exception e) {
-                log.error("Problem with closing ", e);
-            }
-        }
-    }
-
-    public void rollback(Connection con) {
-        try {
-            con.rollback();
-            con.close();
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-    }
-
-
 }
+
+

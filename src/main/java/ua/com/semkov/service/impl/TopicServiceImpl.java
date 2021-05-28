@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 import ua.com.semkov.db.dao.impl.EventDaoImpl;
 import ua.com.semkov.db.dao.impl.TopicDaoImpl;
 import ua.com.semkov.db.dao.impl.UserDaoImpl;
+import ua.com.semkov.db.dao.DAOProvider;
 import ua.com.semkov.db.dto.TopicDto;
 import ua.com.semkov.db.entity.Event;
 import ua.com.semkov.db.entity.Topic;
@@ -33,9 +34,10 @@ public class TopicServiceImpl implements TopicService {
 
         List<TopicDto> topicDtos = new ArrayList<>();
 
-        topicDao = new TopicDaoImpl();
-        userDao = new UserDaoImpl();
-        eventDao = new EventDaoImpl();
+        DAOProvider daoProvider = DAOProvider.getInstance();
+        topicDao = daoProvider.getTopicDao();
+        userDao = daoProvider.getUserDao();
+        eventDao = daoProvider.getEventDao();
 
         try {
             topics = topicDao.getAllTopicsByEventId(eventId);
@@ -72,7 +74,9 @@ public class TopicServiceImpl implements TopicService {
     public List<Topic> getTopicsPagination(int start, int noOfRecords) throws ServiceException {
         List<Topic> topics;
 
-        topicDao = new TopicDaoImpl();
+        DAOProvider daoProvider = DAOProvider.getInstance();
+        topicDao = daoProvider.getTopicDao();
+
         try {
             topics = topicDao.getAllPagination(start, noOfRecords);
             this.noOfRecords = topicDao.getNoOfRecords();
@@ -90,7 +94,10 @@ public class TopicServiceImpl implements TopicService {
     @Override
     public List<Topic> getTopics() throws ServiceException {
         List<Topic> topics;
-        topicDao = new TopicDaoImpl();
+
+        DAOProvider daoProvider = DAOProvider.getInstance();
+        topicDao = daoProvider.getTopicDao();
+
         try {
             topics = topicDao.getAll();
         } catch (DAOException e) {
@@ -105,8 +112,10 @@ public class TopicServiceImpl implements TopicService {
     public List<TopicDto> getTopicsDto() throws ServiceException {
         List<Topic> topics = getTopics();
         List<TopicDto> topicDtos = new ArrayList<>();
-        userDao = new UserDaoImpl();
-        eventDao = new EventDaoImpl();
+
+        DAOProvider daoProvider = DAOProvider.getInstance();
+        userDao = daoProvider.getUserDao();
+        eventDao = daoProvider.getEventDao();
 
         User speaker;
         Event event;
@@ -142,8 +151,10 @@ public class TopicServiceImpl implements TopicService {
         List<Topic> topics = getTopicsPagination(start, noOfRecords);
         List<TopicDto> topicDtos = new ArrayList<>();
 
-        userDao = new UserDaoImpl();
-        eventDao = new EventDaoImpl();
+        DAOProvider daoProvider = DAOProvider.getInstance();
+
+        userDao = daoProvider.getUserDao();
+        eventDao = daoProvider.getEventDao();
 
         User speaker;
         Event event;
@@ -181,9 +192,11 @@ public class TopicServiceImpl implements TopicService {
         User speaker = null;
         Event event = null;
 
-        topicDao = new TopicDaoImpl();
-        userDao = new UserDaoImpl();
-        eventDao = new EventDaoImpl();
+        DAOProvider daoProvider = DAOProvider.getInstance();
+
+        topicDao = daoProvider.getTopicDao();
+        userDao = daoProvider.getUserDao();
+        eventDao = daoProvider.getEventDao();
 
         try {
             topic = topicDao.getById(id);
@@ -211,7 +224,8 @@ public class TopicServiceImpl implements TopicService {
         log.trace("entered topic id---> " + id);
         Topic topic;
 
-        topicDao = new TopicDaoImpl();
+        DAOProvider daoProvider = DAOProvider.getInstance();
+        topicDao = daoProvider.getTopicDao();
 
 
         try {
@@ -228,7 +242,8 @@ public class TopicServiceImpl implements TopicService {
     public void createTopic(Topic topic) throws ServiceException {
         log.trace("entered topic ---> " + topic);
 
-        topicDao = new TopicDaoImpl();
+        DAOProvider daoProvider = DAOProvider.getInstance();
+        topicDao = daoProvider.getTopicDao();
 
         try {
             topicDao.insertEntityReturningId(topic);
@@ -246,7 +261,8 @@ public class TopicServiceImpl implements TopicService {
     public void removeTopic(Long id) throws ServiceException {
         log.trace("entered event id---> " + id);
 
-        topicDao = new TopicDaoImpl();
+        DAOProvider daoProvider = DAOProvider.getInstance();
+        topicDao = daoProvider.getTopicDao();
 
         try {
             topicDao.deleteEntity(id);
@@ -261,7 +277,8 @@ public class TopicServiceImpl implements TopicService {
     public void updateTopic(Topic topic) throws ServiceException {
         log.trace("entered topic ---> " + topic);
 
-        topicDao = new TopicDaoImpl();
+        DAOProvider daoProvider = DAOProvider.getInstance();
+        topicDao = daoProvider.getTopicDao();
 
         try {
             topicDao.updateEntityById(topic);

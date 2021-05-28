@@ -71,6 +71,6 @@ public class CreateTopicCommand extends Command {
 
         log.debug("Commands finished");
 
-        return Path.REDIRECT + "controller?command=listTopics";
+        return Path.REDIRECT + Path.COMMAND__LIST_TOPICS;
     }
 }

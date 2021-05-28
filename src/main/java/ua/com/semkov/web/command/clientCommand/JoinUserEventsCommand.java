@@ -39,16 +39,20 @@ public class JoinUserEventsCommand extends Command {
         String idEvent = request.getParameter("id");
         User user = (User) (session.getAttribute("user"));
 
-
+        String errorMessage;
         try {
             event = eventService.getEvent(Long.valueOf(idEvent));
             usersEventsService.setEventsForUser(user, event);
 
         } catch (ServiceException e) {
-            log.error("can't set event to user", e);
+            errorMessage = "Can't set event to use";
+            request.setAttribute("errorMessage", errorMessage);
+            log.error("errorMessage --> " + errorMessage, e);
+            return Path.REDIRECT + Path.PAGE__ERROR_PAGE;
         }
 
         log.debug("Commands JoinUserEventsCommand finished");
-        return Path.PAGE__LIST_EVENTS;
+
+        return Path.REDIRECT + Path.COMMAND__PROFILE_LIST_EVENTS;
     }
 }

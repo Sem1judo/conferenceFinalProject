@@ -14,8 +14,7 @@ public final class Path {
 
     // pages
     public static final String PAGE__LOGIN = "/login.jsp";
-    public static final String PAGE__ERROR_PAGE = "jsp/error/error_page.jsp";
-    public static final String PAGE__LIST_MENU = "jsp/client/list_menu.jsp";
+    public static final String PAGE__ERROR_PAGE = "jsp/error/error_page404.jsp";
     public static final String PAGE__LIST_EVENTS = "jsp/admin/list_events.jsp";
     public static final String PAGE__LIST_TOPICS = "jsp/admin/list_topics.jsp";
     public static final String PAGE__SETTINGS = "jsp/settings.jsp";
@@ -23,10 +22,10 @@ public final class Path {
 
 
     // commands
-    public static final String COMMAND_LIST_EVENTS = "/controller?command=listEvents";
-    public static final String COMMAND__LIST_TOPICS = "/controller?command=listTopics";
-    public static final String COMMAND__LIST_MENU = "/controller?command=listMenu";
-    public static final String COMMAND__PROFILE_LIST_EVENTS = "/controller?command=profileListEvents";
+    public static final String COMMAND_LIST_EVENTS = "controller?command=listEvents";
+    public static final String COMMAND__LIST_TOPICS = "controller?command=listTopics";
+    public static final String COMMAND__PROFILE_LIST_EVENTS = "controller?command=profileListEvents";
+    public static final String COMMAND__UPDATE_EVENT = "controller?command=updateEvent";
 
 
 }

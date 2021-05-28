@@ -5,7 +5,6 @@ import java.util.TreeMap;
 
 import org.apache.log4j.Logger;
 import ua.com.semkov.web.command.clientCommand.JoinUserEventsCommand;
-import ua.com.semkov.web.command.clientCommand.ListMenuCommand;
 import ua.com.semkov.web.command.eventCommand.CreateEventCommand;
 import ua.com.semkov.web.command.eventCommand.DeleteEventCommand;
 import ua.com.semkov.web.command.eventCommand.ListEventsCommand;
@@ -41,8 +40,7 @@ public class CommandContainer {
         commands.put("proposeTopicSpeaker", new ProposeSpeakerTopicCommand());
 
 
-        // client commands
-        commands.put("listMenu", new ListMenuCommand());
+
 
         // admin commands
         commands.put("listEvents", new ListEventsCommand());

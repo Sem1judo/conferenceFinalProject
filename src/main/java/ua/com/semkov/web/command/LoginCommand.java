@@ -74,7 +74,7 @@ public class LoginCommand extends Command {
                 forward = Path.COMMAND_LIST_EVENTS;
 
             if (userRole == Role.CLIENT)
-                forward = Path.COMMAND__LIST_MENU;
+                forward = Path.COMMAND__PROFILE_LIST_EVENTS;
 
             if (userRole == Role.SPEAKER)
                 forward = Path.COMMAND__PROFILE_LIST_EVENTS;
