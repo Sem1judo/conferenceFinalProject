@@ -53,7 +53,7 @@ public class UpdateEventCommand extends Command {
             errorMessage = "Event doesn't exist in db";
             request.setAttribute("errorMessage", errorMessage);
             log.error("errorMessage --> " + errorMessage, e);
-            return Path.REDIRECT + Path.PAGE__ERROR_PAGE;
+            return Path.REDIRECT + Path.PAGE__ERROR_PAGE_404;
         }
 
         String updated = request.getParameter("isUpdated");
@@ -81,7 +81,7 @@ public class UpdateEventCommand extends Command {
                     errorMessage = "All fields are required to be filled";
                     request.setAttribute("errorMessage", errorMessage);
                     log.error("errorMessage --> " + errorMessage);
-                    return Path.REDIRECT + Path.PAGE__ERROR_PAGE;
+                    return Path.REDIRECT + Path.PAGE__ERROR_PAGE_404;
                 }
             }
 
@@ -95,20 +95,28 @@ public class UpdateEventCommand extends Command {
             if (EventValidation.isValidEvent(event)) {
                 try {
                     eventService.updateEvent(event);
-                    eventTopics = topicService.getTopicsDtoByEvent(event.getId());
+
                 } catch (ServiceException e) {
                     log.error("can't update event", e);
                     errorMessage = "Can't update event";
                     request.setAttribute("errorMessage", errorMessage);
-                    return Path.REDIRECT + Path.PAGE__ERROR_PAGE;
+                    return Path.REDIRECT + Path.PAGE__ERROR_PAGE_404;
                 }
             } else {
                 errorMessage = "Event is not valid";
                 request.setAttribute("errorMessage", errorMessage);
                 log.error("errorMessage --> " + errorMessage);
-                return Path.REDIRECT + Path.PAGE__ERROR_PAGE;
+                return Path.REDIRECT + Path.PAGE__ERROR_PAGE_404;
             }
 
+        }
+        try {
+            eventTopics = topicService.getTopicsDtoByEvent(event.getId());
+        } catch (ServiceException e) {
+            errorMessage = "Can't load topics for current event ";
+            request.setAttribute("errorMessage", errorMessage);
+            log.error("errorMessage --> " + errorMessage);
+            return Path.REDIRECT + Path.PAGE__ERROR_PAGE_404;
         }
 
         log.trace("updated event -- >" + event);

@@ -48,7 +48,7 @@ public class JoinUserEventsCommand extends Command {
             errorMessage = "Can't set event to use";
             request.setAttribute("errorMessage", errorMessage);
             log.error("errorMessage --> " + errorMessage, e);
-            return Path.REDIRECT + Path.PAGE__ERROR_PAGE;
+            return Path.REDIRECT + Path.PAGE__ERROR_PAGE_404;
         }
 
         log.debug("Commands JoinUserEventsCommand finished");

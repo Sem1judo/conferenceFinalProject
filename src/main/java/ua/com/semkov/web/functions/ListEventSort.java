@@ -27,6 +27,7 @@ public final class ListEventSort {
                 break;
             case "byTopics":
                 events.sort(compareByTopics.reversed());
+                break;
             case "byUsers":
                 events.sort(compareByUsers.reversed());
                 break;
@@ -46,7 +47,7 @@ public final class ListEventSort {
     }
 
     private static class CompareByUsers implements Comparator<Event>, Serializable {
-        private static final long serialVersionUID = -7573485565177593283L;
+        private static final long serialVersionUID = -6573485565177593283L;
 
         public int compare(Event event1, Event event2) {
             return Integer.compare(event1.getUsers().size(), event2.getUsers().size());

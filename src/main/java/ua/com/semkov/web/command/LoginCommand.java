@@ -42,7 +42,7 @@ public class LoginCommand extends Command {
 
         // error handler
         String errorMessage;
-        String forward = Path.PAGE__ERROR_PAGE;
+        String forward = Path.PAGE__ERROR_PAGE_404;
 
 
         if (userService.isEmpty(login, password)) {

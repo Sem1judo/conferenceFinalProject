@@ -65,7 +65,7 @@ public class RegistrationCommand extends Command {
                 errorMessage = "All fields are required to be filled";
                 request.setAttribute("errorMessage", errorMessage);
                 log.error("errorMessage --> " + errorMessage);
-                return Path.REDIRECT + Path.PAGE__ERROR_PAGE;
+                return Path.REDIRECT + Path.PAGE__ERROR_PAGE_404;
             }
         }
 
@@ -87,7 +87,7 @@ public class RegistrationCommand extends Command {
             errorMessage = "User not valid";
             log.error("errorMessage --> " + errorMessage);
             request.setAttribute("errorMessage", errorMessage);
-            return Path.REDIRECT + Path.PAGE__ERROR_PAGE;
+            return Path.REDIRECT + Path.PAGE__ERROR_PAGE_404;
         }
 
         Role userRole = Role.getRole(user);

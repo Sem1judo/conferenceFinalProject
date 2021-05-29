@@ -45,7 +45,7 @@ public class CreateTopicCommand extends Command {
                 errorMessage = "All fields are required to be filled";
                 request.setAttribute("errorMessage", errorMessage);
                 log.error("errorMessage --> " + errorMessage);
-                return Path.REDIRECT + Path.PAGE__ERROR_PAGE;
+                return Path.REDIRECT + Path.PAGE__ERROR_PAGE_404;
             }
         }
 
@@ -58,13 +58,13 @@ public class CreateTopicCommand extends Command {
                 errorMessage = "Topic wasn't created";
                 request.setAttribute("errorMessage", errorMessage);
                 log.error("errorMessage --> " + errorMessage, e);
-                return Path.REDIRECT + Path.PAGE__ERROR_PAGE;
+                return Path.REDIRECT + Path.PAGE__ERROR_PAGE_404;
             }
         } else {
             errorMessage = "Topic is not valid";
             request.setAttribute("errorMessage", errorMessage);
             log.error("errorMessage --> " + errorMessage);
-            return Path.REDIRECT + Path.PAGE__ERROR_PAGE;
+            return Path.REDIRECT + Path.PAGE__ERROR_PAGE_404;
         }
 
         log.trace("created topic --> " + topic);

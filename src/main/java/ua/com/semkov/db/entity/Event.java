@@ -20,8 +20,17 @@ public class Event implements Serializable {
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private Long organizerId;
+    private Long statusId;
     private List<Topic> topics;
     private List<User> users;
+
+    public Long getStatusId() {
+        return statusId;
+    }
+
+    public void setStatusId(Long statusId) {
+        this.statusId = statusId;
+    }
 
     public List<User> getUsers() {
         return users;
@@ -95,6 +104,7 @@ public class Event implements Serializable {
         this.organizerId = organizerId;
     }
 
+
     public static class Builder {
         private final String title;
         private final LocalDateTime startTime;
@@ -113,8 +123,15 @@ public class Event implements Serializable {
         private Long id;
         private String description = "Exhilarating event";
         private String location = "online";
+        private  Long statusId = 2L;
         private List<Topic> topics;
         private List<User> users;
+
+
+        public Builder statusId(Long statusIdVal) {
+            statusId = statusIdVal;
+            return this;
+        }
 
         public Builder id(Long idVal) {
             id = idVal;
@@ -153,6 +170,7 @@ public class Event implements Serializable {
         startTime = builder.startTime;
         endTime = builder.endTime;
         organizerId = builder.organizerId;
+        statusId = builder.statusId;
         description = builder.description;
         location = builder.location;
         topics = builder.topics;
@@ -169,7 +187,9 @@ public class Event implements Serializable {
                 ", startTime=" + startTime +
                 ", endTime=" + endTime +
                 ", organizerId=" + organizerId +
+                ", statusId=" + statusId +
                 ", topics=" + topics +
+                ", users=" + users +
                 '}';
     }
 }

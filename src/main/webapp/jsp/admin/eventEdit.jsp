@@ -117,14 +117,26 @@
                                    for="description"><fmt:message
                                     key="list_jsp.table.header.description"/></label>
                         </div>
-                        <div class="md-form">
-                            <i class="fas fa-pencil prefix grey-text"></i>
-                            <input name="user_id" type="text" id="userId" readonly value="${user.id}"
-                                   class="md-textarea form-control">
-                            <label data-error="wrong" data-success="right" for="userId"><fmt:message
-                                    key="list_topics.speaker"/>
-                                ID </label>
-                        </div>
+                        <c:if test="${userRole.name == 'moderator' }">
+                            <div class="md-form">
+                                <i class="fas fa-pencil prefix grey-text"></i>
+                                <input name="user_id" type="text" id="userId" value="${user.id}"
+                                       class="md-textarea form-control">
+                                <label data-error="wrong" data-success="right" for="userId"><fmt:message
+                                        key="list_topics.speaker"/>
+                                    ID </label>
+                            </div>
+                        </c:if>
+                        <c:if test="${userRole.name == 'speaker' }">
+                            <div class="md-form">
+                                <i class="fas fa-pencil prefix grey-text"></i>
+                                <input name="user_id" type="text" id="userId" readonly value="${user.id}"
+                                       class="md-textarea form-control">
+                                <label data-error="wrong" data-success="right" for="userId"><fmt:message
+                                        key="list_topics.speaker"/>
+                                    ID </label>
+                            </div>
+                        </c:if>
                         <div class="md-form mb-4">
                             <i class="fas fa-lock prefix grey-text"></i>
                             <input name="event_id" type="text" id="eventId" readonly value="${event.id}"

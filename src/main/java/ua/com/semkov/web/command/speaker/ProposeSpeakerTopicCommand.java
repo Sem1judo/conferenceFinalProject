@@ -1,6 +1,5 @@
 package ua.com.semkov.web.command.speaker;
 
-import com.sun.xml.internal.bind.v2.model.core.ID;
 import org.apache.log4j.Logger;
 import ua.com.semkov.Path;
 import ua.com.semkov.db.entity.Topic;
@@ -47,7 +46,7 @@ public class ProposeSpeakerTopicCommand extends Command {
                 errorMessage = "All fields are required to be filled";
                 request.setAttribute("errorMessage", errorMessage);
                 log.error("errorMessage --> " + errorMessage);
-                return Path.REDIRECT + Path.PAGE__ERROR_PAGE;
+                return Path.REDIRECT + Path.PAGE__ERROR_PAGE_404;
             }
         }
 
@@ -60,13 +59,13 @@ public class ProposeSpeakerTopicCommand extends Command {
                 errorMessage = "Topic wasn't created";
                 request.setAttribute("errorMessage", errorMessage);
                 log.error("errorMessage --> " + errorMessage, e);
-                return Path.REDIRECT + Path.PAGE__ERROR_PAGE;
+                return Path.REDIRECT + Path.PAGE__ERROR_PAGE_404;
             }
         } else {
             errorMessage = "Topic is not valid";
             request.setAttribute("errorMessage", errorMessage);
             log.error("errorMessage --> " + errorMessage);
-            return Path.REDIRECT + Path.PAGE__ERROR_PAGE;
+            return Path.REDIRECT + Path.PAGE__ERROR_PAGE_404;
         }
 
         log.trace("obtained topic --> " + topic);

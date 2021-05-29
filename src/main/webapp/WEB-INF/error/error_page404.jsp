@@ -26,14 +26,14 @@
     <div class="msg"><p>
 
 
-        <h3>Message:  <fmt:message key="error_404_title"/></h3>
-        <c:if test="${not empty errorMessage}">
-            <h3>Message: ${errorMessage}</h3>
+        <h3><fmt:message key="error_404_title"/></h3>
+
+        <c:if test="${not empty errorMessage and userRole.name == 'moderator'}">
+            <h3><fmt:message key="list_jsp.table.header.details"/>: ${errorMessage}</h3>
         </c:if>
         <a href="${pageContext.request.contextPath}/login.jsp">
-            <p><--</p>
+            <p><fmt:message key="error_404_back"/></p>
         </a>
-
     </div>
 
 

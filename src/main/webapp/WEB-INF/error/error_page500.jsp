@@ -28,8 +28,8 @@
         <h3> <fmt:message key="error_500_title"/></h3>
         <h4> <fmt:message key="error_500_desc"/></h4>
         <a href="${pageContext.request.contextPath}/login.jsp">
-            <p><--</p>
-        </a>
+            <p><fmt:message key="error_404_back"/></p>
+        </a>>
     </div>
 
 

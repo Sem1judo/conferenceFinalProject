@@ -36,6 +36,9 @@
                 <c:if test="${userRole.name == 'moderator'}">
                     <th><fmt:message key="list_jsp.table.header.update"/></th>
                 </c:if>
+                <c:if test="${userRole.name == 'moderator'}">
+                    <th><fmt:message key="list_jsp.table.header.delete"/></th>
+                </c:if>
             </tr>
             <tr>
                 <form action="${pageContext.request.contextPath}/controller" method="post">

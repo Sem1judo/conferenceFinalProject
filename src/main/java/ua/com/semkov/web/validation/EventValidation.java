@@ -7,10 +7,10 @@ import java.util.regex.Pattern;
 
 public class EventValidation {
 
-    private final static String REGEX_TITLE = "^\\w{3,255}$";
+    private final static String REGEX_TITLE = "^[\\w\\s\\.\\,\\-\\'\\!\\?\\+\\#\\*А-Яа-яЪъЇї]{3,255}$";
     private final static String REGEX_ORGANIZER_ID = "^\\d*$";
-    private final static String REGEX_DESCRIPTION = "^\\w{8,1024}$";
-    private final static String REGEX_LOCATION = "^[\\w\\s\\,\\.]{3,255}$";
+    private final static String REGEX_DESCRIPTION = "^[\\w\\s\\.\\,\\-\\'\\!\\?\\+\\#\\*А-Яа-яЪъЇї]8,1024}$";
+    private final static String REGEX_LOCATION = "^[\\w\\s\\,\\.\\-]{3,255}$";
 
 
     public static boolean isValidEvent(Event event) {
@@ -18,9 +18,9 @@ public class EventValidation {
                 isValidTitle(event.getTitle(), REGEX_TITLE) &&
                         isValidDescription(event.getDescription(), REGEX_DESCRIPTION) &&
                         isValidLocation(event.getLocation(), REGEX_LOCATION) &&
-                        isValidOrganizerId(event.getOrganizerId().toString(), REGEX_ORGANIZER_ID) &&
-                        isValidStartTime(event.getStartTime().toString()) &&
-                        isValidEndTime(event.getEndTime().toString());
+                        isValidOrganizerId(event.getOrganizerId().toString(), REGEX_ORGANIZER_ID) ;
+//                        isValidStartTime(event.getStartTime().toString()) &&
+//                        isValidEndTime(event.getEndTime().toString());
     }
 
 
