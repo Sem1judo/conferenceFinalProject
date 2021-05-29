@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 import ua.com.semkov.Path;
+import ua.com.semkov.db.entity.Status;
 import ua.com.semkov.service.impl.EventServiceImpl;
 import ua.com.semkov.db.entity.Event;
 import ua.com.semkov.exceptions.ServiceException;

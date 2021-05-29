@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 import ua.com.semkov.Path;
 import ua.com.semkov.db.dto.TopicDto;
 import ua.com.semkov.db.entity.Event;
+import ua.com.semkov.db.entity.Status;
 import ua.com.semkov.exceptions.ServiceException;
 import ua.com.semkov.service.impl.EventServiceImpl;
 import ua.com.semkov.service.impl.TopicServiceImpl;
@@ -43,7 +44,8 @@ public class UpdateEventCommand extends Command {
         }
 
         Event event;
-        List<TopicDto> eventTopics = null;
+        Status eventStatus;
+        List<TopicDto> eventTopics;
 
         String errorMessage;
 
@@ -67,6 +69,7 @@ public class UpdateEventCommand extends Command {
             String start_time = request.getParameter("start_time");
             String end_time = request.getParameter("end_time");
             String organizedId = request.getParameter("organizer_id");
+            String statusId = request.getParameter("status_id");
 
             ArrayList<String> fields = new ArrayList<>();
             fields.add(title);
@@ -75,6 +78,7 @@ public class UpdateEventCommand extends Command {
             fields.add(start_time);
             fields.add(end_time);
             fields.add(organizedId);
+            fields.add(statusId);
 
             for (String field : fields) {
                 if (field == null || field.isEmpty()) {
@@ -91,7 +95,10 @@ public class UpdateEventCommand extends Command {
             event.setStartTime(LocalDateTime.parse(start_time));
             event.setEndTime(LocalDateTime.parse(end_time));
             event.setOrganizerId(Long.valueOf(organizedId));
+            event.setStatusId(Long.valueOf(statusId));
+            
 
+            
             if (EventValidation.isValidEvent(event)) {
                 try {
                     eventService.updateEvent(event);
@@ -111,17 +118,22 @@ public class UpdateEventCommand extends Command {
 
         }
         try {
+            eventStatus = Status.getStatusStatic(event);
             eventTopics = topicService.getTopicsDtoByEvent(event.getId());
+
         } catch (ServiceException e) {
             errorMessage = "Can't load topics for current event ";
             request.setAttribute("errorMessage", errorMessage);
             log.error("errorMessage --> " + errorMessage);
             return Path.REDIRECT + Path.PAGE__ERROR_PAGE_404;
         }
-
+        
+        log.trace("Set the session attribute: eventStatus --> " + eventStatus);
         log.trace("updated event -- >" + event);
         log.trace("Event topics -- >" + eventTopics);
 
+        
+        session.setAttribute("eventStatus", eventStatus);
         session.setAttribute("eventTopics", eventTopics);
         session.setAttribute("event", event);
 

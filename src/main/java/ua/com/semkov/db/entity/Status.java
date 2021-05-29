@@ -8,15 +8,16 @@ import java.io.Serializable;
  *
  * @author S.Semkov
  */
-public enum STATUS implements Serializable {
+public enum Status implements Serializable {
     FINISHED, PERFORMING, PLANNED;
 
-    public static STATUS getStatus(Event event) {
+    public static Status getStatusStatic(Event event) {
         int eventId = Math.toIntExact(event.getStatusId());
-        return STATUS.values()[eventId];
+        return Status.values()[eventId];
     }
 
     public String getName() {
         return name().toLowerCase();
     }
+
 }

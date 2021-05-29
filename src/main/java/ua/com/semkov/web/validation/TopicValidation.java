@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 
 public class TopicValidation {
 
-    private final static String REGEX_NAME = "^[\\w\\s\\.\\,\\-\\'\\!\\?\\+\\#\\*А-Яа-яЪъЇї]{3,255}$$";
+    private final static String REGEX_NAME = "^[\\w\\s\\.\\,\\-\\'\\!\\?\\+\\#\\*А-Яа-яЪъЇї]{3,255}$";
     private final static String REGEX_ID = "^\\d*$";
     private final static String REGEX_DESCRIPTION = "^[\\w\\s\\.\\,\\-\\'\\!\\?\\+\\#\\*А-Яа-яЪъЇї]{8,1024}$";
 

@@ -9,7 +9,7 @@ public class EventValidation {
 
     private final static String REGEX_TITLE = "^[\\w\\s\\.\\,\\-\\'\\!\\?\\+\\#\\*А-Яа-яЪъЇї]{3,255}$";
     private final static String REGEX_ORGANIZER_ID = "^\\d*$";
-    private final static String REGEX_DESCRIPTION = "^[\\w\\s\\.\\,\\-\\'\\!\\?\\+\\#\\*А-Яа-яЪъЇї]8,1024}$";
+    private final static String REGEX_DESCRIPTION = "^[\\w\\s\\.\\,\\-\\'\\!\\?\\+\\#\\*А-Яа-яЪъЇї]{8,1024}$";
     private final static String REGEX_LOCATION = "^[\\w\\s\\,\\.\\-]{3,255}$";
 
 

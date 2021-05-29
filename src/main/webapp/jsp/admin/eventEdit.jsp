@@ -29,6 +29,7 @@
         <th><fmt:message key="list_jsp.table.header.startTime"/></th>
         <th><fmt:message key="list_jsp.table.header.endTime"/></th>
         <th><fmt:message key="list_orders_jsp.table.header.organizerId"/></th>
+        <th><fmt:message key="list_jsp.table.header.status"/></th>
         <c:if test="${userRole.name == 'moderator' }">
             <th><fmt:message key="list_jsp.table.header.update"/></th>
             <th><fmt:message key="list_jsp.table.header.delete"/></th>
@@ -48,11 +49,14 @@
                     <td><input name="start_time" value="${event.startTime}" type="datetime-local"></td>
                     <td><input name="end_time" value="${event.endTime}" type="datetime-local"></td>
                     <td><input name="organizer_id" value="${event.organizerId}" type="text"></td>
+                    <td><input name="status_id" value="${eventStatus.name}" readonly type="text"></td>
                     <td>
                         <button type="submit"
                                 class="btn btn-dark btn-lg"><fmt:message key="list_jsp.table.header.update"/>
                         </button>
                     </td>
+
+
                 </form>
 
             </c:when>

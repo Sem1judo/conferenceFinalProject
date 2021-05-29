@@ -1,4 +1,4 @@
-package ua.com.semkov.web.functions;
+package ua.com.semkov.web.view.tag;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

@@ -11,20 +11,20 @@
 
     <function>
         <name>sortByTime</name>
-        <function-class>ua.com.semkov.web.functions.ListEventSort</function-class>
+        <function-class>ua.com.semkov.web.view.tag.ListEventSort</function-class>
         <function-signature>java.util.List sortByTime(java.util.List)</function-signature>
     </function>
 
 
     <function>
         <name>sortBy</name>
-        <function-class>ua.com.semkov.web.functions.ListEventSort</function-class>
+        <function-class>ua.com.semkov.web.view.tag.ListEventSort</function-class>
         <function-signature>java.util.List sortBy(java.util.List, java.lang.String)</function-signature>
     </function>
 
     <function>
         <name>formatLocalDateTime</name>
-        <function-class>ua.com.semkov.web.functions.Dates</function-class>
+        <function-class>ua.com.semkov.web.view.tag.Dates</function-class>
         <function-signature>java.lang.String formatLocalDateTime(java.time.LocalDateTime, java.lang.String)
         </function-signature>
     </function>

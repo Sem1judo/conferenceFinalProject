@@ -10,7 +10,7 @@ public class UserValidation {
     private final static String REGEX_LOGIN = "^\\w{3,16}$";
     private final static String REGEX_NAME = "^[A-Za-zА-Яа-яЁё]{2,45}$";
     private final static String REGEX_PHONE = "(?:\\+38)?(?:\\(0\\d{2}\\)[ .-]?[0-9]{3}[ .-]?[0-9]{2}[ .-]?[0-9]{2}|044[ .-]?[0-9]{3}[ .-]?[0-9]{2}[ .-]?[0-9]{2}|044[0-9]{7})$";
-    private final static String REGEX_PASSWORD = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&-+=()])(?=\\S+$).{4, 32}$";
+    private final static String REGEX_PASSWORD = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&-+=()])(?=\\S+$).{4,32}$";
     private final static String REGEX_EMAIL = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^-]+(?:\\.[a-zA-Z0-9_!#$%&'*+/=?`{|}~^-]+)*@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$";
 
     public static boolean isValidUser(User user) {

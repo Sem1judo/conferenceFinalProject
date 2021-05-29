@@ -19,7 +19,7 @@ public class EventDaoImpl extends AbstractDao<Event> {
 
     private static final String SQL__INSERT_EVENT =
             "INSERT INTO events (" +
-                    " id, title, description, location, start_time, end_time, organizer_id) " +
+                    " id, title, description, location, start_time, end_time, organizer_id,status_id) " +
                     " VALUES (DEFAULT, ?, ?, ?, ?, ?, ?)";
 
     private static final String SQL__GET_EVENT_BY_ID =
@@ -32,7 +32,7 @@ public class EventDaoImpl extends AbstractDao<Event> {
             "DELETE FROM events where id = ?";
 
     public static final String SQL__UPDATE_EVENT = "UPDATE events " +
-            "SET title=?, description=?, location=?, start_time=?, end_time=?, organizer_id=? " +
+            "SET title=?, description=?, location=?, start_time=?, end_time=?, organizer_id=?,status_id=? " +
             "WHERE id =?";
 
     private static final String SQL__FIND_ALL_EVENTS_PAGINATION = " SELECT * FROM events OFFSET ? LIMIT ? ;";
@@ -104,6 +104,7 @@ public class EventDaoImpl extends AbstractDao<Event> {
                     , rs.getTimestamp("end_time").toLocalDateTime()
                     , rs.getLong("organizer_id"))
                     .id(rs.getLong("id"))
+                    .statusId(rs.getLong("status_id"))
                     .description(rs.getString("description"))
                     .location(rs.getString("location"))
                     .topics(topics)
@@ -125,6 +126,7 @@ public class EventDaoImpl extends AbstractDao<Event> {
             ps.setTimestamp(4, Timestamp.valueOf(event.getStartTime()));
             ps.setTimestamp(5, Timestamp.valueOf(event.getEndTime()));
             ps.setLong(6, event.getOrganizerId());
+            ps.setLong(7, event.getStatusId());
         } catch (SQLException ex) {
             log.error("Problem with setting PreparedStatement from event", ex);
         }
@@ -133,7 +135,7 @@ public class EventDaoImpl extends AbstractDao<Event> {
     @Override
     public void setIdPS(Event event, PreparedStatement ps) {
         try {
-            ps.setLong(7, event.getId());
+            ps.setLong(8, event.getId());
         } catch (SQLException ex) {
             log.error("Problem with setting ID for PreparedStatement from event", ex);
         }

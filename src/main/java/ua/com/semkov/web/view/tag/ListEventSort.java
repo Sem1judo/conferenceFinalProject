@@ -1,4 +1,4 @@
-package ua.com.semkov.web.functions;
+package ua.com.semkov.web.view.tag;
 
 import ua.com.semkov.db.entity.Event;
 
@@ -9,10 +9,11 @@ import java.util.List;
 
 public final class ListEventSort {
 
-    private static Comparator<Event> compareByStartTime = Comparator.comparing(Event::getStartTime);
-    private static Comparator<Event> compareByTopics = new CompareByTopics();
-    private static Comparator<Event> compareByUsers = new CompareByUsers();
-    private static Comparator<Event> compareById = new CompareById();
+    private static final Comparator<Event> compareByStartTime = Comparator.comparing(Event::getStartTime);
+    private static final Comparator<Event> compareByTopics = new CompareByTopics();
+    private static final Comparator<Event> compareByUsers = new CompareByUsers();
+    private static final Comparator<Event> compareById = Comparator.comparing(Event::getId);
+    private static final Comparator<Event> compareByStatus = Comparator.comparing(Event::getStatusId).reversed();
 
 
     public static List<Event> sortByTime(List<Event> events) {
@@ -30,6 +31,9 @@ public final class ListEventSort {
                 break;
             case "byUsers":
                 events.sort(compareByUsers.reversed());
+                break;
+            case "byStatus":
+                events.sort(compareByStatus);
                 break;
             default:
                 events.sort(compareById);
@@ -52,16 +56,6 @@ public final class ListEventSort {
         public int compare(Event event1, Event event2) {
             return Integer.compare(event1.getUsers().size(), event2.getUsers().size());
         }
-    }
-
-
-    private static class CompareById implements Comparator<Event>, Serializable {
-        private static final long serialVersionUID = -2573481565177573183L;
-
-        public int compare(Event o1, Event o2) {
-            return o1.getId().compareTo(o2.getId());
-        }
-
     }
 
 

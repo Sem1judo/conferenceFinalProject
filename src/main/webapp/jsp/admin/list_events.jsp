@@ -1,3 +1,4 @@
+<%@ page import="ua.com.semkov.db.entity.Status" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
@@ -41,13 +42,17 @@
                     <th><fmt:message key="list_event.jsp.joinClient"/></th>
                 </c:if>
                 <th><fmt:message key="sort.participants"/></th>
+                <th><fmt:message key="list_jsp.table.header.status"/></th>
+
                 <div class="sort ">
                     <a class="link-warning" href="controller?command=listEvents&sort=byStartTime"> <fmt:message
                             key="sort.time"/> | </a>
-                    <a  class="link-warning" href="controller?command=listEvents&sort=byTopics"> <fmt:message
+                    <a class="link-warning" href="controller?command=listEvents&sort=byTopics"> <fmt:message
                             key="sort.topics"/> | </a>
-                    <a  class="link-warning" href="controller?command=listEvents&sort=byUsers"> <fmt:message
+                    <a class="link-warning" href="controller?command=listEvents&sort=byUsers"> <fmt:message
                             key="sort.participants"/> | </a>
+                    <a class="link-warning" href="controller?command=listEvents&sort=byStatus"> <fmt:message
+                            key="list_jsp.table.header.status"/> | </a>
                     <a class="link-warning" href="controller?command=listEvents&sort=byId">
                         #ID</a>
                 </div>
@@ -114,6 +119,9 @@
                         </c:when>
                     </c:choose>
                     <td>${event.users.size()}</td>
+                    <td><c:set var="state" value="${Status.getStatusStatic(event)}" scope="request"/>
+                        <p>${state}</p>
+                    </td>
 
                 </tr>
             </c:forEach>
