@@ -150,5 +150,13 @@ public class UserDaoImpl extends AbstractDao<User> {
         }
     }
 
+    public boolean updateUserPassword(Long userID, String oldPassword, String newPassword) throws DAOException {
+        return true;
+    }
+
+    public boolean updateUserLogin(Long userID, String newUserLogin) throws DAOException {
+        return true;
+    }
+
 
 }

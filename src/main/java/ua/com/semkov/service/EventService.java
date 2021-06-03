@@ -13,11 +13,11 @@ public interface EventService {
 
     List<Event> getEventsPagination(int start, int total) throws ServiceException;
 
-    void createEvent(Event event) throws ServiceException;
+    boolean createEvent(Event event) throws ServiceException;
 
-    void removeEvent(Long id) throws ServiceException;
+    boolean removeEvent(Long id) throws ServiceException;
 
-    void updateEvent(Event event) throws ServiceException;
+    boolean updateEvent(Event event) throws ServiceException;
 
     Event getEvent(Long id) throws ServiceException;
 }

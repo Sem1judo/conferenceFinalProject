@@ -18,6 +18,11 @@ public class EventServiceImpl implements EventService {
 
     private int noOfRecords;
 
+    public int getNoOfRecords() {
+        return noOfRecords;
+    }
+
+
     @Override
 
     public List<Event> getEvents() throws ServiceException {
@@ -55,10 +60,6 @@ public class EventServiceImpl implements EventService {
         return events;
     }
 
-    public int getNoOfRecords() {
-        return noOfRecords;
-    }
-
 
     public Event getEvent(Long id) throws ServiceException {
         log.trace("entered event id---> " + id);
@@ -77,14 +78,18 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public void createEvent(Event event) throws ServiceException {
+    public boolean createEvent(Event event) throws ServiceException {
+        boolean isCreated = false;
         log.trace("entered event ---> " + event);
 
         DAOProvider daoProvider = DAOProvider.getInstance();
         eventDao = daoProvider.getEventDao();
 
         try {
-            eventDao.insertEntityReturningId(event);
+            if (0 < eventDao.insertEntityReturningId(event)) {
+                isCreated = true;
+            }
+
         } catch (EntityAlreadyExistsDAOException e) {
             log.error("already exist event", e);
             throw new EntityAlreadyExistsServiceException("already exist event", e);
@@ -92,18 +97,18 @@ public class EventServiceImpl implements EventService {
             log.error("problem with creating event", e);
             throw new ServiceException("problem with creating event", e);
         }
-
+        return isCreated;
     }
 
     @Override
-    public void removeEvent(Long id) throws ServiceException {
+    public boolean removeEvent(Long id) throws ServiceException {
         log.trace("entered event id---> " + id);
 
         DAOProvider daoProvider = DAOProvider.getInstance();
         eventDao = daoProvider.getEventDao();
 
         try {
-            eventDao.deleteEntity(id);
+            return eventDao.deleteEntity(id);
         } catch (DAOException e) {
             log.error("problem with removing event", e);
             throw new ServiceException("problem with removing event", e);
@@ -111,14 +116,14 @@ public class EventServiceImpl implements EventService {
 
     }
 
-    public void updateEvent(Event event) throws ServiceException {
+    public boolean updateEvent(Event event) throws ServiceException {
         log.trace("entered event ---> " + event);
 
         DAOProvider daoProvider = DAOProvider.getInstance();
         eventDao = daoProvider.getEventDao();
 
         try {
-            eventDao.updateEntityById(event);
+            return eventDao.updateEntityById(event);
         } catch (DAOException e) {
             log.error("problem with updating event", e);
             throw new ServiceException("problem with updating event", e);

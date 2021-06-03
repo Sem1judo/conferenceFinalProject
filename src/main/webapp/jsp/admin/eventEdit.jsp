@@ -28,7 +28,10 @@
         <th><fmt:message key="list_jsp.table.header.location"/></th>
         <th><fmt:message key="list_jsp.table.header.startTime"/></th>
         <th><fmt:message key="list_jsp.table.header.endTime"/></th>
-        <th><fmt:message key="list_orders_jsp.table.header.organizerId"/></th>
+        <c:if test="${userRole.name == 'moderator' }">
+
+            <th><fmt:message key="list_orders_jsp.table.header.organizerId"/></th>
+        </c:if>
         <th><fmt:message key="list_jsp.table.header.status"/></th>
         <c:if test="${userRole.name == 'moderator' }">
             <th><fmt:message key="list_jsp.table.header.update"/></th>
@@ -66,7 +69,15 @@
                 <td>${event.location}</td>
                 <td>${event.startTime}</td>
                 <td>${event.endTime}</td>
-                <td>${event.organizerId}</td>
+                <td>${eventStatus.name}</td>
+            </c:when>
+            <c:when test="${userRole.name == 'client' }">
+                <td>${event.title}</td>
+                <td>${event.description}</td>
+                <td>${event.location}</td>
+                <td>${event.startTime}</td>
+                <td>${event.endTime}</td>
+                <td>${eventStatus.name}</td>
             </c:when>
         </c:choose>
 

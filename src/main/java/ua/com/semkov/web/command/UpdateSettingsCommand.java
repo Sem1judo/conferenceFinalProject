@@ -31,8 +31,6 @@ public class UpdateSettingsCommand extends Command {
 
 		log.debug("Command starts");
 
-		// UPDATE USER ////////////////////////////////////////////////////////
-
 		User user = (User)request.getSession().getAttribute("user");
 		boolean updateUser = false;
 

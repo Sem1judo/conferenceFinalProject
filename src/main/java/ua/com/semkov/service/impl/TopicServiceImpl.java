@@ -87,9 +87,6 @@ public class TopicServiceImpl implements TopicService {
         return topics;
     }
 
-    public int getNoOfRecords() {
-        return noOfRecords;
-    }
 
     @Override
     public List<Topic> getTopics() throws ServiceException {
@@ -181,6 +178,7 @@ public class TopicServiceImpl implements TopicService {
 
             topicDtos.add(topicDto);
         }
+
         return topicDtos;
 
     }
@@ -239,14 +237,18 @@ public class TopicServiceImpl implements TopicService {
 
 
     @Override
-    public void createTopic(Topic topic) throws ServiceException {
+    public boolean createTopic(Topic topic) throws ServiceException {
+        boolean isCreated = false;
         log.trace("entered topic ---> " + topic);
 
         DAOProvider daoProvider = DAOProvider.getInstance();
         topicDao = daoProvider.getTopicDao();
 
         try {
-            topicDao.insertEntityReturningId(topic);
+            if (0 < topicDao.insertEntityReturningId(topic)) {
+                isCreated = true;
+            }
+
         } catch (EntityAlreadyExistsDAOException e) {
             log.error("already exist topic", e);
             throw new EntityAlreadyExistsServiceException("already exist topic", e);
@@ -254,18 +256,18 @@ public class TopicServiceImpl implements TopicService {
             log.error("problem with creating topic", e);
             throw new ServiceException("problem with creating topic", e);
         }
-
+        return isCreated;
     }
 
     @Override
-    public void removeTopic(Long id) throws ServiceException {
+    public boolean removeTopic(Long id) throws ServiceException {
         log.trace("entered event id---> " + id);
 
         DAOProvider daoProvider = DAOProvider.getInstance();
         topicDao = daoProvider.getTopicDao();
 
         try {
-            topicDao.deleteEntity(id);
+            return topicDao.deleteEntity(id);
         } catch (DAOException e) {
             log.error("problem with removing topic", e);
             throw new ServiceException("problem with removing topic", e);
@@ -274,19 +276,21 @@ public class TopicServiceImpl implements TopicService {
     }
 
     @Override
-    public void updateTopic(Topic topic) throws ServiceException {
+    public boolean updateTopic(Topic topic) throws ServiceException {
         log.trace("entered topic ---> " + topic);
 
         DAOProvider daoProvider = DAOProvider.getInstance();
         topicDao = daoProvider.getTopicDao();
 
         try {
-            topicDao.updateEntityById(topic);
+            return topicDao.updateEntityById(topic);
         } catch (DAOException e) {
             log.error("problem with updating topic", e);
             throw new ServiceException("problem with updating topic", e);
         }
     }
 
-
+    public int getNoOfRecords() {
+        return noOfRecords;
+    }
 }

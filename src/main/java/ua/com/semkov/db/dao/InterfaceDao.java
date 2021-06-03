@@ -17,11 +17,11 @@ public interface InterfaceDao<T> {
 
     int insertEntityReturningId(T t) throws DAOException;
 
-    void updateEntityById(T t) throws DAOException;
+    boolean updateEntityById(T t) throws DAOException;
 
-    void updateEntityBySpecificName(T k) throws DAOException;
+    boolean updateEntityBySpecificName(T k) throws DAOException;
 
-    void deleteEntity(Long id) throws DAOException;
+    boolean deleteEntity(Long id) throws DAOException;
 
 
 }

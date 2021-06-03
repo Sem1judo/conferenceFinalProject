@@ -107,37 +107,30 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public void updateUserUsername(int userID, String newUserLogin) throws ServiceException {
+    public boolean updateUserUsername(Long userID, String newUserLogin) throws ServiceException {
+        DAOProvider daoProvider = DAOProvider.getInstance();
+        userDao = daoProvider.getUserDao();
+
+        try {
+            return userDao.updateUserLogin(userID, newUserLogin);
+        } catch (DAOException e) {
+            throw new ServiceException(e);
+        }
 
     }
 
     @Override
-    public void updateUserPassword(int userID, String oldPassword, String newPassword) throws ServiceException {
+    public boolean updateUserPassword(Long userID, String oldPassword, String newPassword) throws ServiceException {
+        DAOProvider daoProvider = DAOProvider.getInstance();
+        userDao = daoProvider.getUserDao();
 
+        try {
+            oldPassword = Encoder.encrypt(oldPassword);
+            newPassword = Encoder.encrypt(newPassword);
+
+            return userDao.updateUserPassword(userID, oldPassword, newPassword);
+        } catch (NoSuchAlgorithmException | DAOException e) {
+            throw new ServiceException(e);
+        }
     }
-
-//    @Override
-//    public void updateUserUsername(int userID, String newUserLogin) throws ServiceException {
-//        AbstractDao<User> userDAO = new UserDaoImpl();
-//
-//        try {
-//            userDAO.updateUserLogin(userID, newUserLogin);
-//        } catch (DAOException e) {
-//            throw new ServiceException(e);
-//        }
-//    }
-//
-//    @Override
-//    public void updateUserPassword(int userID, String oldPassword, String newPassword) throws ServiceException {
-//        AbstractDao<User> userDAO = new UserDaoImpl();
-//
-//        try {
-//            oldPassword = Encoder.encrypt(oldPassword);
-//            newPassword = Encoder.encrypt(newPassword);
-//
-//            userDAO.updateUserPassword(userID, oldPassword, newPassword);
-//        } catch (DAOException | NoSuchAlgorithmException e) {
-//            throw new ServiceException(e);
-//        }
-//    }
 }

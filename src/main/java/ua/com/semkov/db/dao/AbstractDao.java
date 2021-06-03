@@ -12,9 +12,10 @@ import java.util.List;
 
 public abstract class AbstractDao<K> implements InterfaceDao<K> {
 
-    private int noOfRecords;
 
     private static final Logger log = Logger.getLogger(AbstractDao.class.getName());
+
+    private int noOfRecords;
 
     public abstract String getQueryGetAll();
 
@@ -223,7 +224,8 @@ public abstract class AbstractDao<K> implements InterfaceDao<K> {
      * @param K k to update.
      */
     @Override
-    public void updateEntityById(K k) throws DAOException {
+    public boolean updateEntityById(K k) throws DAOException {
+        boolean isUpdated;
         log.debug("Start method updateEntityById(K k)");
 
         Connection con = null;
@@ -241,17 +243,20 @@ public abstract class AbstractDao<K> implements InterfaceDao<K> {
             setIdPS(k, ps);
 
             ps.executeUpdate();
-
             con.commit();
+            isUpdated = true;
         } catch (SQLException ex) {
             if (con != null) {
                 DBManager.getInstance().rollback(con);
             }
             log.error("Updating event failed", ex);
             throw new DAOException("Updating event failed", ex);
+
         } finally {
             DBManager.getInstance().close(con, ps);
         }
+
+        return isUpdated;
     }
 
     /**
@@ -260,7 +265,8 @@ public abstract class AbstractDao<K> implements InterfaceDao<K> {
      * @param K k to update.
      */
     @Override
-    public void updateEntityBySpecificName(K k) throws DAOException {
+    public boolean updateEntityBySpecificName(K k) throws DAOException {
+        boolean isUpdated;
         log.debug("Start method updateEntityBySpecificName(K k)");
         Connection con = null;
         PreparedStatement ps = null;
@@ -281,6 +287,7 @@ public abstract class AbstractDao<K> implements InterfaceDao<K> {
             ps.executeUpdate();
 
             con.commit();
+            isUpdated = true;
         } catch (SQLException ex) {
             if (con != null) {
                 DBManager.getInstance().rollback(con);
@@ -290,6 +297,7 @@ public abstract class AbstractDao<K> implements InterfaceDao<K> {
         } finally {
             DBManager.getInstance().close(con, ps);
         }
+        return isUpdated;
     }
 
 
@@ -299,21 +307,22 @@ public abstract class AbstractDao<K> implements InterfaceDao<K> {
      * @param Long id to delete.
      */
     @Override
-    public void deleteEntity(Long id) throws DAOException {
+    public boolean deleteEntity(Long id) throws DAOException {
+        boolean isDeleted;
         log.debug("Start method updateEntityBySpecificName(K k)");
 
         try (Connection con = DBManager.getInstance().getConnection();
              PreparedStatement ps = con.prepareStatement(getQueryDelete())) {
 
-            log.trace("entity ID---> " + id);
+            log.trace("entity ID ---> " + id);
             ps.setLong(1, id);
             ps.executeUpdate();
-
+            isDeleted = true;
         } catch (SQLException ex) {
             log.error("Deleting event failed", ex);
             throw new DAOException("Deleting event failed", ex);
         }
-
+        return isDeleted;
     }
 
 }

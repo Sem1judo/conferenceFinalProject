@@ -17,9 +17,9 @@ public interface TopicService {
 
     TopicDto getTopicDtoById(Long id) throws ServiceException;
 
-    void createTopic(Topic topic) throws ServiceException;
+    boolean createTopic(Topic topic) throws ServiceException;
 
-    void removeTopic(Long id) throws ServiceException;
+    boolean removeTopic(Long id) throws ServiceException;
 
-    void updateTopic(Topic topic) throws ServiceException;
+    boolean updateTopic(Topic topic) throws ServiceException;
 }

@@ -35,9 +35,9 @@
                 <th><fmt:message key="list_jsp.table.header.startTime"/></th>
                 <th><fmt:message key="list_jsp.table.header.endTime"/></th>
                 <th><fmt:message key="header_jspf.anchor.all_topics"/></th>
-                <c:if test="${userRole.name == 'moderator' or userRole.name == 'speaker' }">
-                    <th><fmt:message key="list_jsp.table.header.details"/></th>
-                </c:if>
+
+                <th><fmt:message key="list_jsp.table.header.details"/></th>
+
                 <c:if test="${userRole.name == 'client' }">
                     <th><fmt:message key="list_event.jsp.joinClient"/></th>
                 </c:if>
@@ -105,7 +105,19 @@
                                 </form>
                             </td>
                         </c:when>
-                        <c:when test="${userRole.name == 'client' }">
+
+                        <c:when test="${userRole.name == 'client'}">
+
+                            <td>
+                                <form action="${pageContext.request.contextPath}/controller" method="post">
+                                    <input type="hidden" name="command" value="updateEvent"/>
+                                    <input type="hidden" name="id" value="${event.id}">
+                                    <button type="submit"
+                                            class="btn btn-dark btn-lg">
+                                        <fmt:message key="list_jsp.table.header.details"/>
+                                    </button>
+                                </form>
+                            </td>
                             <td>
                                 <form action="${pageContext.request.contextPath}/controller" method="post">
                                     <input type="hidden" name="command" value="joinEvent"/>
@@ -116,7 +128,10 @@
                                     </button>
                                 </form>
                             </td>
+
                         </c:when>
+
+
                     </c:choose>
                     <td>${event.users.size()}</td>
                     <td><c:set var="state" value="${Status.getStatusStatic(event)}" scope="request"/>
