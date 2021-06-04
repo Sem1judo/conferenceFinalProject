@@ -14,8 +14,8 @@ public final class Path {
 
     // pages
     public static final String PAGE__LOGIN = "/login.jsp";
-    public static final String PAGE__ERROR_PAGE_404 = "WEB-INF/error/error_page404.jsp";
-    public static final String PAGE__ERROR_PAGE_505 = "WEB-INF/error/error_page500.jsp";
+    public static final String PAGE__ERROR_PAGE_404 = "jsp/error/error_page404.jsp";
+    public static final String PAGE__ERROR_PAGE_505 = "jsp/error/error_page500.jsp";
     public static final String PAGE__LIST_EVENTS = "jsp/admin/list_events.jsp";
     public static final String PAGE__LIST_TOPICS = "jsp/admin/list_topics.jsp";
     public static final String PAGE__SETTINGS = "jsp/settings.jsp";

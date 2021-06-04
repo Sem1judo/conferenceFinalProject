@@ -39,7 +39,7 @@
                             key="header_jspf.anchor.profile"/></a></li>
                     <li><a href="#"> <i class="fa fa-calendar"></i><fmt:message key="profile.quantityEvents"/><span
                             class="label label-warning pull-right r-activity">${events.size()}</span></a></li>
-                    <li><a href="#"> <i class="fa fa-edit"></i><fmt:message key="btn.change"/></a></li>
+                    <li><a href="${pageContext.request.contextPath}/jsp/settings.jsp"> <i class="fa fa-edit"></i><fmt:message key="btn.change"/></a></li>
                 </ul>
             </div>
         </div>

@@ -11,6 +11,7 @@ import ua.com.semkov.web.validation.TopicValidation;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -26,6 +27,8 @@ public class CreateTopicCommand extends Command {
 
 
         log.debug("Command starts");
+
+        HttpSession session = request.getSession();
 
         String name = request.getParameter("name");
         String description = request.getParameter("description");
@@ -43,7 +46,7 @@ public class CreateTopicCommand extends Command {
         for (String field : fields) {
             if (field == null || field.isEmpty()) {
                 errorMessage = "All fields are required to be filled";
-                request.setAttribute("errorMessage", errorMessage);
+                session.setAttribute("errorMessage", errorMessage);
                 log.error("errorMessage --> " + errorMessage);
                 return Path.REDIRECT + Path.PAGE__ERROR_PAGE_404;
             }
@@ -56,13 +59,13 @@ public class CreateTopicCommand extends Command {
                 topicService.createTopic(topic);
             } catch (ServiceException e) {
                 errorMessage = "Topic wasn't created";
-                request.setAttribute("errorMessage", errorMessage);
+                session.setAttribute("errorMessage", errorMessage);
                 log.error("errorMessage --> " + errorMessage, e);
                 return Path.REDIRECT + Path.PAGE__ERROR_PAGE_404;
             }
         } else {
             errorMessage = "Topic is not valid";
-            request.setAttribute("errorMessage", errorMessage);
+            session.setAttribute("errorMessage", errorMessage);
             log.error("errorMessage --> " + errorMessage);
             return Path.REDIRECT + Path.PAGE__ERROR_PAGE_404;
         }

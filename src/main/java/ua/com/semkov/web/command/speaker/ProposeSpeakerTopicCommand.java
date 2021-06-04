@@ -28,6 +28,7 @@ public class ProposeSpeakerTopicCommand extends Command {
 
         log.debug("Command ProposeSpeakerTopicCommand starts");
 
+        HttpSession session = request.getSession();
 
         String name = request.getParameter("name");
         String description = request.getParameter("description");
@@ -44,7 +45,7 @@ public class ProposeSpeakerTopicCommand extends Command {
         for (String field : fields) {
             if (field == null || field.isEmpty()) {
                 errorMessage = "All fields are required to be filled";
-                request.setAttribute("errorMessage", errorMessage);
+                session.setAttribute("errorMessage", errorMessage);
                 log.error("errorMessage --> " + errorMessage);
                 return Path.REDIRECT + Path.PAGE__ERROR_PAGE_404;
             }
@@ -57,20 +58,20 @@ public class ProposeSpeakerTopicCommand extends Command {
                 topicService.createTopic(topic);
             } catch (ServiceException e) {
                 errorMessage = "Topic wasn't created";
-                request.setAttribute("errorMessage", errorMessage);
+                session.setAttribute("errorMessage", errorMessage);
                 log.error("errorMessage --> " + errorMessage, e);
                 return Path.REDIRECT + Path.PAGE__ERROR_PAGE_404;
             }
         } else {
             errorMessage = "Topic is not valid";
-            request.setAttribute("errorMessage", errorMessage);
+            session.setAttribute("errorMessage", errorMessage);
             log.error("errorMessage --> " + errorMessage);
             return Path.REDIRECT + Path.PAGE__ERROR_PAGE_404;
         }
 
         log.trace("obtained topic --> " + topic);
 
-        HttpSession session = request.getSession();
+
         session.setAttribute("id", eventId);
 
 

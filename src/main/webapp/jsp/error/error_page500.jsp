@@ -17,7 +17,7 @@
     <title>Error</title>
 </head>
 <body>
-<%@ include file="../../jsp/jspf/header.jspf" %>
+<%@ include file="../jspf/header.jspf" %>
 
 <div class="mainbox">
     <div class="err">5</div>
@@ -33,6 +33,6 @@
     </div>
 
 
-    <%@ include file="../../jsp/jspf/footer.jspf" %>
+    <%@ include file="../jspf/footer.jspf" %>
 </body>
 </html>

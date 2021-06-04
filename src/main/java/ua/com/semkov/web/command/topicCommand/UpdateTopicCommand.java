@@ -34,8 +34,8 @@ public class UpdateTopicCommand extends Command {
 
         String id = request.getParameter("id");
 
-        Topic topic = null;
-        TopicDto topicDto = null;
+        Topic topic;
+        TopicDto topicDto;
         String errorMessage;
 
         try {
@@ -43,7 +43,7 @@ public class UpdateTopicCommand extends Command {
         } catch (ServiceException e) {
             log.error("can't get topic by id ", e);
             errorMessage = "Can't get topic";
-            request.setAttribute("errorMessage", errorMessage);
+            session.setAttribute("errorMessage", errorMessage);
             return Path.REDIRECT + Path.PAGE__ERROR_PAGE_404;
         }
         log.trace("chosen topic ---> " + topic);
@@ -69,7 +69,7 @@ public class UpdateTopicCommand extends Command {
             for (String field : fields) {
                 if (field == null || field.isEmpty()) {
                     errorMessage = "All fields are required to be filled";
-                    request.setAttribute("errorMessage", errorMessage);
+                    session.setAttribute("errorMessage", errorMessage);
                     log.error("errorMessage --> " + errorMessage);
                     return Path.REDIRECT + Path.PAGE__ERROR_PAGE_404;
                 }
@@ -83,16 +83,15 @@ public class UpdateTopicCommand extends Command {
             if (TopicValidation.isValidTopic(topic)) {
                 try {
                     topicService.updateTopic(topic);
-                    topicDto = topicService.getTopicDtoById(topic.getId());
                 } catch (ServiceException e) {
                     errorMessage = "Topic wasn't updated";
-                    request.setAttribute("errorMessage", errorMessage);
+                    session.setAttribute("errorMessage", errorMessage);
                     log.error("errorMessage --> " + errorMessage, e);
                     return Path.REDIRECT + Path.PAGE__ERROR_PAGE_404;
                 }
             } else {
                 errorMessage = "Topic is not valid";
-                request.setAttribute("errorMessage", errorMessage);
+                session.setAttribute("errorMessage", errorMessage);
                 log.error("errorMessage --> " + errorMessage);
                 return Path.REDIRECT + Path.PAGE__ERROR_PAGE_404;
             }
@@ -102,7 +101,7 @@ public class UpdateTopicCommand extends Command {
             topicDto = topicService.getTopicDtoById(topic.getId());
         } catch (ServiceException e) {
             errorMessage = "TopicDto can't be loaded";
-            request.setAttribute("errorMessage", errorMessage);
+            session.setAttribute("errorMessage", errorMessage);
             log.error("errorMessage --> " + errorMessage);
             return Path.REDIRECT + Path.PAGE__ERROR_PAGE_404;
         }

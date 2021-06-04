@@ -17,7 +17,7 @@
     <title>Error</title>
 </head>
 <body>
-<%@ include file="../../jsp/jspf/header.jspf" %>
+<%@ include file="../jspf/header.jspf" %>
 
 <div class="mainbox">
     <div class="err">4</div>
@@ -28,15 +28,15 @@
 
         <h3><fmt:message key="error_404_title"/></h3>
 
-        <c:if test="${not empty errorMessage and userRole.name == 'moderator'}">
+        <c:if test="${not empty errorMessage}">
             <h3><fmt:message key="list_jsp.table.header.details"/>: ${errorMessage}</h3>
         </c:if>
-        <a href="${pageContext.request.contextPath}/login.jsp">
+        <a href="<%=request.getHeader("REFERER")%>">
             <p><fmt:message key="error_404_back"/></p>
         </a>
     </div>
 
 
-    <%@ include file="../../jsp/jspf/footer.jspf" %>
+    <%@ include file="../jspf/footer.jspf" %>
 </body>
 </html>

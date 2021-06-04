@@ -11,6 +11,7 @@ import ua.com.semkov.web.validation.EventValidation;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -26,6 +27,8 @@ public class CreateEventCommand extends Command {
     public String execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
         log.debug("Command starts");
+
+        HttpSession session = request.getSession();
 
         String title = request.getParameter("title");
         String location = request.getParameter("location");
@@ -48,7 +51,7 @@ public class CreateEventCommand extends Command {
         for (String field : fields) {
             if (field == null || field.isEmpty()) {
                 errorMessage = "All fields are required to be filled";
-                request.setAttribute("errorMessage", errorMessage);
+                session.setAttribute("errorMessage", errorMessage);
                 log.error("errorMessage --> " + errorMessage);
                 return Path.REDIRECT + Path.PAGE__ERROR_PAGE_404;
             }
@@ -70,13 +73,13 @@ public class CreateEventCommand extends Command {
             eventService.createEvent(event);
         } catch (ServiceException e) {
           errorMessage = "Can't create event";
-           request.setAttribute("errorMessage", errorMessage);
+            session.setAttribute("errorMessage", errorMessage);
           log.error("errorMessage --> " + errorMessage, e);
             return Path.REDIRECT + Path.PAGE__ERROR_PAGE_404;
             }
           } else {
             errorMessage = "Event  is not valid";
-            request.setAttribute("errorMessage", errorMessage);
+            session.setAttribute("errorMessage", errorMessage);
             log.error("errorMessage --> " + errorMessage);
             return Path.REDIRECT + Path.PAGE__ERROR_PAGE_404;
         }

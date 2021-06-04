@@ -53,7 +53,7 @@ public class UpdateEventCommand extends Command {
             event = eventService.getEvent(Long.valueOf(id));
         } catch (ServiceException e) {
             errorMessage = "Event doesn't exist in db";
-            request.setAttribute("errorMessage", errorMessage);
+            session.setAttribute("errorMessage", errorMessage);
             log.error("errorMessage --> " + errorMessage, e);
             return Path.REDIRECT + Path.PAGE__ERROR_PAGE_404;
         }
@@ -83,7 +83,7 @@ public class UpdateEventCommand extends Command {
             for (String field : fields) {
                 if (field == null || field.isEmpty()) {
                     errorMessage = "All fields are required to be filled";
-                    request.setAttribute("errorMessage", errorMessage);
+                    session.setAttribute("errorMessage", errorMessage);
                     log.error("errorMessage --> " + errorMessage);
                     return Path.REDIRECT + Path.PAGE__ERROR_PAGE_404;
                 }
@@ -106,12 +106,12 @@ public class UpdateEventCommand extends Command {
                 } catch (ServiceException e) {
                     log.error("can't update event", e);
                     errorMessage = "Can't update event";
-                    request.setAttribute("errorMessage", errorMessage);
+                    session.setAttribute("errorMessage", errorMessage);
                     return Path.REDIRECT + Path.PAGE__ERROR_PAGE_404;
                 }
             } else {
                 errorMessage = "Event is not valid";
-                request.setAttribute("errorMessage", errorMessage);
+                session.setAttribute("errorMessage", errorMessage);
                 log.error("errorMessage --> " + errorMessage);
                 return Path.REDIRECT + Path.PAGE__ERROR_PAGE_404;
             }
@@ -123,7 +123,7 @@ public class UpdateEventCommand extends Command {
 
         } catch (ServiceException e) {
             errorMessage = "Can't load topics for current event ";
-            request.setAttribute("errorMessage", errorMessage);
+            session.setAttribute("errorMessage", errorMessage);
             log.error("errorMessage --> " + errorMessage);
             return Path.REDIRECT + Path.PAGE__ERROR_PAGE_404;
         }
