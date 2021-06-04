@@ -52,7 +52,23 @@
                     <td><input name="start_time" value="${event.startTime}" type="datetime-local"></td>
                     <td><input name="end_time" value="${event.endTime}" type="datetime-local"></td>
                     <td><input name="organizer_id" value="${event.organizerId}" type="text"></td>
-                    <td><input name="status_id" value="${eventStatus.name}" readonly type="text"></td>
+                    <td><input value="${eventStatus.name}" readonly type="text">
+                        <div>
+                            <input type="radio" id="planned" name="status_id" value="2"
+                                   <c:if test="${event.statusId == 2}">checked</c:if>>
+                            <label for="planned"><fmt:message key="status_planned"/></label>
+                        </div>
+                        <div>
+                            <input type="radio" id="performing" name="status_id" value="1"
+                                   <c:if test="${event.statusId == 1}">checked</c:if>>
+                            <label for="performing"><fmt:message key="status_performing"/></label>
+                        </div>
+                        <div>
+                            <input type="radio" id="finished" name="status_id" value="0"
+                                   <c:if test="${event.statusId == 0}">checked</c:if>>
+                            <label for="finished"><fmt:message key="status_finished"/></label>
+                        </div>
+                    </td>
                     <td>
                         <button type="submit"
                                 class="btn btn-dark btn-lg"><fmt:message key="list_jsp.table.header.update"/>

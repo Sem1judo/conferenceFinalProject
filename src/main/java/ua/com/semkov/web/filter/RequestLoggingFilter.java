@@ -16,9 +16,6 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
-/**
- * Servlet Filter implementation class RequestLoggingFilter
- */
 @WebFilter("/RequestLoggingFilter")
 public class RequestLoggingFilter implements Filter {
 
@@ -46,7 +43,7 @@ public class RequestLoggingFilter implements Filter {
                 log.trace(req.getRemoteAddr() + "::Cookie::{" + cookie.getName() + "," + cookie.getValue() + "}");
             }
         }
-        // pass the request along the filter chain
+
         chain.doFilter(request, response);
     }
 

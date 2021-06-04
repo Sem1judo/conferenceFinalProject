@@ -34,8 +34,7 @@
                 <th><fmt:message key="list_topics.speaker"/></th>
                 <th><fmt:message key="list_event"/></th>
                 <th><fmt:message key="btn.confirm"/></th>
-
-
+                <th><fmt:message key="btn.change"/></th>
             </tr>
 
             <c:forEach var="topic" items="${topics}">
@@ -57,6 +56,18 @@
                             </button>
                         </form>
                     </td>
+
+                        <td>
+                            <form action="controller" method="post">
+                                <input type="hidden" name="command" value="updateTopic"/>
+                                <input type="hidden" name="id" value="${topic.id}">
+
+                                <button type="submit"
+                                        class="btn btn-dark btn-lg">
+                                    <fmt:message key="btn.change"/>
+                                </button>
+                            </form>
+                        </td>
                 </tr>
                 </c:if>
             </c:forEach>

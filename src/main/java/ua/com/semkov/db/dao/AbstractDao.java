@@ -177,7 +177,7 @@ public abstract class AbstractDao<K> implements InterfaceDao<K> {
      */
     @Override
     public K insertEntity(K k) throws DAOException {
-        log.debug("Start method insertEntityReturningId(K k)");
+        log.debug("Start method insertEntity(K k)");
 
         Connection con = null;
         PreparedStatement ps = null;

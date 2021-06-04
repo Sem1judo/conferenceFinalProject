@@ -20,7 +20,7 @@ public class EventDaoImpl extends AbstractDao<Event> {
     private static final String SQL__INSERT_EVENT =
             "INSERT INTO events (" +
                     " id, title, description, location, start_time, end_time, organizer_id,status_id) " +
-                    " VALUES (DEFAULT, ?, ?, ?, ?, ?, ?)";
+                    " VALUES (DEFAULT, ?, ?, ?, ?, ?, ?,?)";
 
     private static final String SQL__GET_EVENT_BY_ID =
             "SELECT * FROM events where id = ?";

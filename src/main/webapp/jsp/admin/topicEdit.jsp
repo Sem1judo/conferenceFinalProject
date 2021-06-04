@@ -60,9 +60,22 @@
                     <td>
                         <c:if test="${userRole.name == 'moderator'}">
                             <input name="speakerId" value="${topic.userId}" type="number">
+                            <div>
+                                <input type="radio" id="true" name="isConfirm" value="true"
+                                       <c:if test="${topic.confirm}">checked</c:if>>
+                                <label for="true"><fmt:message key="list_topics.confirmedTrue"/></label>
+                            </div>
+                            <div>
+                                <input type="radio" id="false" name="isConfirm" value="false"
+                                       <c:if test="${not topic.confirm}">checked</c:if>>
+                                <label for="false"><fmt:message key="list_topics.confirmedFalse"/></label>
+                            </div>
                         </c:if>
-                        <div><p><fmt:message key="list_topics.current"/>: </p>${topicDto.speaker.firstName} ${topicDto.speaker.lastName}</div>
+                        <div><p><fmt:message
+                                key="list_topics.current"/>: </p>${topicDto.speaker.firstName} ${topicDto.speaker.lastName}
+                        </div>
                         <div>${topicDto.speaker.email}</div>
+                        <div>${topicDto.confirm}</div>
                         <div>${topicDto.speaker.id}</div>
 
                     </td>
@@ -70,7 +83,8 @@
                         <c:if test="${userRole.name == 'moderator'}">
                             <input name="eventId" type="number" value="${topic.eventId}">
                         </c:if>
-                        <div style="color: #111111"><p><fmt:message key="list_topics.current"/>: </p>${topicDto.event.title}</div>
+                        <div style="color: #111111"><p><fmt:message
+                                key="list_topics.current"/>: </p>${topicDto.event.title}</div>
                         <div>${topicDto.event.description}</div>
                         <div>${topicDto.event.id}</div>
                     </td>

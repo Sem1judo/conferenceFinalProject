@@ -62,6 +62,7 @@ public class UpdateSettingsCommand extends Command {
 				new UserDaoImpl().updateEntityById(user);
 			} catch (DAOException e) {
 				e.printStackTrace();
+				return Path.REDIRECT + Path.PAGE__ERROR_PAGE_404;
 			}
 		}
 

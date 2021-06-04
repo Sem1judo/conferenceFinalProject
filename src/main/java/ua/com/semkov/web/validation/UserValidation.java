@@ -15,11 +15,10 @@ public class UserValidation {
 
     public static boolean isValidUser(User user) {
         return isValidEmail(user.getEmail(), REGEX_EMAIL) &&
-                isValidEmail(user.getEmail(), REGEX_EMAIL) &&
                 isValidFirstName(user.getFirstName(), REGEX_NAME) &&
                 isValidLastName(user.getLastName(), REGEX_NAME) &&
-                isValidPhone(user.getPhone(), REGEX_PHONE) &&
-                isValidPassword(user.getPassword(), REGEX_PASSWORD) &&
+//                isValidPhone(user.getPhone(), REGEX_PHONE) &&
+//                isValidPassword(user.getPassword(), REGEX_PASSWORD) &&
                 isValidLogin(user.getLogin(), REGEX_LOGIN);
     }
 

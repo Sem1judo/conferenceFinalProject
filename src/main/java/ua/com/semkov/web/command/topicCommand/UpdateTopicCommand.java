@@ -57,6 +57,7 @@ public class UpdateTopicCommand extends Command {
             String description = request.getParameter("description");
             String userId = request.getParameter("speakerId");
             String eventId = request.getParameter("eventId");
+            String isConfirm = request.getParameter("isConfirm");
 
 
             ArrayList<String> fields = new ArrayList<>();
@@ -64,6 +65,7 @@ public class UpdateTopicCommand extends Command {
             fields.add(description);
             fields.add(userId);
             fields.add(eventId);
+            fields.add(isConfirm);
 
 
             for (String field : fields) {
@@ -79,6 +81,7 @@ public class UpdateTopicCommand extends Command {
             topic.setDescription(description);
             topic.setEventId(Long.valueOf(eventId));
             topic.setUserId(Long.valueOf(userId));
+            topic.setConfirm(Boolean.parseBoolean(isConfirm));
 
             if (TopicValidation.isValidTopic(topic)) {
                 try {

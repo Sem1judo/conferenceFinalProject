@@ -18,10 +18,10 @@ public class Topic  implements Serializable {
     private String description;
     private Long userId;
     private Long eventId;
-    private Boolean confirm;
+    private boolean confirm;
 
 
-    public Topic(String name, String description, Long userId) {
+    public Topic(String name, String description) {
         this.name = name;
         this.description = description;
     }

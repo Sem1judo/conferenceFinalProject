@@ -23,7 +23,7 @@ public class EncodingFilter implements Filter {
 
     private static final String DEFAULT_ENCODING = "UTF-8";
 
-    public void init(FilterConfig fConfig) throws ServletException {
+    public void init(FilterConfig fConfig)  {
         log.debug("Filter initialization starts");
     }
 

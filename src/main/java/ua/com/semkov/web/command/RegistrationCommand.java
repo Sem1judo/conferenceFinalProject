@@ -63,7 +63,7 @@ public class RegistrationCommand extends Command {
         for (String field : fields) {
             if (field == null || field.isEmpty()) {
                 errorMessage = "All fields are required to be filled";
-                request.setAttribute("errorMessage", errorMessage);
+                session.setAttribute("errorMessage", errorMessage);
                 log.error("errorMessage --> " + errorMessage);
                 return Path.REDIRECT + Path.PAGE__ERROR_PAGE_404;
             }
@@ -86,7 +86,7 @@ public class RegistrationCommand extends Command {
         } else {
             errorMessage = "User not valid";
             log.error("errorMessage --> " + errorMessage);
-            request.setAttribute("errorMessage", errorMessage);
+            session.setAttribute("errorMessage", errorMessage);
             return Path.REDIRECT + Path.PAGE__ERROR_PAGE_404;
         }
 
