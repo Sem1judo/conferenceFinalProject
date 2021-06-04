@@ -15,6 +15,7 @@ public class TopicDto implements Serializable {
     private String description;
     private User speaker;
     private Event event;
+    private Boolean confirm;
 
     public TopicDto() {
     }
@@ -24,14 +25,22 @@ public class TopicDto implements Serializable {
         this.description = description;
     }
 
-    public TopicDto(Long id, String name, String description, User speaker, Event event) {
+    public TopicDto(Long id, String name, String description, User speaker, Event event, Boolean confirm) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.speaker = speaker;
         this.event = event;
+        this.confirm = confirm;
     }
 
+    public Boolean getConfirm() {
+        return confirm;
+    }
+
+    public void setConfirm(Boolean confirm) {
+        this.confirm = confirm;
+    }
 
     public Long getId() {
         return id;

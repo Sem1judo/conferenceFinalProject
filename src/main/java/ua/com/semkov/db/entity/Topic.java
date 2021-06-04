@@ -18,6 +18,7 @@ public class Topic  implements Serializable {
     private String description;
     private Long userId;
     private Long eventId;
+    private Boolean confirm;
 
 
     public Topic(String name, String description, Long userId) {
@@ -31,6 +32,7 @@ public class Topic  implements Serializable {
         this.description = description;
         this.userId = userId;
     }
+
     public Topic(String name, String description, Long userId, Long eventId) {
         this.name = name;
         this.description = description;
@@ -38,15 +40,33 @@ public class Topic  implements Serializable {
         this.eventId = eventId;
     }
 
-    public Topic(Long id, String name, String description, Long userId, Long eventId) {
+    public Topic(String name, String description, Long userId, Long eventId, Boolean confirm) {
+        this.name = name;
+        this.description = description;
+        this.userId = userId;
+        this.eventId = eventId;
+        this.confirm = confirm;
+    }
+
+    public Topic(Long id, String name, String description, Long userId, Long eventId, Boolean confirm) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.userId = userId;
         this.eventId = eventId;
+        this.confirm = confirm;
     }
 
 
+
+
+    public Boolean getConfirm() {
+        return confirm;
+    }
+
+    public void setConfirm(Boolean confirm) {
+        this.confirm = confirm;
+    }
 
     public Long getEventId() {
         return eventId;
@@ -98,6 +118,7 @@ public class Topic  implements Serializable {
                 ", description='" + description + '\'' +
                 ", userId=" + userId +
                 ", eventId=" + eventId +
+                ", confirmed=" + confirm +
                 '}';
     }
 }

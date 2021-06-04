@@ -190,26 +190,29 @@
         </c:when>
         <c:otherwise>
             <c:forEach var="topic" items="${eventTopics}">
-                <tr>
-                    <td>${topic.name}</td>
-                    <td>${topic.description}</td>
-                    <td>${topic.speaker.firstName} ${topic.speaker.lastName}</td>
-                    <td>${topic.speaker.email}</td>
+                <c:if test="${topic.confirm}">
+                    <tr>
+                        <td>${topic.name}</td>
+                        <td>${topic.description}</td>
+                        <td>${topic.speaker.firstName} ${topic.speaker.lastName}</td>
+                        <td>${topic.speaker.email}</td>
 
-                    <c:if test="${userRole.name == 'moderator' }">
-                        <td>
-                            <form action="${pageContext.request.contextPath}/controller" method="post">
-                                <input type="hidden" name="command" value="updateTopic"/>
-                                <input type="hidden" name="id" value="${topic.id}">
-                                <button type="submit"
-                                        class="btn btn-dark btn-lg">
-                                    <fmt:message key="btn.change"/>
-                                </button>
-                            </form>
-                        </td>
-                    </c:if>
-                </tr>
+                        <c:if test="${userRole.name == 'moderator' }">
+                            <td>
+                                <form action="${pageContext.request.contextPath}/controller" method="post">
+                                    <input type="hidden" name="command" value="updateTopic"/>
+                                    <input type="hidden" name="id" value="${topic.id}">
+                                    <button type="submit"
+                                            class="btn btn-dark btn-lg">
+                                        <fmt:message key="btn.change"/>
+                                    </button>
+                                </form>
+                            </td>
+                        </c:if>
+                    </tr>
+                </c:if>
             </c:forEach>
+
         </c:otherwise>
     </c:choose>
 </table>

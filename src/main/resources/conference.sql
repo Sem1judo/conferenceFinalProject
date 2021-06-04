@@ -60,6 +60,7 @@ CREATE TABLE topics
     description character varying(1024),
     user_id     integer,
     event_id    integer,
+    confirm     boolean default false,
     CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users (id) ON UPDATE CASCADE ON DELETE CASCADE,
     CONSTRAINT fk_event_id FOREIGN KEY (event_id) REFERENCES events (id) ON UPDATE CASCADE ON DELETE CASCADE
 

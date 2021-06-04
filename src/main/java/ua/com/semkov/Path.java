@@ -11,6 +11,7 @@ public final class Path {
     public static final String REDIRECT = "redirect:";
     public static final String PAGE__EVENT_EDIT = "jsp/admin/eventEdit.jsp";
     public static final String PAGE__TOPIC_EDIT = "jsp/admin/topicEdit.jsp";
+    public static final String PAGE__ADMIN_CONFIRM = "jsp/admin/adminListConfirm.jsp";
 
     // pages
     public static final String PAGE__LOGIN = "/login.jsp";
@@ -24,6 +25,7 @@ public final class Path {
 
     // commands
     public static final String COMMAND_LIST_EVENTS = "controller?command=listEvents";
+    public static final String COMMAND_ADMIN_LIST_TOPICS = "controller?command=adminConfirmList";
     public static final String COMMAND__LIST_TOPICS = "controller?command=listTopics";
     public static final String COMMAND__PROFILE_LIST_EVENTS = "controller?command=profileListEvents";
     public static final String COMMAND__UPDATE_EVENT = "controller?command=updateEvent";

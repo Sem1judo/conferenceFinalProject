@@ -19,6 +19,12 @@
                         <fmt:message key="header_jspf.anchor.all_topics"/>
                     </a>
                 </li>
+                <li class="nav_link">
+                    <a class="nav-item"
+                       href="${pageContext.request.contextPath}/controller?command=adminConfirmList">
+                        <fmt:message key="header_jspf.anchor.all_topicsConfirm"/>
+                    </a>
+                </li>
             </c:when>
             <c:when test="${userRole.name == 'client'}">
                 <li class="nav_link">
@@ -65,13 +71,13 @@
             </c:if>
         </p>
     </li>
-<c:if test="${not empty user}">
-    <li class="nav_link-right">
-        <a class="nav-item" href="${pageContext.request.contextPath}/controller?command=logout">
-            <fmt:message key="header_jspf.anchor.logout"/>
-        </a>
-    </li>
-</c:if>
+    <c:if test="${not empty user}">
+        <li class="nav_link-right">
+            <a class="nav-item" href="${pageContext.request.contextPath}/controller?command=logout">
+                <fmt:message key="header_jspf.anchor.logout"/>
+            </a>
+        </li>
+    </c:if>
     <c:if test="${empty user and title ne 'Login'}">
         <li class="nav_link-right">
             <a class="nav-item" href="../../login.jsp">

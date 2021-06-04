@@ -21,7 +21,7 @@ public class TopicDaoImpl extends AbstractDao<Topic> {
             "SELECT * FROM topics";
 
     private static final String SQL__INSERT_TOPIC =
-            "INSERT INTO topics VALUES (default, ?, ?, ?,?)";
+            "INSERT INTO topics VALUES (default, ?, ?, ?, ?, ?)";
 
     private static final String SQL__GET_TOPIC_BY_ID =
             "SELECT * FROM topics where id = ?";
@@ -33,17 +33,17 @@ public class TopicDaoImpl extends AbstractDao<Topic> {
             "DELETE FROM topics where id = ?";
 
     public static final String SQL__UPDATE_TOPIC_BY_ID = "UPDATE topics " +
-            "SET name=?, description=?, user_id=?, event_id=? " +
+            "SET name=?, description=?, user_id=?, event_id=?, confirm=? " +
             "WHERE id=?";
 
 
-    public static final String SQL__GET_ALL_TOPICS_BY_EVENT_ID = "SELECT id, name, description, user_id, event_id " +
+    public static final String SQL__GET_ALL_TOPICS_BY_EVENT_ID = "SELECT id, name, description, user_id, event_id, confirm " +
             " FROM topics WHERE event_id = ?";
-    public static final String SQL__GET_ALL_TOPICS_BY_USER_ID = "SELECT id, name, description, user_id, event_id " +
+    public static final String SQL__GET_ALL_TOPICS_BY_USER_ID = "SELECT id, name, description, user_id, event_id, confirm" +
             " FROM topics WHERE user_id = ?";
 
     private static final String SQL__FIND_ALL_TOPICS_PAGINATION = " SELECT * FROM topics OFFSET ? LIMIT ? ;";
-    private static final String SQL__GET_TOTAL_COUNT = "SELECT COUNT(*) AS total FROM topics";
+    private static final String SQL__GET_TOTAL_COUNT = "SELECT COUNT(*) AS total FROM topics where confirm = true";
 
 
     @Override
@@ -125,6 +125,7 @@ public class TopicDaoImpl extends AbstractDao<Topic> {
             ps.setString(2, topic.getDescription());
             ps.setLong(3, topic.getUserId());
             ps.setLong(4, topic.getEventId());
+            ps.setBoolean(5, topic.getConfirm());
         } catch (SQLException ex) {
             log.error("Problem with setting PreparedStatement from topic", ex);
         }
@@ -134,7 +135,7 @@ public class TopicDaoImpl extends AbstractDao<Topic> {
     @Override
     public void setIdPS(Topic topic, PreparedStatement ps) {
         try {
-            ps.setLong(5, topic.getId());
+            ps.setLong(6, topic.getId());
         } catch (SQLException ex) {
             log.error("Problem with setting ID for PreparedStatement from topic", ex);
         }
@@ -147,7 +148,8 @@ public class TopicDaoImpl extends AbstractDao<Topic> {
                     , rs.getString("name")
                     , rs.getString("description")
                     , rs.getLong("user_id")
-                    , rs.getLong("event_id"));
+                    , rs.getLong("event_id"),
+                    rs.getBoolean("confirm"));
         } catch (SQLException e) {
             log.error("Problem with mapping user", e);
             throw new IllegalStateException(e);

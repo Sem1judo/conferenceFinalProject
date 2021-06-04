@@ -73,7 +73,9 @@
                             </c:when>
                             <c:otherwise>
                                 <c:forEach var="topic" items="${event.topics}">
-                                    <p>${topic.name}</p>
+                                    <c:if test="${topic.confirm}">
+                                        <p>${topic.name}</p>
+                                    </c:if>
                                 </c:forEach>
                             </c:otherwise>
                         </c:choose>

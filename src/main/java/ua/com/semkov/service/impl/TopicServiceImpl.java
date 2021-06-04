@@ -64,6 +64,7 @@ public class TopicServiceImpl implements TopicService {
             topicDto.setDescription(topic.getDescription());
             topicDto.setEvent(event);
             topicDto.setSpeaker(speaker);
+            topicDto.setConfirm(topic.getConfirm());
 
             topicDtos.add(topicDto);
         }
@@ -136,19 +137,30 @@ public class TopicServiceImpl implements TopicService {
             topicDto.setDescription(topic.getDescription());
             topicDto.setEvent(event);
             topicDto.setSpeaker(speaker);
+            topicDto.setConfirm(topic.getConfirm());
+
 
             topicDtos.add(topicDto);
+
         }
         return topicDtos;
 
     }
 
     @Override
-    public List<TopicDto> getTopicsDtoPagination(int start, int noOfRecords) throws ServiceException {
-        List<Topic> topics = getTopicsPagination(start, noOfRecords);
+    public List<TopicDto> getTopicsDtoPaginationConfirmed(int start, int noOfRecords) throws ServiceException {
+        List<Topic> topics;
         List<TopicDto> topicDtos = new ArrayList<>();
+        int notConfirmedSize = 0;
 
         DAOProvider daoProvider = DAOProvider.getInstance();
+        topicDao = daoProvider.getTopicDao();
+        try {
+            topics = topicDao.getAllPagination(start, noOfRecords);
+        } catch (DAOException e) {
+            log.error("problem with getting topics", e);
+            throw new ServiceException("problem with getting topics", e);
+        }
 
         userDao = daoProvider.getUserDao();
         eventDao = daoProvider.getEventDao();
@@ -175,10 +187,14 @@ public class TopicServiceImpl implements TopicService {
             topicDto.setDescription(topic.getDescription());
             topicDto.setEvent(event);
             topicDto.setSpeaker(speaker);
+            topicDto.setConfirm(topic.getConfirm());
 
             topicDtos.add(topicDto);
-        }
 
+        }
+        System.out.println("this is is 2= " + topicDtos.size());
+        this.noOfRecords = topicDao.getNoOfRecords();
+        System.out.println("this is is= " + this.noOfRecords);
         return topicDtos;
 
     }
@@ -214,6 +230,8 @@ public class TopicServiceImpl implements TopicService {
         topicDto.setDescription(topic.getDescription());
         topicDto.setEvent(event);
         topicDto.setSpeaker(speaker);
+        topicDto.setConfirm(topic.getConfirm());
+
 
         return topicDto;
     }

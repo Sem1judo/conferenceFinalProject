@@ -4,6 +4,8 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import org.apache.log4j.Logger;
+import ua.com.semkov.web.command.adminCommand.AdminConfirmListCommand;
+import ua.com.semkov.web.command.adminCommand.AdminConfirmTopicCommand;
 import ua.com.semkov.web.command.clientCommand.JoinUserEventsCommand;
 import ua.com.semkov.web.command.eventCommand.CreateEventCommand;
 import ua.com.semkov.web.command.eventCommand.DeleteEventCommand;
@@ -40,9 +42,10 @@ public class CommandContainer {
         commands.put("proposeTopicSpeaker", new ProposeSpeakerTopicCommand());
 
 
-
-
         // admin commands
+        commands.put("adminConfirmList", new AdminConfirmListCommand());
+        commands.put("adminConfirm", new AdminConfirmTopicCommand());
+
         commands.put("listEvents", new ListEventsCommand());
         commands.put("createEvent", new CreateEventCommand());
         commands.put("deleteEvent", new DeleteEventCommand());

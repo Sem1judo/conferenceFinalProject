@@ -21,6 +21,7 @@
 <body>
 <%@ include file="../jspf/header.jspf" %>
 <hr>
+<c:if test="${userRole.name == 'moderator'}">
 <c:choose>
     <c:when test="${fn:length(topics) == 0}"><fmt:message key="list_jsp.table.header.empty"/></c:when>
 
@@ -32,72 +33,41 @@
                 <th><fmt:message key="list_jsp.table.header.description"/></th>
                 <th><fmt:message key="list_topics.speaker"/></th>
                 <th><fmt:message key="list_event"/></th>
-                <c:if test="${userRole.name == 'moderator'}">
-                    <th><fmt:message key="btn.change"/></th>
-                </c:if>
+                <th><fmt:message key="btn.confirm"/></th>
+
 
             </tr>
 
             <c:forEach var="topic" items="${topics}">
+                <c:if test="${not topic.confirm}">
                 <tr>
                     <td>${topic.id}</td>
                     <td>${topic.name}</td>
                     <td>${topic.description}</td>
                     <td>${topic.speaker.firstName} ${topic.speaker.lastName}</td>
                     <td>${topic.event.title}</td>
-                    <c:if test="${userRole.name == 'moderator'}">
-                        <td>
-                            <form action="controller" method="post">
-                                <input type="hidden" name="command" value="updateTopic"/>
-                                <input type="hidden" name="id" value="${topic.id}">
 
-                                <button type="submit"
-                                        class="btn btn-dark btn-lg">
-                                    <fmt:message key="btn.change"/>
-                                </button>
-                            </form>
-                        </td>
-                    </c:if>
+                    <td>
+                        <form action="controller" method="post">
+                            <input type="hidden" name="command" value="adminConfirm"/>
+                            <input type="hidden" name="id" value="${topic.id}">
+                            <button type="submit"
+                                    class="btn btn-dark btn-lg">
+                                <fmt:message key="btn.confirm"/>
+                            </button>
+                        </form>
+                    </td>
                 </tr>
+                </c:if>
             </c:forEach>
 
         </table>
-        <%--For displaying Page numbers.
-               The when condition does not display a link for the current page--%>
-        <table class="table">
-            <tr>
-                <c:forEach begin="1" end="${noOfPages}" var="i">
-                    <c:choose>
-                        <c:when test="${currentPage eq i}">
-                            <td>${i}</td>
-                        </c:when>
-                        <c:otherwise>
-                            <td><a href="controller?command=listTopics&page=${i}">${i}</a></td>
-                        </c:otherwise>
-                    </c:choose>
-                </c:forEach>
-            </tr>
-        </table>
-
-        <%--For displaying Previous link except for the 1st page --%>
-        <c:if test="${currentPage != 1}">
-            <td><a href="controller?command=listTopics&page=${currentPage - 1}"><fmt:message
-                    key="list.pagination.previous"/></a></td>
-        </c:if>
-
-        <%--For displaying Next link --%>
-        <c:if test="${currentPage lt noOfPages}">
-            <td><a href="controller?command=listTopics&page=${currentPage + 1}"><fmt:message
-                    key="list.pagination.next"/></a></td>
-        </c:if>
-
     </c:otherwise>
 </c:choose>
 
 
-
 <%@ include file="../jspf/footer.jspf" %>
-
+</c:if>
 
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"

@@ -11,8 +11,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.Serializable;
-import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -43,7 +41,7 @@ public class ListTopicsCommand extends Command {
             page = Integer.parseInt(request.getParameter("page"));
 
         try {
-            topicDtos = topicService.getTopicsDtoPagination((page - 1) * recordsPerPage,
+            topicDtos = topicService.getTopicsDtoPaginationConfirmed((page - 1) * recordsPerPage,
                     recordsPerPage);
         } catch (ServiceException e) {
             log.error("Problem getting topics DTO", e);
