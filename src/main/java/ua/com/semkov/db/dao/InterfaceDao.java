@@ -15,7 +15,7 @@ public interface InterfaceDao<T> {
 
     T getBySpecificName(String name) throws DAOException;
 
-    int insertEntityReturningId(T t) throws DAOException;
+    T insertEntity(T t) throws DAOException;
 
     boolean updateEntityById(T t) throws DAOException;
 

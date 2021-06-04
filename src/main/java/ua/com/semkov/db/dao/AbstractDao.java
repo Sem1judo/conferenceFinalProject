@@ -176,7 +176,7 @@ public abstract class AbstractDao<K> implements InterfaceDao<K> {
      * @param K k to insert.
      */
     @Override
-    public int insertEntityReturningId(K k) throws DAOException {
+    public K insertEntity(K k) throws DAOException {
         log.debug("Start method insertEntityReturningId(K k)");
 
         Connection con = null;
@@ -214,7 +214,7 @@ public abstract class AbstractDao<K> implements InterfaceDao<K> {
         } finally {
             DBManager.getInstance().close(con, ps);
         }
-        return id;
+        return k;
     }
 
 

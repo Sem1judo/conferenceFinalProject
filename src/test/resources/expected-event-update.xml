@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+    <EVENTS id='1' title='Java1'
+            description='newDescription'
+            location='online'
+            start_time='2021-09-01 10:30:00.000000'
+            end_time='2021-09-01 10:30:00.000000'
+            organizer_id='1' status_id='1'/>
+</dataset>

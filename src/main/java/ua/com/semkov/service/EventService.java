@@ -13,7 +13,7 @@ public interface EventService {
 
     List<Event> getEventsPagination(int start, int total) throws ServiceException;
 
-    boolean createEvent(Event event) throws ServiceException;
+    Event createEvent(Event event) throws ServiceException;
 
     boolean removeEvent(Long id) throws ServiceException;
 

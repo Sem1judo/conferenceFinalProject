@@ -78,18 +78,14 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public boolean createEvent(Event event) throws ServiceException {
-        boolean isCreated = false;
+    public Event createEvent(Event event) throws ServiceException {
         log.trace("entered event ---> " + event);
 
         DAOProvider daoProvider = DAOProvider.getInstance();
         eventDao = daoProvider.getEventDao();
 
         try {
-            if (0 < eventDao.insertEntityReturningId(event)) {
-                isCreated = true;
-            }
-
+            eventDao.insertEntity(event);
         } catch (EntityAlreadyExistsDAOException e) {
             log.error("already exist event", e);
             throw new EntityAlreadyExistsServiceException("already exist event", e);
@@ -97,7 +93,7 @@ public class EventServiceImpl implements EventService {
             log.error("problem with creating event", e);
             throw new ServiceException("problem with creating event", e);
         }
-        return isCreated;
+        return event;
     }
 
     @Override

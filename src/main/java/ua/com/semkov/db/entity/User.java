@@ -33,8 +33,6 @@ public class User implements Serializable {
 
     private int roleId;
 
-    private Long eventId;
-
     private List<Topic> topics;
 
     public List<Topic> getTopics() {
@@ -43,14 +41,6 @@ public class User implements Serializable {
 
     public void setTopics(List<Topic> topics) {
         this.topics = topics;
-    }
-
-    public Long getEventId() {
-        return eventId;
-    }
-
-    public void setEventId(Long eventId) {
-        this.eventId = eventId;
     }
 
     public Long getId() {
@@ -151,7 +141,6 @@ public class User implements Serializable {
 
         private Long id;
         private int roleId = 2;
-        private Long eventId;
         private String firstName = "First name";
         private String lastName = "Last Name";
         private LocalDateTime registrationDate = LocalDateTime.now();
@@ -161,11 +150,6 @@ public class User implements Serializable {
 
         public Builder id(Long idVal) {
             id = idVal;
-            return this;
-        }
-
-        public Builder eventId(Long eventIdVal) {
-            eventId = eventIdVal;
             return this;
         }
 
@@ -214,7 +198,6 @@ public class User implements Serializable {
         lastName = builder.lastName;
         phone = builder.phone;
         roleId = builder.roleId;
-        eventId = builder.eventId;
         registrationDate = builder.registrationDate;
         localeName = builder.localeName;
         topics = builder.topics;
@@ -234,7 +217,6 @@ public class User implements Serializable {
                 ", email='" + email + '\'' +
                 ", registrationDate=" + registrationDate +
                 ", roleId=" + roleId +
-                ", eventId=" + eventId +
                 ", topics=" + topics +
                 '}';
     }

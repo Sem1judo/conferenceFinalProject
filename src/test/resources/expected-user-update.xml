@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+    <USERS id='1' first_name='Mark' last_name='Mark' email='newEmail@mail.com' password='univer' login='univer'
+           phone='3809627111204' registration_date='2022-03-01 11:30:00.000000' role_id='1' locale_name='ru' />
+
+</dataset>

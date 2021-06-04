@@ -237,17 +237,15 @@ public class TopicServiceImpl implements TopicService {
 
 
     @Override
-    public boolean createTopic(Topic topic) throws ServiceException {
-        boolean isCreated = false;
+    public Topic createTopic(Topic topic) throws ServiceException {
+
         log.trace("entered topic ---> " + topic);
 
         DAOProvider daoProvider = DAOProvider.getInstance();
         topicDao = daoProvider.getTopicDao();
 
         try {
-            if (0 < topicDao.insertEntityReturningId(topic)) {
-                isCreated = true;
-            }
+            topicDao.insertEntity(topic);
 
         } catch (EntityAlreadyExistsDAOException e) {
             log.error("already exist topic", e);
@@ -256,7 +254,7 @@ public class TopicServiceImpl implements TopicService {
             log.error("problem with creating topic", e);
             throw new ServiceException("problem with creating topic", e);
         }
-        return isCreated;
+        return topic;
     }
 
     @Override
