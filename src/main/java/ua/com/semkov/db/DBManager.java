@@ -95,8 +95,10 @@ public class DBManager {
 
     public void rollback(Connection con) {
         try {
-            con.rollback();
-            con.close();
+            if (con != null) {
+                con.rollback();
+                con.close();
+            }
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -113,7 +115,7 @@ public class DBManager {
     }
 
     public int executeQuery(String query) throws ClassNotFoundException, SQLException {
-                return DBManager.getInstance().getConnection().createStatement().executeUpdate(query);
+        return DBManager.getInstance().getConnection().createStatement().executeUpdate(query);
     }
 
 }

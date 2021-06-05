@@ -2,13 +2,16 @@ package ua.com.semkov.web.command.eventCommand;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import ua.com.semkov.Path;
 import ua.com.semkov.db.entity.Status;
+import ua.com.semkov.db.entity.User;
 import ua.com.semkov.service.impl.EventServiceImpl;
 import ua.com.semkov.db.entity.Event;
 import ua.com.semkov.exceptions.ServiceException;
@@ -27,7 +30,6 @@ public class ListEventsCommand extends Command {
     private static final Logger log = Logger.getLogger(ListEventsCommand.class);
 
     private final EventServiceImpl eventService = new EventServiceImpl();
-
 
     @Override
     public String execute(HttpServletRequest request,
@@ -50,10 +52,10 @@ public class ListEventsCommand extends Command {
         }
 
         List<Event> events = null;
-
         try {
             events = eventService.getEventsPagination((page - 1) * recordsPerPage,
                     recordsPerPage);
+
         } catch (ServiceException daoException) {
             daoException.printStackTrace();
         }

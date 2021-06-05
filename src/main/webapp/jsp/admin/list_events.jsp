@@ -57,7 +57,7 @@
                         #ID</a>
                 </div>
             </tr>
-
+            <jsp:useBean id="userEvent" class="ua.com.semkov.service.impl.UsersEventsServiceImpl"/>
             <c:forEach var="event" items="${p:sortBy(events, sort)}">
                 <tr>
                     <td>${event.title}</td>
@@ -105,7 +105,14 @@
                                         <fmt:message key="list_jsp.table.header.details"/>
                                     </button>
                                 </form>
+                                <c:if test="${userEvent.isUserJoinedToEvent(event,user)}">
+                                    <p>
+                                        <fmt:message key="list_event.jsp.speakerJoined"/>
+                                    </p>
+                                </c:if>
                             </td>
+
+
                         </c:when>
 
                         <c:when test="${userRole.name == 'client'}">
@@ -120,17 +127,24 @@
                                     </button>
                                 </form>
                             </td>
-                            <td>
-                                <form action="${pageContext.request.contextPath}/controller" method="post">
-                                    <input type="hidden" name="command" value="joinEvent"/>
-                                    <input type="hidden" name="id" value="${event.id}">
-                                    <button type="submit"
-                                            class="btn btn-dark btn-lg">
-                                        <fmt:message key="list_event.jsp.joinClient"/>
-                                    </button>
-                                </form>
-                            </td>
 
+                            <c:if test="${not userEvent.isUserJoinedToEvent(event,user)}">
+                                <td>
+                                    <form action="${pageContext.request.contextPath}/controller" method="post">
+                                        <input type="hidden" name="command" value="joinEvent"/>
+                                        <input type="hidden" name="id" value="${event.id}">
+                                        <button type="submit"
+                                                class="btn btn-dark btn-lg">
+                                            <fmt:message key="list_event.jsp.joinClient"/>
+                                        </button>
+                                    </form>
+                                </td>
+                            </c:if>
+                            <c:if test="${userEvent.isUserJoinedToEvent(event,user)}">
+                                <td>
+                                    <fmt:message key="list_event.jsp.userJoined"/>
+                                </td>
+                            </c:if>
                         </c:when>
 
 

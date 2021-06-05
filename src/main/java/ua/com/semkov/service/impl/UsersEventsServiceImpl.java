@@ -9,6 +9,7 @@ import ua.com.semkov.exceptions.DAOException;
 import ua.com.semkov.exceptions.ServiceException;
 
 import java.util.List;
+import java.util.Map;
 
 public class UsersEventsServiceImpl {
     private static final Logger log = Logger.getLogger(UsersEventsServiceImpl.class);
@@ -45,6 +46,7 @@ public class UsersEventsServiceImpl {
         }
     }
 
+
     public List<User> getAllUsersByEventId(Long id) throws ServiceException {
 
         List<User> users;
@@ -62,5 +64,37 @@ public class UsersEventsServiceImpl {
         }
 
         return users;
+    }
+
+    public boolean isUserJoinedToEvent(Event event, User user) throws ServiceException {
+
+        DAOProvider daoProvider = DAOProvider.getInstance();
+        usersEventsDao = daoProvider.getUsersEventsDao();
+
+        boolean isJoined;
+
+        try {
+            isJoined = usersEventsDao.isUserJoinedToEvent(event.getId(), user.getId());
+        } catch (
+                DAOException e) {
+            log.error("problem with getting users for event", e);
+            throw new ServiceException("problem with getting users for event", e);
+        }
+        return isJoined;
+    }
+
+
+    public boolean removeJoinedEvent(Long eventId, Long userId) throws ServiceException {
+
+        DAOProvider daoProvider = DAOProvider.getInstance();
+        usersEventsDao = daoProvider.getUsersEventsDao();
+
+        try {
+            return usersEventsDao.deleteJoinedEvent(eventId, userId);
+        } catch (DAOException e) {
+            log.error("problem with removing event from user", e);
+            throw new ServiceException("problem with removing event from user", e);
+        }
+
     }
 }

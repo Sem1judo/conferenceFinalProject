@@ -27,11 +27,11 @@ public class DeleteTopicCommand extends Command {
 
         String id = request.getParameter("id");
 
-        System.out.println("Topic it -- > " + id);
+        log.trace("Topic it -- > " + id);
         try {
             topicService.removeTopic(Long.valueOf(id));
         } catch (ServiceException e) {
-            log.error("problem remove topic", e);
+            log.error("problem with removing topic", e);
         }
 
         log.debug("Commands finished");

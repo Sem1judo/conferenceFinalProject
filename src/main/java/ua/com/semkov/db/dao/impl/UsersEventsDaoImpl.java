@@ -2,13 +2,16 @@ package ua.com.semkov.db.dao.impl;
 
 import org.apache.log4j.Logger;
 import ua.com.semkov.db.DBManager;
+
 import ua.com.semkov.db.entity.Event;
 import ua.com.semkov.db.entity.User;
 import ua.com.semkov.db.entity.UsersEvents;
 import ua.com.semkov.exceptions.DAOException;
 
+
 import java.sql.*;
 import java.util.ArrayList;
+
 import java.util.List;
 
 
@@ -31,6 +34,12 @@ public class UsersEventsDaoImpl {
     public static final String SQL__GET_USERS_BY_EVENT_ID =
             "SELECT * FROM users_events WHERE event_id = ?";
 
+    public static final String SQL__GET_USERS_EVENTS_CONNECTION_EXISTENCE =
+            "SELECT * FROM users_events WHERE event_id =? and user_id = ?";
+
+    private static final String SQL__DELETE_JOINED_EVENT =
+            "DELETE FROM users_events where  event_id = ? and user_id=?";
+
 
     public List<Event> getAllEventsByUser(User user) throws DAOException {
         ResultSet rs = null;
@@ -49,7 +58,7 @@ public class UsersEventsDaoImpl {
             log.error("Cannot obtain a list from the database", e);
             throw new DAOException("Getting list from database failed", e);
         } finally {
-            close(rs);
+            DBManager.getInstance().close(rs);
         }
         return events;
     }
@@ -71,7 +80,7 @@ public class UsersEventsDaoImpl {
             log.error("Cannot obtain a list from the database", e);
             throw new DAOException("Getting list from database failed", e);
         } finally {
-            close(rs);
+            DBManager.getInstance().close(rs);
         }
         return users;
     }
@@ -101,32 +110,55 @@ public class UsersEventsDaoImpl {
                     }
                 } else throw new SQLException("User or Event is null");
             } catch (SQLException e) {
-                rollback(con);
+                DBManager.getInstance().rollback(con);
                 log.error("Problem with setting Events For User ", e);
             } finally {
-                close(ps);
-                close(con);
+                DBManager.getInstance().close(con, ps);
             }
         }
     }
 
-    public void close(AutoCloseable closeable) {
-        if (closeable != null) {
-            try {
-                closeable.close();
-            } catch (Exception e) {
-                log.error("Problem with closing ", e);
+
+    public boolean isUserJoinedToEvent(Long eventId, Long userId) throws DAOException {
+        ResultSet rs = null;
+        boolean isJoined = false;
+        try (Connection con = DBManager.getInstance().getConnection();
+             PreparedStatement stmt = con.prepareStatement(SQL__GET_USERS_EVENTS_CONNECTION_EXISTENCE)) {
+
+            stmt.setLong(1, eventId);
+            stmt.setLong(2, userId);
+
+            rs = stmt.executeQuery();
+            if (rs.next()) {
+                isJoined = true;
             }
+        } catch (SQLException e) {
+            log.error("Cannot obtain a list from the database", e);
+            throw new DAOException("Getting list from database failed", e);
+        } finally {
+            DBManager.getInstance().close(rs);
         }
+        return isJoined;
     }
 
-    private void rollback(Connection con) {
-        if (con != null) {
-            try {
-                con.close();
-            } catch (Exception e) {
-                log.error("Problem with rolling back ", e);
-            }
+
+    public boolean deleteJoinedEvent(Long eventId,Long userId) throws DAOException {
+        boolean isDeleted;
+        log.debug("Start method deleteJoinedEvent");
+
+        try (Connection con = DBManager.getInstance().getConnection();
+             PreparedStatement ps = con.prepareStatement(SQL__DELETE_JOINED_EVENT)) {
+
+            log.trace("Event ID ---> " + eventId);
+            log.trace("User ID ---> " + userId);
+            ps.setLong(1, eventId);
+            ps.setLong(2, userId);
+            ps.executeUpdate();
+            isDeleted = true;
+        } catch (SQLException ex) {
+            log.error("Deleting event failed", ex);
+            throw new DAOException("Deleting event failed", ex);
         }
+        return isDeleted;
     }
 }

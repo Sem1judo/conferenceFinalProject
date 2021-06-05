@@ -120,6 +120,17 @@
                                             <h4 class="red">${p:formatLocalDateTime(event.endTime, 'dd-MM-yyyy HH:mm')}</h4>
 
                                         </div>
+                                        <form action="${pageContext.request.contextPath}/controller" method="post">
+                                            <td>
+                                                <input type="hidden" name="command" value="deleteJoinedEvent"/>
+                                                <input type="hidden" name="eventId" value="${event.id}">
+                                                <input type="hidden" name="userId" value="${user.id}">
+                                                <button type="submit"
+                                                        class="btn btn-dark btn-lg">
+                                                    <fmt:message key="list_jsp.table.header.delete"/>
+                                                </button>
+                                            </td>
+                                        </form>
                                     </div>
                                 </div>
                             </div>

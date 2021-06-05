@@ -24,10 +24,9 @@ public class DeleteEventCommand extends Command {
 
         log.debug("Command starts");
 
-
         String id = request.getParameter("id");
 
-        System.out.println("Event id -- > " + id);
+        log.trace("Event id for removing-- > " + id);
         try {
             eventService.removeEvent(Long.valueOf(id));
         } catch (ServiceException e) {

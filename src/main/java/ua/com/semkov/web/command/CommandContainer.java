@@ -6,6 +6,7 @@ import java.util.TreeMap;
 import org.apache.log4j.Logger;
 import ua.com.semkov.web.command.adminCommand.AdminConfirmListCommand;
 import ua.com.semkov.web.command.adminCommand.AdminConfirmTopicCommand;
+import ua.com.semkov.web.command.clientCommand.DeleteJoinedEventCommand;
 import ua.com.semkov.web.command.clientCommand.JoinUserEventsCommand;
 import ua.com.semkov.web.command.eventCommand.CreateEventCommand;
 import ua.com.semkov.web.command.eventCommand.DeleteEventCommand;
@@ -30,7 +31,7 @@ public class CommandContainer {
     private static Map<String, Command> commands = new TreeMap<String, Command>();
 
     static {
-        // common commands
+        // user commands
         commands.put("registration", new RegistrationCommand());
         commands.put("login", new LoginCommand());
         commands.put("logout", new LogoutCommand());
@@ -38,8 +39,9 @@ public class CommandContainer {
         commands.put("viewSettings", new ViewSettingsCommand());
         commands.put("updateSettings", new UpdateSettingsCommand());
         commands.put("profileListEvents", new UserListEventsCommand());
-        commands.put("joinEvent", new JoinUserEventsCommand());
         commands.put("proposeTopicSpeaker", new ProposeSpeakerTopicCommand());
+        commands.put("joinEvent", new JoinUserEventsCommand());
+        commands.put("deleteJoinedEvent", new DeleteJoinedEventCommand());
 
 
         // admin commands

@@ -97,14 +97,6 @@ public abstract class AbstractDao<K> implements InterfaceDao<K> {
         return entities;
     }
 
-    /**
-     * Returns size of list.
-     *
-     * @return size of list.
-     */
-    public int getNoOfRecords() {
-        return noOfRecords;
-    }
 
 
     /**
@@ -324,6 +316,16 @@ public abstract class AbstractDao<K> implements InterfaceDao<K> {
         }
         return isDeleted;
     }
+
+    /**
+     * Returns size of list.
+     *
+     * @return size of list.
+     */
+    public int getNoOfRecords() {
+        return noOfRecords;
+    }
+
 
 }
 
