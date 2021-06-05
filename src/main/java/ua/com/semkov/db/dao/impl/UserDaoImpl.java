@@ -150,6 +150,12 @@ public class UserDaoImpl extends AbstractDao<User> {
         }
     }
 
+    @Override
+    public User setEntityId(Long id, User user) {
+        user.setId(id);
+        return user;
+    }
+
     public boolean updateUserPassword(Long userID, String oldPassword, String newPassword) throws DAOException {
         return true;
     }

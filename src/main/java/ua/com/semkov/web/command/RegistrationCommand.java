@@ -77,7 +77,7 @@ public class RegistrationCommand extends Command {
 
         if (UserValidation.isValidUser(user)) {
             try {
-                userService.registration(user);
+                user = userService.registration(user);
                 log.trace("Inserted user : user --> " + user);
             } catch (ServiceException e) {
                 log.error("Problem with registration user", e);

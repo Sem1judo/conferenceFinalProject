@@ -115,7 +115,7 @@
 </tr>
 
 
-<c:if test="${userRole.name == 'moderator' or userRole.name == 'speaker'}">
+<c:if test="${userRole.name == 'speaker'}">
     <div class="text-center">
         <a href="" class="btn btn-default btn-rounded mb-4" data-toggle="modal"
            data-target="#createEvent"><fmt:message key="topic.createTopic"/></a>

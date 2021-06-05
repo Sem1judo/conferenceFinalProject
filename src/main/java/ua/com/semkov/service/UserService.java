@@ -8,7 +8,7 @@ import java.util.List;
 public interface UserService {
 
 
-    void registration(User user) throws ServiceException;
+    User registration(User user) throws ServiceException;
 
 
     List<User> getUsers() throws ServiceException;

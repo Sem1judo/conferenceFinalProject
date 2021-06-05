@@ -41,6 +41,8 @@ public abstract class AbstractDao<K> implements InterfaceDao<K> {
 
     public abstract K mapRow(ResultSet rs);
 
+    public abstract K setEntityId(Long id, K k);
+
 
     /**
      * Returns list  with entities.
@@ -96,7 +98,6 @@ public abstract class AbstractDao<K> implements InterfaceDao<K> {
 
         return entities;
     }
-
 
 
     /**
@@ -173,13 +174,11 @@ public abstract class AbstractDao<K> implements InterfaceDao<K> {
 
         Connection con = null;
         PreparedStatement ps = null;
-        int id = 0;
+        long id;
         try {
             con = DBManager.getInstance().getConnection();
             con.setAutoCommit(false);
             con.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
-
-            log.trace("entity ---> " + k);
 
             ps = con.prepareStatement(getQueryInsertEntity()
                     , Statement.RETURN_GENERATED_KEYS);
@@ -189,8 +188,10 @@ public abstract class AbstractDao<K> implements InterfaceDao<K> {
             if (affectedRows > 0) {
                 try (ResultSet rs = ps.getGeneratedKeys()) {
                     if (rs.next()) {
-                        id = rs.getInt(1);
+                        id = rs.getLong(1);
+                        k = setEntityId(id, k);
                         con.commit();
+                        log.trace("Inserted entity --> "+ k);
                     }
                 } catch (SQLException ex) {
                     DBManager.getInstance().rollback(con);

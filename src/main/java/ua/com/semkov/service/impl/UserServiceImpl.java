@@ -61,9 +61,10 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public void registration(User data) throws ServiceException {
+    public User registration(User data) throws ServiceException {
         DAOProvider daoProvider = DAOProvider.getInstance();
         userDao = daoProvider.getUserDao();
+        User user = null;
 
         try {
             data.setPassword(Encoder.encrypt(data.getPassword()));
@@ -72,7 +73,7 @@ public class UserServiceImpl implements UserService {
             if (email != null && email.length() < MIN_EMAIL_LENGTH) {
                 data.setEmail(null);
             }
-            User user = new User.Builder(
+             user = new User.Builder(
                     data.getLogin()
                     , data.getPassword()
                     , data.getEmail()
@@ -81,10 +82,11 @@ public class UserServiceImpl implements UserService {
                     .firstName(data.getFirstName())
                     .lastName(data.getLastName())
                     .build();
-            userDao.insertEntity(user);
+            user = userDao.insertEntity(user);
         } catch (DAOException | NoSuchAlgorithmException e) {
             throw new ServiceException(e);
         }
+        return user;
     }
 
 

@@ -117,6 +117,12 @@ public class EventDaoImpl extends AbstractDao<Event> {
         }
     }
 
+    @Override
+    public Event setEntityId(Long id, Event event) {
+        event.setId(id);
+        return event;
+    }
+
 
     public void setRowPS(Event event, PreparedStatement ps) {
         try {

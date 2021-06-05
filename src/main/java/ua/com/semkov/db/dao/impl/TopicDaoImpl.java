@@ -156,5 +156,9 @@ public class TopicDaoImpl extends AbstractDao<Topic> {
         }
     }
 
-
+    @Override
+    public Topic setEntityId(Long id, Topic topic) {
+        topic.setId(id);
+        return topic;
+    }
 }
