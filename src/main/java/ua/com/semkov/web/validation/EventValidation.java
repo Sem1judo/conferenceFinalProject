@@ -2,6 +2,7 @@ package ua.com.semkov.web.validation;
 
 import ua.com.semkov.db.entity.Event;
 import ua.com.semkov.web.validation.formatterDate.FormattedDateMatcher;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -18,16 +19,14 @@ public class EventValidation {
                 isValidTitle(event.getTitle(), REGEX_TITLE) &&
                         isValidDescription(event.getDescription(), REGEX_DESCRIPTION) &&
                         isValidLocation(event.getLocation(), REGEX_LOCATION) &&
-                        isValidOrganizerId(event.getOrganizerId().toString(), REGEX_ORGANIZER_ID) ;
-//                        isValidStartTime(event.getStartTime().toString()) &&
-//                        isValidEndTime(event.getEndTime().toString());
+                        isValidOrganizerId(event.getOrganizerId().toString(), REGEX_ORGANIZER_ID);
     }
 
 
     private static boolean isValidTitle(String title, String regexTitle) {
         Pattern p = Pattern.compile(regexTitle);
 
-        if (title == null  || title.isEmpty()) {
+        if (title == null || title.isEmpty()) {
             return false;
         }
         Matcher m = p.matcher(title);
