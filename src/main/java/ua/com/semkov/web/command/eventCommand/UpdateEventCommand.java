@@ -104,7 +104,7 @@ public class UpdateEventCommand extends Command {
                     eventService.updateEvent(event);
 
                 } catch (ServiceException e) {
-                    log.error("can't update event", e);
+                    log.error("Can't update event", e);
                     errorMessage = "Can't update event";
                     session.setAttribute("errorMessage", errorMessage);
                     return Path.REDIRECT + Path.PAGE__ERROR_PAGE_404;

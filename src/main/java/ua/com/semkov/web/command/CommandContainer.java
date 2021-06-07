@@ -38,6 +38,7 @@ public class CommandContainer {
         commands.put("noCommand", new NoCommand());
         commands.put("viewSettings", new ViewSettingsCommand());
         commands.put("updateSettings", new UpdateSettingsCommand());
+        commands.put("localeSetting", new LocaleSettingCommand());
         commands.put("profileListEvents", new UserListEventsCommand());
         commands.put("proposeTopicSpeaker", new ProposeSpeakerTopicCommand());
         commands.put("joinEvent", new JoinUserEventsCommand());

@@ -160,9 +160,5 @@ public class UserDaoImpl extends AbstractDao<User> {
         return true;
     }
 
-    public boolean updateUserLogin(Long userID, String newUserLogin) throws DAOException {
-        return true;
-    }
-
 
 }

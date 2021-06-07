@@ -123,6 +123,9 @@ public class User implements Serializable {
         this.roleId = roleId;
     }
 
+    public User() {
+    }
+
     public static class Builder {
 
 

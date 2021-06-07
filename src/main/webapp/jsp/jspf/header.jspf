@@ -63,6 +63,7 @@
             </a>
         </li>
     </c:if>
+
     <li class="nav_link-right">
         <p class="nav_link-user">
             <c:out value="${user.firstName} ${user.lastName}"/>
@@ -72,6 +73,7 @@
             </c:if>
         </p>
     </li>
+
     <c:if test="${not empty user}">
         <li class="nav_link-right">
             <a class="nav-item" href="${pageContext.request.contextPath}/controller?command=logout">
@@ -80,6 +82,7 @@
         </li>
     </c:if>
     <c:if test="${empty user and title ne 'Login'}">
+
         <li class="nav_link-right">
             <a class="nav-item" href="../../login.jsp">
                 <fmt:message key="header_jspf.anchor.login"/>

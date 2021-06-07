@@ -17,8 +17,7 @@ public interface UserService {
 
     User getUserById(Long id) throws ServiceException;
 
-
-    boolean updateUserUsername(Long userID, String newUserLogin) throws ServiceException;
+    boolean updateUser(User user) throws ServiceException;
 
     boolean updateUserPassword(Long userID, String oldPassword, String newPassword) throws ServiceException;
 }

@@ -22,15 +22,15 @@
 <div class="container w-25 my-3">
     <div class=" card d-block border-0 ">
         <div class="card-body">
-            <form action="controller" method="get">
-                <input type="hidden" name="command" value="updateSettings"/>
-                <p>
+            <form action="${pageContext.request.contextPath}/controller" method="post">
+                <input type="hidden" name="command" value="localeSetting"/>
+                <h3>
                     <fmt:message key="settings_jsp.label.localization"/>
-                </p>
+                </h3>
                 <select name="localeToSet">
                     <c:choose>
                         <c:when test="${not empty defaultLocale}">
-                            <option value="">${defaultLocale}[Default]</option>
+                            <option value="">${defaultLocale}<fmt:message key="default"/></option>
                         </c:when>
                         <c:otherwise>
                             <option value=""/>
@@ -41,19 +41,52 @@
                         <option value="${localeName}">${localeName}</option>
                     </c:forEach>
                 </select>
+                <input type="submit" value="<fmt:message key="list_jsp.table.header.update"/>">
+            </form>
+            <form action="${pageContext.request.contextPath}/controller" method="post">
+                <input type="hidden" name="command" value="updateSettings"/>
+                <input type="hidden" name="id" value="${user.id}">
+                <input type="hidden" name="isUpdated" value="${true}">
+                <h3>
+                    <fmt:message key="header_jspf.anchor.profile"/>
+                </h3>
                 <div class="form-group">
                     <p>
                         <fmt:message key="settings_jsp.label.first_name"/>
                     </p>
-                    <input name="firstName">
+                    <input type="text" name="firstName" value="${user.firstName}">
                 </div>
 
                 <div class="form-group">
                     <p>
                         <fmt:message key="settings_jsp.label.last_name"/>
                     </p>
-                    <input name="lastName">
+                    <input type="text" name="lastName" value="${user.lastName}">
                 </div>
+
+                <div class="form-group">
+                    <p>
+                        <fmt:message key="login_jsp.label.email"/>
+                    </p>
+                    <input name="email" value="${user.email}">
+                </div>
+
+                <c:if test="${userRole.name != 'moderator'}">
+                    <div class="form-group">
+                        <p>
+                            <fmt:message key="login_jsp.label.login"/>
+                        </p>
+                        <input type="text" name="login" value="${user.login}">
+                    </div>
+
+                    <div class="form-group">
+                        <p>
+                            <fmt:message key="login_jsp.label.password"/>
+                        </p>
+                        <input type="password" name="password" placeholder="*****">
+                    </div>
+                </c:if>
+
                 <button type="submit"
                         class="btn btn-dark btn-lg"><fmt:message key="settings_jsp.button.update"/></button>
             </form>

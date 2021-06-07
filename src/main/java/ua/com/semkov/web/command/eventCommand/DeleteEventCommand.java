@@ -35,6 +35,6 @@ public class DeleteEventCommand extends Command {
 
         log.debug("Commands finished");
 
-        return Path.REDIRECT + Path.PAGE__LIST_EVENTS;
+        return Path.REDIRECT + Path.COMMAND_LIST_EVENTS;
     }
 }

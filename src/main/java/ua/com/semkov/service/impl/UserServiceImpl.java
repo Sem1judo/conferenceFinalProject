@@ -3,6 +3,7 @@ package ua.com.semkov.service.impl;
 
 import org.apache.log4j.Logger;
 import ua.com.semkov.db.dao.DAOProvider;
+import ua.com.semkov.db.entity.Event;
 import ua.com.semkov.db.entity.User;
 import ua.com.semkov.service.UserService;
 import ua.com.semkov.db.dao.impl.UserDaoImpl;
@@ -59,12 +60,27 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+    public boolean updateUser(User user) throws ServiceException {
+        log.trace("entered user ---> " + user);
+
+        DAOProvider daoProvider = DAOProvider.getInstance();
+        userDao = daoProvider.getUserDao();
+
+        try {
+            return userDao.updateEntityById(user);
+        } catch (DAOException e) {
+            log.error("problem with updating event", e);
+            throw new ServiceException("problem with updating event", e);
+        }
+
+    }
+
 
     @Override
     public User registration(User data) throws ServiceException {
         DAOProvider daoProvider = DAOProvider.getInstance();
         userDao = daoProvider.getUserDao();
-        User user = null;
+        User user;
 
         try {
             data.setPassword(Encoder.encrypt(data.getPassword()));
@@ -73,7 +89,7 @@ public class UserServiceImpl implements UserService {
             if (email != null && email.length() < MIN_EMAIL_LENGTH) {
                 data.setEmail(null);
             }
-             user = new User.Builder(
+            user = new User.Builder(
                     data.getLogin()
                     , data.getPassword()
                     , data.getEmail()
@@ -107,19 +123,6 @@ public class UserServiceImpl implements UserService {
         return allUsers;
     }
 
-
-    @Override
-    public boolean updateUserUsername(Long userID, String newUserLogin) throws ServiceException {
-        DAOProvider daoProvider = DAOProvider.getInstance();
-        userDao = daoProvider.getUserDao();
-
-        try {
-            return userDao.updateUserLogin(userID, newUserLogin);
-        } catch (DAOException e) {
-            throw new ServiceException(e);
-        }
-
-    }
 
     @Override
     public boolean updateUserPassword(Long userID, String oldPassword, String newPassword) throws ServiceException {
