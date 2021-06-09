@@ -87,11 +87,11 @@ ALTER TABLE ONLY events
     ADD CONSTRAINT fk_organizer_id FOREIGN KEY (organizer_id) REFERENCES users (id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
-INSERT INTO public.roles (id, name)
+INSERT INTO roles (id, name)
 VALUES (0, 'moderator');
-INSERT INTO public.roles (id, name)
+INSERT INTO roles (id, name)
 VALUES (1, 'speaker');
-INSERT INTO public.roles (id, name)
+INSERT INTO roles (id, name)
 VALUES (2, 'client');
 
 INSERT INTO status (id, name)

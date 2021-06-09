@@ -114,8 +114,4 @@ public class DBManager {
         }
     }
 
-    public int executeQuery(String query) throws ClassNotFoundException, SQLException {
-        return DBManager.getInstance().getConnection().createStatement().executeUpdate(query);
-    }
-
 }

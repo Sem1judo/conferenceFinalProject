@@ -1,10 +1,10 @@
 package ua.com.semkov.service.impl;
 
 import org.apache.log4j.Logger;
+import ua.com.semkov.db.dao.AbstractDao;
 import ua.com.semkov.db.dao.DAOProvider;
 import ua.com.semkov.exceptions.*;
 import ua.com.semkov.service.EventService;
-import ua.com.semkov.db.dao.impl.EventDaoImpl;
 import ua.com.semkov.db.entity.Event;
 
 
@@ -14,7 +14,7 @@ public class EventServiceImpl implements EventService {
 
     private static final Logger log = Logger.getLogger(EventServiceImpl.class);
 
-    private EventDaoImpl eventDao;
+    private AbstractDao<Event> eventDao;
 
     private int noOfRecords;
 

@@ -19,7 +19,7 @@ import java.sql.Connection;
 import static org.dbunit.Assertion.*;
 
 
-public class DataSourceDBUnitTest extends DataSourceBasedDBTestCase {
+public class DataSourceConferenceDaoTest extends DataSourceBasedDBTestCase {
     @Override
     protected DataSource getDataSource() {
         JdbcDataSource dataSource = new JdbcDataSource();
@@ -84,16 +84,16 @@ public class DataSourceDBUnitTest extends DataSourceBasedDBTestCase {
 
             conn.createStatement()
                     .executeUpdate(
-                            "INSERT INTO users (id, login, password, email, first_name, last_name, phone, registration_date, role_id) " +
-                                    " VALUES (default, 'univer','univer','university1@gmail.com' ,'Mark' ,'Mark', " +
-                                    "'3809627111204', '2022-03-01 11:30:00.000000','1')");
+                            "INSERT INTO users (login, password, first_name, last_name, email, phone, role_id,locale_name) " +
+                                    " VALUES ('login','password','Mark' ,'Mark','university1@gmail.com', " +
+                                    "'3809627111204',1,'ru')");
             ITable actualData = getConnection()
                     .createQueryTable(
                             "users",
                             "SELECT * FROM users WHERE email='university1@gmail.com'");
 
 
-            assertEqualsIgnoreCols(expectedTable, actualData, new String[]{"id"});
+            assertEqualsIgnoreCols(expectedTable, actualData, new String[]{"id", "registration_date"});
         }
     }
 
@@ -107,7 +107,7 @@ public class DataSourceDBUnitTest extends DataSourceBasedDBTestCase {
 
             conn.createStatement()
                     .executeUpdate(
-                            "insert into topics (id, name, description, user_id, event_id)" +
+                            "insert into topics " +
                                     "  values (default,'Difference','yes','1','1')");
             ITable actualData = getConnection()
                     .createQueryTable(
@@ -204,18 +204,20 @@ public class DataSourceDBUnitTest extends DataSourceBasedDBTestCase {
             ITable expectedTable = expectedDataSet.getTable("EVENTS");
 
             Connection conn = getDataSource().getConnection();
-
             conn.createStatement()
                     .executeUpdate("INSERT INTO events (" +
-                            " id, title, description, location, start_time, end_time, organizer_id, status_id) " +
-                            " VALUES (DEFAULT, 'Java1', 'description', 'online', '2021-09-01 10:30:00.000000', '2021-09-01 10:30:00.000000', 1,1);" +
+                            "id, title, description, location, start_time, end_time, organizer_id, status_id) " +
+                            " VALUES (DEFAULT, 'Java1', 'description', 'online', '2021-09-01 10:30:00.000000', " +
+                            "'2021-09-01 10:30:00.000000', 1,1); " +
                             "UPDATE events " +
-                            "SET description='newDescription'" +
-                            "WHERE title='Java1'");
+                            "SET title='updatedTitle', description='updatedDesc', location='updatedLocation', " +
+                            "start_time='2021-09-01 15:30:00.000000',end_time='2021-09-01 15:30:00.000000', " +
+                            "organizer_id='2', status_id='2' " +
+                            "WHERE title ='Java1'");
             ITable actualData = getConnection()
                     .createQueryTable(
                             "events",
-                            "SELECT * FROM events WHERE description='newDescription'");
+                            "SELECT * FROM events WHERE title = 'updatedTitle'");
 
             assertEqualsIgnoreCols(expectedTable, actualData, new String[]{"id"});
         }
@@ -234,7 +236,8 @@ public class DataSourceDBUnitTest extends DataSourceBasedDBTestCase {
                             " VALUES (default, 'univer','univer','university1@gmail.com' ,'Mark' ,'Mark', " +
                             "'3809627111204', '2022-03-01 11:30:00.000000','1'); " +
                             "UPDATE users " +
-                            "SET email='newEmail@mail.com'" +
+                            "SET  first_name='newFirstName', last_name='newLastName', email='newEmail@mail.com', password='newPassword'," +
+                            "login='newLogin', phone='390962750188', role_id=1 ,locale_name='en'" +
                             "WHERE email='university1@gmail.com'");
             ITable actualData = getConnection()
                     .createQueryTable(
@@ -257,7 +260,7 @@ public class DataSourceDBUnitTest extends DataSourceBasedDBTestCase {
                     .executeUpdate("insert into topics (id, name, description, user_id, event_id)" +
                             "  values (default,'Difference','yes','1','1');" +
                             "UPDATE topics " +
-                            "SET name='newName', description='yes', user_id=1, event_id=1 " +
+                            "SET name='newName', description='yes', user_id=1, event_id=1  " +
                             "WHERE id=1");
             ITable actualData = getConnection()
                     .createQueryTable(
