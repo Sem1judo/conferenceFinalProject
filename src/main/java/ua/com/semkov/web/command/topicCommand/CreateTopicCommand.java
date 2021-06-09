@@ -56,8 +56,8 @@ public class CreateTopicCommand extends Command {
         ArrayList<String> fields = new ArrayList<>();
         fields.add(name);
         fields.add(description);
-        fields.add(userId);
         fields.add(eventId);
+        fields.add(userId);
 
 
         for (String field : fields) {
@@ -69,21 +69,22 @@ public class CreateTopicCommand extends Command {
             }
         }
 
-        Topic topic = new Topic(name, description, Long.valueOf(userId), Long.valueOf(eventId));
+        Topic topic = new Topic(name, description, Long.valueOf(userId),
+                Long.valueOf(eventId));
 
         if (TopicValidation.isValidTopic(topic)) {
             try {
                 topicService.createTopic(topic);
             } catch (ServiceException e) {
-                errorMessage = "Topic wasn't created";
+                errorMessage = labels.getString("error_404_topic-creation");
                 session.setAttribute(ERROR_MESSAGE, errorMessage);
-                log.error("errorMessage --> " + errorMessage, e);
+                log.error(ERROR_MESSAGE + " --> " + errorMessage);
                 return null;
             }
         } else {
-            errorMessage = "Topic is not valid";
+            errorMessage = labels.getString("error_404_topic-notValid");
             session.setAttribute(ERROR_MESSAGE, errorMessage);
-            log.error("errorMessage --> " + errorMessage);
+            log.error(ERROR_MESSAGE + " --> " + errorMessage);
             return null;
         }
         return topic;

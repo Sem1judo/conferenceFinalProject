@@ -85,7 +85,7 @@ public class UpdateEventCommand extends Command {
                 eventStatus = Status.getStatusStatic(event);
                 eventTopics = topicService.getTopicsDtoByEvent(event.getId());
             } else {
-                errorMessage = labels.getString("error_404_event-notValid");
+                errorMessage = labels.getString("error_404_topic-dtosGet");
                 session.setAttribute(ERROR_MESSAGE, errorMessage);
                 log.error(ERROR_MESSAGE + " --> " + errorMessage);
                 return Path.REDIRECT + Path.PAGE__ERROR_PAGE_404;
@@ -147,7 +147,7 @@ public class UpdateEventCommand extends Command {
             try {
                 eventService.updateEvent(event);
             } catch (ServiceException e) {
-                errorMessage = labels.getString("error_404_event-creation");
+                errorMessage = labels.getString("error_404_event-update");
                 session.setAttribute(ERROR_MESSAGE, errorMessage);
                 log.error(ERROR_MESSAGE + " --> " + errorMessage, e);
                 return Path.REDIRECT + Path.PAGE__ERROR_PAGE_404;
