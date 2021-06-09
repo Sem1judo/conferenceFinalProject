@@ -9,9 +9,8 @@ public final class Path {
 
     //redirect
     public static final String REDIRECT = "redirect:";
-    public static final String PAGE__EVENT_EDIT = "jsp/admin/eventEdit.jsp";
-    public static final String PAGE__TOPIC_EDIT = "jsp/admin/topicEdit.jsp";
-    public static final String PAGE__ADMIN_CONFIRM = "jsp/admin/adminListConfirm.jsp";
+
+
 
     // pages
     public static final String PAGE__LOGIN = "/login.jsp";
@@ -21,6 +20,10 @@ public final class Path {
     public static final String PAGE__LIST_TOPICS = "jsp/admin/list_topics.jsp";
     public static final String PAGE__SETTINGS = "jsp/settings.jsp";
     public static final String PAGE__PROFILE_USER = "jsp/speaker_client/profile.jsp";
+
+    public static final String PAGE__EVENT_EDIT = "jsp/admin/eventEdit.jsp";
+    public static final String PAGE__TOPIC_EDIT = "jsp/admin/topicEdit.jsp";
+    public static final String PAGE__ADMIN_CONFIRM = "jsp/admin/adminListConfirm.jsp";
 
 
     // commands

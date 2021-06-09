@@ -23,7 +23,7 @@ public class RequestLoggingFilter implements Filter {
 
     private ServletContext context;
 
-    public void init(FilterConfig fConfig) throws ServletException {
+    public void init(FilterConfig fConfig) {
         this.context = fConfig.getServletContext();
         log.debug("RequestLoggingFilter initialized");
     }

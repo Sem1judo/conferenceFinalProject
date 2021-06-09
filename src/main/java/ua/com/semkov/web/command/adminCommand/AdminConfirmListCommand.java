@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 public class AdminConfirmListCommand extends Command {
     private static final long serialVersionUID = 1863972354019582513L;
@@ -35,11 +37,9 @@ public class AdminConfirmListCommand extends Command {
 
         log.trace("Set the request attribute: topics --> " + topicDtos);
 
-
         request.setAttribute("topics", topicDtos);
 
         log.debug("Commands finished");
-
 
         return Path.PAGE__ADMIN_CONFIRM;
     }

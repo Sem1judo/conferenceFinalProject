@@ -15,13 +15,16 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 public class CreateEventCommand extends Command {
     private static final long serialVersionUID = 1863978254519586513L;
+    private static final Logger log = Logger.getLogger(CreateEventCommand.class);
+    private static final String ERROR_MESSAGE = "errorMessage";
 
     private EventServiceImpl eventService = new EventServiceImpl();
 
-    private static final Logger log = Logger.getLogger(CreateEventCommand.class);
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -29,6 +32,8 @@ public class CreateEventCommand extends Command {
         log.debug("Command starts");
 
         HttpSession session = request.getSession();
+        Locale locale = Locale.forLanguageTag((String) session.getAttribute("defaultLocale"));
+        ResourceBundle labels = ResourceBundle.getBundle("resources", locale);
 
         String title = request.getParameter("title");
         String location = request.getParameter("location");
@@ -37,6 +42,16 @@ public class CreateEventCommand extends Command {
         String end_time = request.getParameter("end_time");
         String organizedId = request.getParameter("organizer_id");
 
+        String REDIRECT = isValidEvent(session, labels, title, location, description, start_time, end_time, organizedId);
+        if (REDIRECT != null) return REDIRECT;
+
+        log.debug("Commands finished");
+
+        return Path.REDIRECT + Path.COMMAND_LIST_EVENTS;
+
+    }
+
+    private String isValidEvent(HttpSession session, ResourceBundle labels, String title, String location, String description, String start_time, String end_time, String organizedId) {
         ArrayList<String> fields = new ArrayList<>();
         fields.add(title);
         fields.add(location);
@@ -50,13 +65,12 @@ public class CreateEventCommand extends Command {
 
         for (String field : fields) {
             if (field == null || field.isEmpty()) {
-                errorMessage = "All fields are required to be filled";
-                session.setAttribute("errorMessage", errorMessage);
-                log.error("errorMessage --> " + errorMessage);
+                errorMessage = labels.getString("error_404_fields");
+                session.setAttribute(ERROR_MESSAGE, errorMessage);
+                log.error(ERROR_MESSAGE + " --> " + errorMessage);
                 return Path.REDIRECT + Path.PAGE__ERROR_PAGE_404;
             }
         }
-
 
         Event event = new Event.Builder(title,
                 LocalDateTime.parse(start_time),
@@ -69,24 +83,20 @@ public class CreateEventCommand extends Command {
         log.trace("obtained event --> " + event);
 
         if (EventValidation.isValidEvent(event)) {
-        try {
-            eventService.createEvent(event);
-        } catch (ServiceException e) {
-          errorMessage = "Can't create event";
-            session.setAttribute("errorMessage", errorMessage);
-          log.error("errorMessage --> " + errorMessage, e);
-            return Path.REDIRECT + Path.PAGE__ERROR_PAGE_404;
+            try {
+                eventService.createEvent(event);
+            } catch (ServiceException e) {
+                errorMessage = labels.getString("error_404_event-creation");
+                session.setAttribute(ERROR_MESSAGE, errorMessage);
+                log.error(ERROR_MESSAGE + " --> " + errorMessage, e);
+                return Path.REDIRECT + Path.PAGE__ERROR_PAGE_404;
             }
-          } else {
-            errorMessage = "Event  is not valid";
-            session.setAttribute("errorMessage", errorMessage);
-            log.error("errorMessage --> " + errorMessage);
+        } else {
+            errorMessage = labels.getString("error_404_event-notValid");
+            session.setAttribute(ERROR_MESSAGE, errorMessage);
+            log.error(ERROR_MESSAGE + " --> " + errorMessage);
             return Path.REDIRECT + Path.PAGE__ERROR_PAGE_404;
         }
-
-        log.debug("Commands finished");
-
-        return Path.REDIRECT + Path.COMMAND_LIST_EVENTS;
-
+        return null;
     }
 }

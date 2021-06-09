@@ -47,7 +47,6 @@ public class UsersEventsDaoImpl {
         try (Connection con = DBManager.getInstance().getConnection();
              PreparedStatement stmt = con.prepareStatement(SQL__GET_ALL_EVENTS_BY_USER_ID)) {
 
-            log.trace("THIS IS USER = "+ user);
             stmt.setLong(1, user.getId());
 
             rs = stmt.executeQuery();

@@ -9,19 +9,21 @@
     <short-name>Functions</short-name>
     <uri>ua.com.semkov</uri>
 
+
+    <!-- using in topic pages when rendering event for specific topic-->
     <function>
         <name>sortByTime</name>
         <function-class>ua.com.semkov.web.view.tag.ListEventSort</function-class>
         <function-signature>java.util.List sortByTime(java.util.List)</function-signature>
     </function>
 
-
+    <!-- sort events -->
     <function>
         <name>sortBy</name>
         <function-class>ua.com.semkov.web.view.tag.ListEventSort</function-class>
         <function-signature>java.util.List sortBy(java.util.List, java.lang.String)</function-signature>
     </function>
-
+    <!-- transform date in desirable pattern -->
     <function>
         <name>formatLocalDateTime</name>
         <function-class>ua.com.semkov.web.view.tag.Dates</function-class>

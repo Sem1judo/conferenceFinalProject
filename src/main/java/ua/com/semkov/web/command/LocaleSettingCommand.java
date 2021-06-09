@@ -11,11 +11,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.jstl.core.Config;
 import java.io.IOException;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 
 public class LocaleSettingCommand extends Command {
     private static final long serialVersionUID = 7732286214251478505L;
-
     private static final Logger log = Logger.getLogger(LocaleSettingCommand.class);
 
     @Override
@@ -23,10 +24,13 @@ public class LocaleSettingCommand extends Command {
                           HttpServletResponse response) throws IOException {
 
         log.debug("Command starts");
+        HttpSession session = request.getSession();
 
         User user = (User) request.getSession().getAttribute("user");
         boolean updateUser = false;
-        HttpSession session = request.getSession();
+
+        Locale locale = Locale.forLanguageTag((String) session.getAttribute("defaultLocale"));
+        ResourceBundle labels = ResourceBundle.getBundle("resources", locale);
 
         String localeToSet = request.getParameter("localeToSet");
         if (localeToSet != null && !localeToSet.isEmpty()) {
@@ -42,8 +46,8 @@ public class LocaleSettingCommand extends Command {
             try {
                 new UserServiceImpl().updateUser(user);
             } catch (ServiceException e) {
-                log.error("Can't update user locale", e);
-                errorMessage = "Can't update user locale";
+                errorMessage = labels.getString("error_404_locale");
+                log.error(errorMessage, e);
                 session.setAttribute("errorMessage", errorMessage);
                 return Path.REDIRECT + Path.PAGE__ERROR_PAGE_404;
             }

@@ -109,12 +109,10 @@ public abstract class AbstractDao<K> implements InterfaceDao<K> {
 
     @Override
     public K getById(Long id) throws DAOException {
-        log.debug("Start method getById(Long id)");
         ResultSet rs = null;
         K entity = null;
         try (Connection con = DBManager.getInstance().getConnection();
              PreparedStatement ps = con.prepareStatement(getQueryGetById())) {
-            log.trace("Entered event id ---> " + id);
 
             ps.setLong(1, id);
             rs = ps.executeQuery();
@@ -141,7 +139,7 @@ public abstract class AbstractDao<K> implements InterfaceDao<K> {
 
     @Override
     public K getBySpecificName(String name) throws DAOException {
-        log.debug("Start method getBySpecificName(String name)");
+        log.debug("Start method getBySpecificName(String name:" + name + ")");
         ResultSet rs = null;
         K entity = null;
         try (Connection con = DBManager.getInstance().getConnection();
@@ -191,7 +189,7 @@ public abstract class AbstractDao<K> implements InterfaceDao<K> {
                         id = rs.getLong(1);
                         k = setEntityId(id, k);
                         con.commit();
-                        log.trace("Inserted entity --> "+ k);
+                        log.trace("Inserted entity --> " + k);
                     }
                 } catch (SQLException ex) {
                     DBManager.getInstance().rollback(con);
@@ -242,8 +240,8 @@ public abstract class AbstractDao<K> implements InterfaceDao<K> {
             if (con != null) {
                 DBManager.getInstance().rollback(con);
             }
-            log.error("Updating event failed", ex);
-            throw new DAOException("Updating event failed", ex);
+            log.error("Updating entity failed", ex);
+            throw new DAOException("Updating entity failed", ex);
 
         } finally {
             DBManager.getInstance().close(con, ps);

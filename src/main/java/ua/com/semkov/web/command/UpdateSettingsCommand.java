@@ -22,6 +22,8 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 /**
  * Update settings items.
@@ -31,8 +33,9 @@ import java.util.List;
 public class UpdateSettingsCommand extends Command {
 
     private static final long serialVersionUID = 7732286214029478505L;
-
     private static final Logger log = Logger.getLogger(UpdateSettingsCommand.class);
+    private static final String ERROR_MESSAGE = "errorMessage";
+
     private final UserServiceImpl userService = new UserServiceImpl();
 
     @Override
@@ -43,6 +46,8 @@ public class UpdateSettingsCommand extends Command {
         log.debug("Command starts");
 
         HttpSession session = request.getSession();
+        Locale locale = Locale.forLanguageTag((String) session.getAttribute("defaultLocale"));
+        ResourceBundle labels = ResourceBundle.getBundle("resources", locale);
 
         String id = request.getParameter("id");
         if (id == null) {
@@ -53,70 +58,25 @@ public class UpdateSettingsCommand extends Command {
         String errorMessage;
         boolean isUpdate;
 
-
         try {
             user = userService.getUserById(Long.valueOf(id));
         } catch (ServiceException e) {
-            errorMessage = "User doesn't exist in db";
-            session.setAttribute("errorMessage", errorMessage);
-            log.error("errorMessage --> " + errorMessage, e);
+            errorMessage = labels.getString("error_404_auth-notExist");
+            session.setAttribute(ERROR_MESSAGE, errorMessage);
+            log.error(ERROR_MESSAGE + " -- > " + errorMessage, e);
             return Path.REDIRECT + Path.PAGE__ERROR_PAGE_404;
         }
-// LOCALE
-        String localeToSet = request.getParameter("localeToSet");
-        if (localeToSet != null && !localeToSet.isEmpty()) {
-            Config.set(session, "javax.servlet.jsp.jstl.fmt.locale", localeToSet);
-            session.setAttribute("defaultLocale", localeToSet);
-            user.setLocaleName(localeToSet);
-        }
+
+        log.trace("obtained user = " + user);
+
 
         String updated = request.getParameter("isUpdated");
         isUpdate = Boolean.parseBoolean(updated);
 
         if (user != null && isUpdate) {
 
-            String firstName = request.getParameter("firstName");
-            String lastName = request.getParameter("lastName");
-            String email = request.getParameter("email");
-            String login = request.getParameter("login");
-
-
-            ArrayList<String> fields = new ArrayList<>();
-            fields.add(firstName);
-            fields.add(lastName);
-            fields.add(email);
-            fields.add(login);
-
-            for (String field : fields) {
-                if (field == null || field.isEmpty()) {
-                    errorMessage = "All fields are required to be filled";
-                    session.setAttribute("errorMessage", errorMessage);
-                    log.error("errorMessage --> " + errorMessage);
-                    return Path.REDIRECT + Path.PAGE__ERROR_PAGE_404;
-                }
-            }
-
-            user.setFirstName(firstName);
-            user.setLastName(lastName);
-            user.setEmail(email);
-            user.setLogin(login);
-
-            if (UserValidation.isValidUser(user)) {
-                try {
-                    userService.updateUser(user);
-
-                } catch (ServiceException e) {
-                    log.error("Can't update user", e);
-                    errorMessage = "Can't update user";
-                    session.setAttribute("errorMessage", errorMessage);
-                    return Path.REDIRECT + Path.PAGE__ERROR_PAGE_404;
-                }
-            } else {
-                errorMessage = "User is not valid";
-                session.setAttribute("errorMessage", errorMessage);
-                log.error("errorMessage --> " + errorMessage);
-                return Path.REDIRECT + Path.PAGE__ERROR_PAGE_404;
-            }
+            String REDIRECT = isValidUser(request, session, labels, user);
+            if (REDIRECT != null) return REDIRECT;
 
         }
 
@@ -133,9 +93,9 @@ public class UpdateSettingsCommand extends Command {
             try {
                 userService.updateUserPassword(user.getId(), user.getPassword(), password);
             } catch (ServiceException e) {
-                log.error("can't update password", e);
-                errorMessage = "Can't change password ";
-                session.setAttribute("errorMessage", errorMessage);
+                errorMessage = labels.getString("error_404_user-update");
+                log.error(errorMessage, e);
+                session.setAttribute(ERROR_MESSAGE, errorMessage);
                 return Path.REDIRECT + Path.PAGE__ERROR_PAGE_404;
             }
         }
@@ -146,6 +106,52 @@ public class UpdateSettingsCommand extends Command {
 
         log.debug("Command finished");
         return Path.REDIRECT + Path.PAGE__SETTINGS;
+    }
+
+    private String isValidUser(HttpServletRequest request, HttpSession session, ResourceBundle labels, User user) {
+        String errorMessage;
+        String firstName = request.getParameter("firstName");
+        String lastName = request.getParameter("lastName");
+        String email = request.getParameter("email");
+        String login = request.getParameter("login");
+
+
+        ArrayList<String> fields = new ArrayList<>();
+        fields.add(firstName);
+        fields.add(lastName);
+        fields.add(email);
+        fields.add(login);
+
+        for (String field : fields) {
+            if (field == null || field.isEmpty()) {
+                errorMessage = labels.getString("error_404_fields");
+                log.error(ERROR_MESSAGE + " --> " + errorMessage);
+                session.setAttribute(ERROR_MESSAGE, errorMessage);
+                return Path.REDIRECT + Path.PAGE__ERROR_PAGE_404;
+            }
+        }
+
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+        user.setEmail(email);
+        user.setLogin(login);
+
+        if (UserValidation.isValidUser(user)) {
+            try {
+                userService.updateUser(user);
+            } catch (ServiceException e) {
+                errorMessage = labels.getString("error_404_user-update");
+                log.error(errorMessage, e);
+                session.setAttribute(ERROR_MESSAGE, errorMessage);
+                return Path.REDIRECT + Path.PAGE__ERROR_PAGE_404;
+            }
+        } else {
+            errorMessage = labels.getString("error_404_user-notValid");
+            log.error(ERROR_MESSAGE + " --> " + errorMessage);
+            session.setAttribute(ERROR_MESSAGE, errorMessage);
+            return Path.REDIRECT + Path.PAGE__ERROR_PAGE_404;
+        }
+        return null;
     }
 
 }

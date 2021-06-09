@@ -19,7 +19,6 @@ public class UserServiceImpl implements UserService {
 
     private static final Logger log = Logger.getLogger(UserServiceImpl.class);
 
-    private static final int MIN_EMAIL_LENGTH = 5;
     private UserDaoImpl userDao;
 
 
@@ -85,15 +84,12 @@ public class UserServiceImpl implements UserService {
         try {
             data.setPassword(Encoder.encrypt(data.getPassword()));
 
-            String email = data.getEmail();
-            if (email != null && email.length() < MIN_EMAIL_LENGTH) {
-                data.setEmail(null);
-            }
             user = new User.Builder(
                     data.getLogin()
                     , data.getPassword()
                     , data.getEmail()
                     , data.getPhone())
+                    .id(data.getId())
                     .roleId(2)
                     .firstName(data.getFirstName())
                     .lastName(data.getLastName())

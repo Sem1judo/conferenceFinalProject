@@ -16,6 +16,8 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.jstl.core.Config;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 
 /**
@@ -26,10 +28,9 @@ import java.util.ArrayList;
 public class RegistrationCommand extends Command {
 
     private static final long serialVersionUID = -3071531593627692473L;
-
     private static final Logger log = Logger.getLogger(RegistrationCommand.class);
 
-    UserServiceImpl userService = new UserServiceImpl();
+   private final UserServiceImpl userService = new UserServiceImpl();
 
     @Override
     public String execute(HttpServletRequest request,
@@ -38,8 +39,28 @@ public class RegistrationCommand extends Command {
         log.debug("Command registration starts");
 
         HttpSession session = request.getSession();
+        ResourceBundle labels = ResourceBundle.getBundle("resources", request.getLocale());
 
-        // obtain data from the request
+        User user = isValidUser(request, session, labels);
+        if (user == null) return Path.REDIRECT + Path.PAGE__ERROR_PAGE_404;
+
+        Role userRole = Role.getRole(user);
+        log.trace("userRole --> " + userRole);
+
+        setUserSessionAndCookies(response, session, user, userRole, log);
+
+        log.info("User " + user + " register and logged as " + userRole.toString().toLowerCase());
+
+        // work with i18n
+        setUserLocale(session, user, log);
+
+        log.debug("Command registration finished");
+
+        return Path.REDIRECT + Path.PAGE__PROFILE_USER;
+    }
+
+    private User isValidUser(HttpServletRequest request, HttpSession session, ResourceBundle labels) {
+        String errorMessage;
         String login = request.getParameter("login");
         String password = request.getParameter("password");
         String email = request.getParameter("email");
@@ -56,16 +77,12 @@ public class RegistrationCommand extends Command {
         fields.add(login);
 
 
-        // error handler
-        String errorMessage;
-
-
         for (String field : fields) {
             if (field == null || field.isEmpty()) {
-                errorMessage = "All fields are required to be filled";
-                session.setAttribute("errorMessage", errorMessage);
+                errorMessage = labels.getString("error_404_fields");
                 log.error("errorMessage --> " + errorMessage);
-                return Path.REDIRECT + Path.PAGE__ERROR_PAGE_404;
+                session.setAttribute("errorMessage", errorMessage);
+                return null;
             }
         }
 
@@ -84,25 +101,12 @@ public class RegistrationCommand extends Command {
             }
 
         } else {
-            errorMessage = "User not valid";
+            errorMessage = labels.getString("error_404_user-notValid");
             log.error("errorMessage --> " + errorMessage);
             session.setAttribute("errorMessage", errorMessage);
-            return Path.REDIRECT + Path.PAGE__ERROR_PAGE_404;
+            return null;
         }
-
-        Role userRole = Role.getRole(user);
-        log.trace("userRole --> " + userRole);
-
-        setUserSessionAndCookies(response, session, user, userRole, log);
-
-        log.info("User " + user + " register and logged as " + userRole.toString().toLowerCase());
-
-        // work with i18n
-        setUserLocale(session, user, log);
-
-        log.debug("Command registration finished");
-
-        return Path.REDIRECT + Path.PAGE__PROFILE_USER;
+        return user;
     }
 
     static void setUserLocale(HttpSession session, User user, Logger log) {
@@ -125,8 +129,6 @@ public class RegistrationCommand extends Command {
         response.addCookie(ck);
 
         session.setAttribute("user", user);
-        log.trace("Set the session attribute: user --> " + user);
-
         session.setAttribute("userRole", userRole);
         log.trace("Set the session attribute: userRole --> " + userRole);
     }

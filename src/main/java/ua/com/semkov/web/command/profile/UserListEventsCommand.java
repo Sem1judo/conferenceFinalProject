@@ -22,7 +22,6 @@ import java.util.List;
 public class UserListEventsCommand extends Command {
 
     private static final long serialVersionUID = 1863978251529586513L;
-
     private static final Logger log = Logger.getLogger(UserListEventsCommand.class);
 
     private final UsersEventsServiceImpl usersEventsService = new UsersEventsServiceImpl();
@@ -44,7 +43,6 @@ public class UserListEventsCommand extends Command {
             daoException.printStackTrace();
         }
 
-        log.trace("Set the request attribute founded events for speaker: --> " + events);
 
         request.setAttribute("events", events);
 

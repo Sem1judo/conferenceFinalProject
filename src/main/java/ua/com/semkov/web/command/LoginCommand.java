@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 /**
  * Login command.
@@ -21,10 +23,9 @@ import java.io.IOException;
 public class LoginCommand extends Command {
 
     private static final long serialVersionUID = -3071536593627692473L;
-
     private static final Logger log = Logger.getLogger(LoginCommand.class);
 
-    UserServiceImpl userService = new UserServiceImpl();
+    private final UserServiceImpl userService = new UserServiceImpl();
 
     @Override
     public String execute(HttpServletRequest request,
@@ -33,11 +34,9 @@ public class LoginCommand extends Command {
         log.debug("Command starts");
 
         HttpSession session = request.getSession();
+        ResourceBundle labels = ResourceBundle.getBundle("resources", request.getLocale());
 
-        // obtain login and password from the request
         String login = request.getParameter("login");
-        log.trace("Request parameter: loging --> " + login);
-
         String password = request.getParameter("password");
 
         // error handler
@@ -46,7 +45,7 @@ public class LoginCommand extends Command {
 
 
         if (userService.isEmpty(login, password)) {
-            errorMessage = "Login or password cannot be empty";
+            errorMessage = labels.getString("error_404_auth-empty");
             request.setAttribute("errorMessage", errorMessage);
             log.error("errorMessage --> " + errorMessage);
             return forward;
@@ -58,10 +57,10 @@ public class LoginCommand extends Command {
         } catch (ServiceException e) {
             log.error("problem with getting user by login", e);
         }
-        log.trace("Found in DB: user --> " + user);
+
 
         if (user == null || !password.equals(user.getPassword())) {
-            errorMessage = "Cannot find user with such login and password";
+            errorMessage = labels.getString("error_404_auth-notExist");
             request.setAttribute("errorMessage", errorMessage);
             log.error("errorMessage --> " + errorMessage);
             return forward;

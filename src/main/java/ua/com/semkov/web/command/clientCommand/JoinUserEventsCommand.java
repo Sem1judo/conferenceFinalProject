@@ -17,23 +17,26 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 public class JoinUserEventsCommand extends Command {
     private static final long serialVersionUID = 3331975151519536313L;
+    private static final Logger log = Logger.getLogger(JoinUserEventsCommand.class);
 
     private final UsersEventsServiceImpl usersEventsService = new UsersEventsServiceImpl();
     private final EventServiceImpl eventService = new EventServiceImpl();
 
-    private static final Logger log = Logger.getLogger(JoinUserEventsCommand.class);
+
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
         log.debug("Command JoinUserEventsCommand starts");
 
-
         HttpSession session = request.getSession();
-
+        Locale locale = Locale.forLanguageTag((String) session.getAttribute("defaultLocale"));
+        ResourceBundle labels = ResourceBundle.getBundle("resources", locale);
 
         Event event;
         String idEvent = request.getParameter("id");
@@ -45,7 +48,7 @@ public class JoinUserEventsCommand extends Command {
             usersEventsService.setEventsForUser(user, event);
 
         } catch (ServiceException e) {
-            errorMessage = "Can't set event to use";
+            errorMessage = labels.getString("error_404_joinUser-event");
             request.setAttribute("errorMessage", errorMessage);
             log.error("errorMessage --> " + errorMessage, e);
             return Path.REDIRECT + Path.PAGE__ERROR_PAGE_404;

@@ -14,9 +14,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 public class CreateTopicCommand extends Command {
     private static final long serialVersionUID = 1863978254019582513L;
+    private static final String ERROR_MESSAGE = "errorMessage";
 
     private final TopicServiceImpl topicService = new TopicServiceImpl();
 
@@ -29,26 +32,40 @@ public class CreateTopicCommand extends Command {
         log.debug("Command starts");
 
         HttpSession session = request.getSession();
+        Locale locale = Locale.forLanguageTag((String) session.getAttribute("defaultLocale"));
+        ResourceBundle labels = ResourceBundle.getBundle("resources", locale);
 
         String name = request.getParameter("name");
         String description = request.getParameter("description");
         String userId = request.getParameter("user_id");
         String eventId = request.getParameter("event_id");
 
+        Topic topic = getTopic(session, labels, name, description, userId, eventId);
 
+        if (topic == null) return Path.REDIRECT + Path.PAGE__ERROR_PAGE_404;
+
+        log.trace("created topic --> " + topic);
+
+        log.debug("Commands finished");
+
+        return Path.REDIRECT + Path.COMMAND__LIST_TOPICS;
+    }
+
+    private Topic getTopic(HttpSession session, ResourceBundle labels, String name, String description, String userId, String eventId) {
+        String errorMessage;
         ArrayList<String> fields = new ArrayList<>();
         fields.add(name);
         fields.add(description);
         fields.add(userId);
         fields.add(eventId);
 
-        String errorMessage;
+
         for (String field : fields) {
             if (field == null || field.isEmpty()) {
-                errorMessage = "All fields are required to be filled";
-                session.setAttribute("errorMessage", errorMessage);
-                log.error("errorMessage --> " + errorMessage);
-                return Path.REDIRECT + Path.PAGE__ERROR_PAGE_404;
+                errorMessage = labels.getString("error_404_fields");
+                session.setAttribute(ERROR_MESSAGE, errorMessage);
+                log.error(ERROR_MESSAGE + " --> " + errorMessage);
+                return null;
             }
         }
 
@@ -59,21 +76,16 @@ public class CreateTopicCommand extends Command {
                 topicService.createTopic(topic);
             } catch (ServiceException e) {
                 errorMessage = "Topic wasn't created";
-                session.setAttribute("errorMessage", errorMessage);
+                session.setAttribute(ERROR_MESSAGE, errorMessage);
                 log.error("errorMessage --> " + errorMessage, e);
-                return Path.REDIRECT + Path.PAGE__ERROR_PAGE_404;
+                return null;
             }
         } else {
             errorMessage = "Topic is not valid";
-            session.setAttribute("errorMessage", errorMessage);
+            session.setAttribute(ERROR_MESSAGE, errorMessage);
             log.error("errorMessage --> " + errorMessage);
-            return Path.REDIRECT + Path.PAGE__ERROR_PAGE_404;
+            return null;
         }
-
-        log.trace("created topic --> " + topic);
-
-        log.debug("Commands finished");
-
-        return Path.REDIRECT + Path.COMMAND__LIST_TOPICS;
+        return topic;
     }
 }
