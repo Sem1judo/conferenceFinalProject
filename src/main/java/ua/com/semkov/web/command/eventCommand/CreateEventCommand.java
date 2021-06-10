@@ -23,7 +23,7 @@ public class CreateEventCommand extends Command {
     private static final Logger log = Logger.getLogger(CreateEventCommand.class);
     private static final String ERROR_MESSAGE = "errorMessage";
 
-    private EventServiceImpl eventService = new EventServiceImpl();
+    private final EventServiceImpl eventService = new EventServiceImpl();
 
 
     @Override
