@@ -14,39 +14,15 @@ public class Event implements Serializable {
     private static final long serialVersionUID = -6889036215149495688L;
 
     private Long id;
-    private String title;
-    private String description;
-    private String location;
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
-    private Long organizerId;
-    private Long statusId;
-    private List<Topic> topics;
-    private List<User> users;
-
-    public Long getStatusId() {
-        return statusId;
-    }
-
-    public void setStatusId(Long statusId) {
-        this.statusId = statusId;
-    }
-
-    public List<User> getUsers() {
-        return users;
-    }
-
-    public void setUsers(List<User> users) {
-        this.users = users;
-    }
-
-    public List<Topic> getTopics() {
-        return topics;
-    }
-
-    public void setTopics(List<Topic> topics) {
-        this.topics = topics;
-    }
+    private final String title;
+    private final String description;
+    private final String location;
+    private final LocalDateTime startTime;
+    private final LocalDateTime endTime;
+    private final Long organizerId;
+    private final Long statusId;
+    private final List<Topic> topics;
+    private final List<User> users;
 
     public Long getId() {
         return id;
@@ -60,50 +36,37 @@ public class Event implements Serializable {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public String getDescription() {
         return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public String getLocation() {
         return location;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
     public LocalDateTime getStartTime() {
         return startTime;
-    }
-
-    public void setStartTime(LocalDateTime startTime) {
-        this.startTime = startTime;
     }
 
     public LocalDateTime getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(LocalDateTime endTime) {
-        this.endTime = endTime;
-    }
-
     public Long getOrganizerId() {
         return organizerId;
     }
 
-    public void setOrganizerId(Long organizerId) {
-        this.organizerId = organizerId;
+    public Long getStatusId() {
+        return statusId;
     }
 
+    public List<Topic> getTopics() {
+        return topics;
+    }
+
+    public List<User> getUsers() {
+        return users;
+    }
 
     public static class Builder {
         private final String title;
@@ -117,13 +80,13 @@ public class Event implements Serializable {
             this.startTime = startTime;
             this.endTime = endTime;
             this.organizerId = organizerId;
-
         }
+
 
         private Long id;
         private String description = "Exhilarating event";
         private String location = "online";
-        private  Long statusId = 2L;
+        private Long statusId = 2L;
         private List<Topic> topics;
         private List<User> users;
 

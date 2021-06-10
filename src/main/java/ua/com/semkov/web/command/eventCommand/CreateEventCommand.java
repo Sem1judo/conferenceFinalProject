@@ -35,14 +35,8 @@ public class CreateEventCommand extends Command {
         Locale locale = Locale.forLanguageTag((String) session.getAttribute("defaultLocale"));
         ResourceBundle labels = ResourceBundle.getBundle("resources", locale);
 
-        String title = request.getParameter("title");
-        String location = request.getParameter("location");
-        String description = request.getParameter("description");
-        String start_time = request.getParameter("start_time");
-        String end_time = request.getParameter("end_time");
-        String organizedId = request.getParameter("organizer_id");
 
-        String REDIRECT = isValidEvent(session, labels, title, location, description, start_time, end_time, organizedId);
+        String REDIRECT = getPathIfValidEvent(request, session, labels);
         if (REDIRECT != null) return REDIRECT;
 
         log.debug("Commands finished");
@@ -51,7 +45,15 @@ public class CreateEventCommand extends Command {
 
     }
 
-    private String isValidEvent(HttpSession session, ResourceBundle labels, String title, String location, String description, String start_time, String end_time, String organizedId) {
+    private String getPathIfValidEvent(HttpServletRequest request, HttpSession session, ResourceBundle labels) {
+        String title = request.getParameter("title");
+        String location = request.getParameter("location");
+        String description = request.getParameter("description");
+        String start_time = request.getParameter("start_time");
+        String end_time = request.getParameter("end_time");
+        String organizedId = request.getParameter("organizer_id");
+
+
         ArrayList<String> fields = new ArrayList<>();
         fields.add(title);
         fields.add(location);

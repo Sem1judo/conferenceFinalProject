@@ -36,6 +36,18 @@ public class ProposeSpeakerTopicCommand extends Command {
         Locale locale = Locale.forLanguageTag((String) session.getAttribute("defaultLocale"));
         ResourceBundle labels = ResourceBundle.getBundle("resources", locale);
 
+        Topic topic = getTopic(request, session, labels);
+
+        if (topic == null) return Path.REDIRECT + Path.PAGE__ERROR_PAGE_404;
+
+
+        log.debug("Commands ProposeSpeakerTopicCommand finished");
+
+
+        return Path.REDIRECT + Path.COMMAND__UPDATE_EVENT;
+    }
+
+    private Topic getTopic(HttpServletRequest request, HttpSession session, ResourceBundle labels) {
         String errorMessage;
 
         String name = request.getParameter("name");
@@ -43,25 +55,46 @@ public class ProposeSpeakerTopicCommand extends Command {
         String userId = request.getParameter("user_id");
         String eventId = request.getParameter("event_id");
 
+
         ArrayList<String> fields = new ArrayList<>();
         fields.add(name);
         fields.add(description);
+        fields.add(eventId);
         fields.add(userId);
-        if (UpdateTopicCommand.topicFields(session, labels, eventId, fields, ERROR_MESSAGE, log))
-            return Path.REDIRECT + Path.PAGE__ERROR_PAGE_404;
 
-        Topic topic = new Topic(name, description, Long.valueOf(userId), Long.valueOf(eventId));
 
-        if (UpdateTopicCommand.getTopic(session, labels, topic, topicService, ERROR_MESSAGE, log))
-            return Path.REDIRECT + Path.PAGE__ERROR_PAGE_404;
+        for (String field : fields) {
+            if (field == null || field.isEmpty()) {
+                errorMessage = labels.getString("error_404_fields");
+                session.setAttribute(ERROR_MESSAGE, errorMessage);
+                log.error(ERROR_MESSAGE + " --> " + errorMessage);
+                return null;
+            }
+        }
 
-        log.trace("obtained topic --> " + topic);
+        Topic topic = new Topic(name, description, Long.valueOf(userId),
+                Long.valueOf(eventId));
 
+        if (TopicValidation.isValidTopic(topic)) {
+            try {
+                topicService.createTopic(topic);
+            } catch (ServiceException e) {
+                errorMessage = labels.getString("error_404_topic-creation");
+                session.setAttribute(ERROR_MESSAGE, errorMessage);
+                log.error(ERROR_MESSAGE + " --> " + errorMessage);
+                return null;
+            }
+        } else {
+            errorMessage = labels.getString("error_404_topic-notValid");
+            session.setAttribute(ERROR_MESSAGE, errorMessage);
+            log.error(ERROR_MESSAGE + " --> " + errorMessage);
+            return null;
+        }
         session.setAttribute("id", eventId);
+        log.trace("created topic --> " + topic);
 
-        log.debug("Commands ProposeSpeakerTopicCommand finished");
-
-
-        return Path.REDIRECT + Path.COMMAND__UPDATE_EVENT;
+        return topic;
     }
+
+
 }

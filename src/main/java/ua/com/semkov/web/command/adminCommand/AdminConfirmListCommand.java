@@ -35,8 +35,6 @@ public class AdminConfirmListCommand extends Command {
             log.error("Problem getting topics DTO", e);
         }
 
-        log.trace("Set the request attribute: topics --> " + topicDtos);
-
         request.setAttribute("topics", topicDtos);
 
         log.debug("Commands finished");

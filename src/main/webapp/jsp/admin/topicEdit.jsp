@@ -153,7 +153,7 @@
                         <div class="md-form mb-4">
                             <i class="fas fa-lock prefix grey-text"></i>
                             <input name="user_id" type="text" id="user_id"
-                                   class="form-control validate" value="${topic.userId}" readonly>
+                                   class="form-control validate" value="${user.id}" readonly>
                             <label data-error="wrong" data-success="right"
                                    for="user_id"><fmt:message
                                     key="list_orders_jsp.table.header.organizerId"/></label>

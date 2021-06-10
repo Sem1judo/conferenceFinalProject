@@ -68,24 +68,25 @@
                     <p>
                         <fmt:message key="login_jsp.label.email"/>
                     </p>
-                    <input name="email" value="${user.email}">
+                    <input name="email" value="${user.email}"
+                    <c:if test="${userRole.name == 'moderator'}"> readonly</c:if>>
                 </div>
 
-                <c:if test="${userRole.name != 'moderator'}">
-                    <div class="form-group">
-                        <p>
-                            <fmt:message key="login_jsp.label.login"/>
-                        </p>
-                        <input type="text" name="login" value="${user.login}">
-                    </div>
+                <div class="form-group">
+                    <p>
+                        <fmt:message key="login_jsp.label.login"/>
+                    </p>
+                    <input type="text" name="login" value="${user.login}"
+                    <c:if test="${userRole.name == 'moderator'}"> readonly</c:if>>
+                </div>
 
-                    <div class="form-group">
-                        <p>
-                            <fmt:message key="login_jsp.label.password"/>
-                        </p>
-                        <input type="password" name="password" placeholder="*****">
-                    </div>
-                </c:if>
+                <div class="form-group">
+                    <p>
+                        <fmt:message key="login_jsp.label.password"/>
+                    </p>
+                    <input type="password" name="password" placeholder="*****"
+                    <c:if test="${userRole.name == 'moderator'}"> readonly</c:if>>
+                </div>
 
                 <button type="submit"
                         class="btn btn-dark btn-lg"><fmt:message key="settings_jsp.button.update"/></button>

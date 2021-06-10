@@ -36,16 +36,50 @@ public class UpdateEventCommand extends Command {
 
         log.debug("Command starts");
 
-        boolean isUpdate;
-
         HttpSession session = request.getSession();
         Locale locale = Locale.forLanguageTag((String) session.getAttribute("defaultLocale"));
         ResourceBundle labels = ResourceBundle.getBundle("resources", locale);
+
 
         String id = request.getParameter("id");
         if (id == null) {
             id = (String) session.getAttribute("id");
         }
+
+        boolean isUpdate;
+        Event event;
+
+        String updated = request.getParameter("isUpdated");
+        isUpdate = Boolean.parseBoolean(updated);
+
+        if (isUpdate) {
+            String REDIRECT = getPathIfValidEvent(request, session, labels, Long.valueOf(id));
+            if (REDIRECT != null) return REDIRECT;
+        } else {
+            try {
+                event = eventService.getEvent(Long.valueOf(id));
+                Status eventStatus = Status.getStatusStatic(event);
+                List<TopicDto> eventTopics = topicService.getTopicsDtoByEvent(event.getId());
+
+                session.setAttribute("eventStatus", eventStatus);
+                session.setAttribute("eventTopics", eventTopics);
+                session.setAttribute("event", event);
+
+            } catch (ServiceException e) {
+                session.setAttribute(ERROR_MESSAGE, labels.getString("error_404_event-get"));
+                log.error(ERROR_MESSAGE + " --> " + labels.getString("error_404_event-get"), e);
+                return Path.REDIRECT + Path.PAGE__ERROR_PAGE_404;
+            }
+
+        }
+
+
+        log.debug("Commands finished");
+
+        return Path.REDIRECT + Path.PAGE__EVENT_EDIT;
+    }
+
+    private String getPathIfValidEvent(HttpServletRequest request, HttpSession session, ResourceBundle labels, Long id) {
 
         Event event;
         Status eventStatus;
@@ -54,7 +88,7 @@ public class UpdateEventCommand extends Command {
         String errorMessage;
 
         try {
-            event = eventService.getEvent(Long.valueOf(id));
+            event = eventService.getEvent(id);
         } catch (ServiceException e) {
             errorMessage = labels.getString("error_404_event-get");
             session.setAttribute(ERROR_MESSAGE, errorMessage);
@@ -62,60 +96,14 @@ public class UpdateEventCommand extends Command {
             return Path.REDIRECT + Path.PAGE__ERROR_PAGE_404;
         }
 
-        String updated = request.getParameter("isUpdated");
-        isUpdate = Boolean.parseBoolean(updated);
+        String title = request.getParameter("title");
+        String location = request.getParameter("location");
+        String description = request.getParameter("description");
+        String start_time = request.getParameter("start_time");
+        String end_time = request.getParameter("end_time");
+        String organizedId = request.getParameter("organizer_id");
+        String statusId = request.getParameter("status_id");
 
-        if (event != null && isUpdate) {
-
-            String title = request.getParameter("title");
-            String location = request.getParameter("location");
-            String description = request.getParameter("description");
-            String start_time = request.getParameter("start_time");
-            String end_time = request.getParameter("end_time");
-            String organizedId = request.getParameter("organizer_id");
-            String statusId = request.getParameter("status_id");
-
-            String REDIRECT = isValidEvent(session, labels, event, title, location, description, start_time, end_time, organizedId, statusId);
-            if (REDIRECT != null) return REDIRECT;
-
-        }
-
-        try {
-            if (event != null) {
-                eventStatus = Status.getStatusStatic(event);
-                eventTopics = topicService.getTopicsDtoByEvent(event.getId());
-            } else {
-                errorMessage = labels.getString("error_404_topic-dtosGet");
-                session.setAttribute(ERROR_MESSAGE, errorMessage);
-                log.error(ERROR_MESSAGE + " --> " + errorMessage);
-                return Path.REDIRECT + Path.PAGE__ERROR_PAGE_404;
-            }
-
-        } catch (ServiceException e) {
-            errorMessage = labels.getString("error_404_event-topicsNotLoaded");
-            session.setAttribute(ERROR_MESSAGE, errorMessage);
-            log.error(ERROR_MESSAGE + " --> " + errorMessage);
-            return Path.REDIRECT + Path.PAGE__ERROR_PAGE_404;
-        }
-
-        log.trace("Set the session attribute: eventStatus --> " + eventStatus);
-        log.trace("updated event -- >" + event);
-        log.trace("Event topics -- >" + eventTopics);
-
-
-        session.setAttribute("eventStatus", eventStatus);
-        session.setAttribute("eventTopics", eventTopics);
-        session.setAttribute("event", event);
-
-
-        log.debug("Commands finished");
-
-
-        return Path.REDIRECT + Path.PAGE__EVENT_EDIT;
-    }
-
-    private String isValidEvent(HttpSession session, ResourceBundle labels, Event event, String title, String location, String description, String start_time, String end_time, String organizedId, String statusId) {
-        String errorMessage;
         ArrayList<String> fields = new ArrayList<>();
         fields.add(title);
         fields.add(location);
@@ -134,18 +122,21 @@ public class UpdateEventCommand extends Command {
             }
         }
 
-        event.setTitle(title);
-        event.setLocation(location);
-        event.setDescription(description);
-        event.setStartTime(LocalDateTime.parse(start_time));
-        event.setEndTime(LocalDateTime.parse(end_time));
-        event.setOrganizerId(Long.valueOf(organizedId));
-        event.setStatusId(Long.valueOf(statusId));
+        event = new Event.Builder(title, LocalDateTime.parse(start_time),
+                LocalDateTime.parse(end_time),
+                Long.valueOf(organizedId))
+                .location(location)
+                .description(description)
+                .topics(event.getTopics())
+                .id(event.getId())
+                .users(event.getUsers())
+                .statusId(Long.valueOf(statusId)).build();
 
 
         if (EventValidation.isValidEvent(event)) {
             try {
                 eventService.updateEvent(event);
+                log.trace("updated event -- >" + event);
             } catch (ServiceException e) {
                 errorMessage = labels.getString("error_404_event-update");
                 session.setAttribute(ERROR_MESSAGE, errorMessage);
@@ -158,6 +149,24 @@ public class UpdateEventCommand extends Command {
             log.error(ERROR_MESSAGE + " --> " + errorMessage);
             return Path.REDIRECT + Path.PAGE__ERROR_PAGE_404;
         }
+
+        try {
+            eventStatus = Status.getStatusStatic(event);
+            eventTopics = topicService.getTopicsDtoByEvent(event.getId());
+
+        } catch (ServiceException e) {
+            errorMessage = labels.getString("error_404_event-topicsNotLoaded");
+            session.setAttribute(ERROR_MESSAGE, errorMessage);
+            log.error(ERROR_MESSAGE + " --> " + errorMessage);
+            return Path.REDIRECT + Path.PAGE__ERROR_PAGE_404;
+        }
+
+        log.trace("Set the session attribute: eventStatus --> " + eventStatus);
+
+        session.setAttribute("eventStatus", eventStatus);
+        session.setAttribute("eventTopics", eventTopics);
+        session.setAttribute("event", event);
+
         return null;
     }
 }

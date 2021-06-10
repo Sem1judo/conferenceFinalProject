@@ -95,6 +95,7 @@ public class UserServiceImpl implements UserService {
                     .lastName(data.getLastName())
                     .build();
             user = userDao.insertEntity(user);
+
         } catch (DAOException | NoSuchAlgorithmException e) {
             throw new ServiceException(e);
         }

@@ -35,24 +35,26 @@ public class CreateTopicCommand extends Command {
         Locale locale = Locale.forLanguageTag((String) session.getAttribute("defaultLocale"));
         ResourceBundle labels = ResourceBundle.getBundle("resources", locale);
 
-        String name = request.getParameter("name");
-        String description = request.getParameter("description");
-        String userId = request.getParameter("user_id");
-        String eventId = request.getParameter("event_id");
 
-        Topic topic = getTopic(session, labels, name, description, userId, eventId);
+        Topic topic = getTopic(request, session, labels);
 
         if (topic == null) return Path.REDIRECT + Path.PAGE__ERROR_PAGE_404;
 
-        log.trace("created topic --> " + topic);
 
         log.debug("Commands finished");
 
         return Path.REDIRECT + Path.COMMAND__LIST_TOPICS;
     }
 
-    private Topic getTopic(HttpSession session, ResourceBundle labels, String name, String description, String userId, String eventId) {
+    private Topic getTopic(HttpServletRequest request, HttpSession session, ResourceBundle labels) {
         String errorMessage;
+
+        String name = request.getParameter("name");
+        String description = request.getParameter("description");
+        String userId = request.getParameter("user_id");
+        String eventId = request.getParameter("event_id");
+
+
         ArrayList<String> fields = new ArrayList<>();
         fields.add(name);
         fields.add(description);
@@ -87,6 +89,9 @@ public class CreateTopicCommand extends Command {
             log.error(ERROR_MESSAGE + " --> " + errorMessage);
             return null;
         }
+
+        log.trace("created topic --> " + topic);
+
         return topic;
     }
 }

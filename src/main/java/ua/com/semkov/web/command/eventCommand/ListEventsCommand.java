@@ -65,7 +65,6 @@ public class ListEventsCommand extends Command {
 
         log.trace("Set the request attribute: noOfPages(total number of events) --> " + noOfPages);
         log.trace("Set the request attribute sort: --> " + sort);
-        log.trace("Set the request attribute founded events: --> " + events);
 
 
         request.setAttribute("events", events);

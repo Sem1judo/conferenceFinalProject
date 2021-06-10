@@ -15,33 +15,25 @@ public class User implements Serializable {
 
     private Long id;
 
-    private String login;
+    private final String login;
 
     private String password;
 
-    private String firstName;
+    private final String firstName;
 
-    private String lastName;
+    private final String lastName;
 
     private String localeName;
 
-    private String phone;
+    private final String phone;
 
-    private String email;
+    private final String email;
 
-    private LocalDateTime registrationDate;
+    private final LocalDateTime registrationDate;
 
-    private int roleId;
+    private final int roleId;
 
-    private List<Topic> topics;
-
-    public List<Topic> getTopics() {
-        return topics;
-    }
-
-    public void setTopics(List<Topic> topics) {
-        this.topics = topics;
-    }
+    private final List<Topic> topics;
 
     public Long getId() {
         return id;
@@ -53,10 +45,6 @@ public class User implements Serializable {
 
     public String getLogin() {
         return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
     }
 
     public String getPassword() {
@@ -71,72 +59,50 @@ public class User implements Serializable {
         return firstName;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
     public String getLastName() {
         return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
     }
 
     public String getLocaleName() {
         return localeName;
     }
 
-    public void setLocaleName(String localeName) {
-        this.localeName = localeName;
-    }
-
     public String getPhone() {
         return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
     }
 
     public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public LocalDateTime getRegistrationDate() {
         return registrationDate;
-    }
-
-    public void setRegistrationDate(LocalDateTime registrationDate) {
-        this.registrationDate = registrationDate;
     }
 
     public int getRoleId() {
         return roleId;
     }
 
-    public void setRoleId(int roleId) {
-        this.roleId = roleId;
+    public List<Topic> getTopics() {
+        return topics;
     }
 
-    public User() {
+    public void setLocaleName(String localeName) {
+        this.localeName = localeName;
     }
+
 
     public static class Builder {
 
 
-        private final String username;
+        private final String login;
         private final String password;
         private final String email;
         private final String phone;
 
 
-        public Builder(String username, String password, String email, String phone) {
-            this.username = username;
+        public Builder(String login, String password, String email, String phone) {
+            this.login = login;
             this.password = password;
             this.email = email;
             this.phone = phone;
@@ -144,8 +110,8 @@ public class User implements Serializable {
 
         private Long id;
         private int roleId = 2;
-        private String firstName = "First name";
-        private String lastName = "Last Name";
+        private String firstName = "Your name";
+        private String lastName = "Your last name";
         private LocalDateTime registrationDate = LocalDateTime.now();
         private String localeName = "ru";
         private List<Topic> topics;
@@ -194,7 +160,7 @@ public class User implements Serializable {
 
     private User(Builder builder) {
         id = builder.id;
-        login = builder.username;
+        login = builder.login;
         password = builder.password;
         email = builder.email;
         firstName = builder.firstName;

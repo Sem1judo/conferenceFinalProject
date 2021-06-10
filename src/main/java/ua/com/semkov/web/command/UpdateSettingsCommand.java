@@ -2,27 +2,19 @@ package ua.com.semkov.web.command;
 
 import org.apache.log4j.Logger;
 import ua.com.semkov.Path;
-import ua.com.semkov.db.dto.TopicDto;
-import ua.com.semkov.db.entity.Event;
-import ua.com.semkov.db.entity.Status;
 import ua.com.semkov.db.entity.User;
-import ua.com.semkov.db.dao.impl.UserDaoImpl;
-import ua.com.semkov.exceptions.DAOException;
 import ua.com.semkov.exceptions.ServiceException;
 import ua.com.semkov.service.impl.UserServiceImpl;
-import ua.com.semkov.web.validation.EventValidation;
 import ua.com.semkov.web.validation.UserValidation;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.servlet.jsp.jstl.core.Config;
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 /**
@@ -54,12 +46,28 @@ public class UpdateSettingsCommand extends Command {
             id = (String) session.getAttribute("id");
         }
 
-        User user;
-        String errorMessage;
         boolean isUpdate;
 
+        String updated = request.getParameter("isUpdated");
+        isUpdate = Boolean.parseBoolean(updated);
+
+        if (isUpdate) {
+            String REDIRECT = getPathIfValidUser(request, session, labels, Long.valueOf(id));
+            if (REDIRECT != null) return REDIRECT;
+
+        }
+
+
+        log.debug("Command finished");
+        return Path.REDIRECT + Path.PAGE__SETTINGS;
+    }
+
+    private String getPathIfValidUser(HttpServletRequest request, HttpSession session, ResourceBundle labels, Long id) {
+        String errorMessage;
+        User user;
+
         try {
-            user = userService.getUserById(Long.valueOf(id));
+            user = userService.getUserById(id);
         } catch (ServiceException e) {
             errorMessage = labels.getString("error_404_auth-notExist");
             session.setAttribute(ERROR_MESSAGE, errorMessage);
@@ -67,49 +75,7 @@ public class UpdateSettingsCommand extends Command {
             return Path.REDIRECT + Path.PAGE__ERROR_PAGE_404;
         }
 
-        log.trace("obtained user = " + user);
 
-
-        String updated = request.getParameter("isUpdated");
-        isUpdate = Boolean.parseBoolean(updated);
-
-        if (user != null && isUpdate) {
-
-            String REDIRECT = isValidUser(request, session, labels, user);
-            if (REDIRECT != null) return REDIRECT;
-
-        }
-
-
-        boolean isPasswordUpdate = false;
-        String password = request.getParameter("password");
-        if (password != null && !password.isEmpty()) {
-            user.setPassword(password);
-            isPasswordUpdate = true;
-        }
-
-
-        if (isPasswordUpdate) {
-            try {
-                userService.updateUserPassword(user.getId(), user.getPassword(), password);
-            } catch (ServiceException e) {
-                errorMessage = labels.getString("error_404_user-update");
-                log.error(errorMessage, e);
-                session.setAttribute(ERROR_MESSAGE, errorMessage);
-                return Path.REDIRECT + Path.PAGE__ERROR_PAGE_404;
-            }
-        }
-
-        log.trace("Updated user = " + user);
-
-        session.setAttribute("user", user);
-
-        log.debug("Command finished");
-        return Path.REDIRECT + Path.PAGE__SETTINGS;
-    }
-
-    private String isValidUser(HttpServletRequest request, HttpSession session, ResourceBundle labels, User user) {
-        String errorMessage;
         String firstName = request.getParameter("firstName");
         String lastName = request.getParameter("lastName");
         String email = request.getParameter("email");
@@ -131,10 +97,21 @@ public class UpdateSettingsCommand extends Command {
             }
         }
 
-        user.setFirstName(firstName);
-        user.setLastName(lastName);
-        user.setEmail(email);
-        user.setLogin(login);
+        user = new User.Builder(Optional.of(login).orElse(user.getLogin()),
+                user.getPassword(),
+                Optional.of(email).orElse(user.getEmail()),
+                user.getPhone())
+                .firstName(firstName)
+                .lastName(lastName)
+                .id(user.getId())
+                .topics(user.getTopics())
+                .registrationDate(user.getRegistrationDate())
+                .roleId(user.getRoleId())
+                .localeName(user.getLocaleName())
+                .build();
+
+        log.trace(user);
+
 
         if (UserValidation.isValidUser(user)) {
             try {
@@ -151,6 +128,29 @@ public class UpdateSettingsCommand extends Command {
             session.setAttribute(ERROR_MESSAGE, errorMessage);
             return Path.REDIRECT + Path.PAGE__ERROR_PAGE_404;
         }
+
+        boolean isPasswordUpdate = false;
+        String password = request.getParameter("password");
+        if (password != null && !password.isEmpty()) {
+            user.setPassword(password);
+            isPasswordUpdate = true;
+        }
+
+
+        if (isPasswordUpdate) {
+            try {
+                userService.updateUserPassword(user.getId(), user.getPassword(), password);
+            } catch (ServiceException e) {
+                errorMessage = labels.getString("error_404_user-update");
+                log.error(errorMessage, e);
+                session.setAttribute(ERROR_MESSAGE, errorMessage);
+                return Path.REDIRECT + Path.PAGE__ERROR_PAGE_404;
+            }
+        }
+
+        log.trace("Updated user = " + user);
+        session.setAttribute("user", user);
+
         return null;
     }
 

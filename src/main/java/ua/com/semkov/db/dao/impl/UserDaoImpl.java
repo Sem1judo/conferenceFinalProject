@@ -25,7 +25,7 @@ public class UserDaoImpl extends AbstractDao<User> {
 
     private static final String SQL__INSERT_USER =
             "INSERT INTO users" +
-                    " (login, password, first_name, last_name, email, phone, role_id,locale_name) " +
+                    " ( first_name, last_name, email, password, login,  phone, role_id, locale_name) " +
                     " VALUES (?, ?, ?, ?, ?, ?, ?,?)";
 
 

@@ -58,8 +58,6 @@ public class Topic  implements Serializable {
     }
 
 
-
-
     public Boolean getConfirm() {
         return confirm;
     }
@@ -76,11 +74,9 @@ public class Topic  implements Serializable {
         this.eventId = eventId;
     }
 
-
     public Long getId() {
         return id;
     }
-
 
     public void setId(Long id) {
         this.id = id;
