@@ -3,13 +3,12 @@ package ua.com.semkov.service.impl;
 
 import org.apache.log4j.Logger;
 import ua.com.semkov.db.dao.DAOProvider;
-import ua.com.semkov.db.entity.Event;
 import ua.com.semkov.db.entity.User;
+import ua.com.semkov.exceptions.NoSuchEntityException;
 import ua.com.semkov.service.UserService;
 import ua.com.semkov.db.dao.impl.UserDaoImpl;
 import ua.com.semkov.exceptions.DAOException;
-import ua.com.semkov.exceptions.EntityAlreadyExistsDAOException;
-import ua.com.semkov.exceptions.EntityAlreadyExistsServiceException;
+
 import ua.com.semkov.exceptions.ServiceException;
 
 import java.security.NoSuchAlgorithmException;
@@ -38,7 +37,8 @@ public class UserServiceImpl implements UserService {
         try {
             user = userDao.getBySpecificName(login);
         } catch (DAOException e) {
-            throw new ServiceException(e);
+            log.error("problem with getting user by login", e);
+            throw new NoSuchEntityException(e);
         }
         return user;
 
@@ -54,7 +54,8 @@ public class UserServiceImpl implements UserService {
         try {
             user = userDao.getById(id);
         } catch (DAOException e) {
-            throw new ServiceException("Problem with getting user", e);
+            log.error("problem with getting user by id", e);
+            throw new NoSuchEntityException("Problem with getting user", e);
         }
         return user;
     }
@@ -68,8 +69,8 @@ public class UserServiceImpl implements UserService {
         try {
             return userDao.updateEntityById(user);
         } catch (DAOException e) {
-            log.error("problem with updating event", e);
-            throw new ServiceException("problem with updating event", e);
+            log.error("problem with updating user", e);
+            throw new ServiceException("problem with updating user", e);
         }
 
     }
@@ -97,6 +98,7 @@ public class UserServiceImpl implements UserService {
             user = userDao.insertEntity(user);
 
         } catch (DAOException | NoSuchAlgorithmException e) {
+            log.error("problem with registration user", e);
             throw new ServiceException(e);
         }
         return user;
@@ -111,10 +113,10 @@ public class UserServiceImpl implements UserService {
 
         try {
             allUsers = userDao.getAll();
-        } catch (EntityAlreadyExistsDAOException e) {
-            throw new EntityAlreadyExistsServiceException(e);
+
         } catch (DAOException e) {
-            throw new ServiceException(e);
+            log.error("problem with getting users", e);
+            throw new NoSuchEntityException(e);
         }
 
         return allUsers;
@@ -132,6 +134,7 @@ public class UserServiceImpl implements UserService {
 
             return userDao.updateUserPassword(userID, oldPassword, newPassword);
         } catch (NoSuchAlgorithmException | DAOException e) {
+            log.error("problem with updating user", e);
             throw new ServiceException(e);
         }
     }

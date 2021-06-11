@@ -3,10 +3,13 @@ package ua.com.semkov.db.dao.impl;
 import org.apache.log4j.Logger;
 import ua.com.semkov.db.DBManager;
 
+import ua.com.semkov.db.dao.DAOProvider;
+import ua.com.semkov.db.dao.InterfaceUsersEvent;
 import ua.com.semkov.db.entity.Event;
 import ua.com.semkov.db.entity.User;
 import ua.com.semkov.db.entity.UsersEvents;
 import ua.com.semkov.exceptions.DAOException;
+import ua.com.semkov.exceptions.EntityNotFoundDAOException;
 
 
 import java.sql.*;
@@ -15,13 +18,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class UsersEventsDaoImpl {
+public class UsersEventsDaoImpl implements InterfaceUsersEvent<UsersEvents> {
 
     private static final Logger log = Logger.getLogger(UsersEventsDaoImpl.class.getName());
 
-
-    private EventDaoImpl eventDao;
-    private UserDaoImpl userDao;
 
     private static final String SQL__GET_ALL_EVENTS_BY_USER_ID =
             "SELECT * FROM users_events WHERE user_id = ?";
@@ -51,7 +51,8 @@ public class UsersEventsDaoImpl {
 
             rs = stmt.executeQuery();
             while (rs.next()) {
-                eventDao = new EventDaoImpl();
+                DAOProvider daoProvider = DAOProvider.getInstance();
+                EventDaoImpl eventDao = daoProvider.getEventDao();
                 events.add(eventDao.getById((rs.getLong("event_id"))));
             }
         } catch (SQLException e) {
@@ -73,12 +74,13 @@ public class UsersEventsDaoImpl {
 
             rs = stmt.executeQuery();
             while (rs.next()) {
-                userDao = new UserDaoImpl();
+                DAOProvider daoProvider = DAOProvider.getInstance();
+                UserDaoImpl userDao = daoProvider.getUserDao();
                 users.add(userDao.getById((rs.getLong("user_id"))));
             }
         } catch (SQLException e) {
             log.error("Cannot obtain a list from the database", e);
-            throw new DAOException("Getting list from database failed", e);
+            throw new EntityNotFoundDAOException("Getting list from database failed", e);
         } finally {
             DBManager.getInstance().close(rs);
         }
@@ -142,7 +144,7 @@ public class UsersEventsDaoImpl {
     }
 
 
-    public boolean deleteJoinedEvent(Long eventId,Long userId) throws DAOException {
+    public boolean deleteJoinedEvent(Long eventId, Long userId) throws DAOException {
         boolean isDeleted;
         log.debug("Start method deleteJoinedEvent");
 

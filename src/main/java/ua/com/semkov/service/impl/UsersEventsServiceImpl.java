@@ -9,7 +9,7 @@ import ua.com.semkov.exceptions.DAOException;
 import ua.com.semkov.exceptions.ServiceException;
 
 import java.util.List;
-import java.util.Map;
+
 
 public class UsersEventsServiceImpl {
     private static final Logger log = Logger.getLogger(UsersEventsServiceImpl.class);

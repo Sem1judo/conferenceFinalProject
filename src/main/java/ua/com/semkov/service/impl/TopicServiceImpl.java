@@ -151,7 +151,6 @@ public class TopicServiceImpl implements TopicService {
     public List<TopicDto> getTopicsDtoPaginationConfirmed(int start, int noOfRecords) throws ServiceException {
         List<Topic> topics;
         List<TopicDto> topicDtos = new ArrayList<>();
-        int notConfirmedSize = 0;
 
         DAOProvider daoProvider = DAOProvider.getInstance();
         topicDao = daoProvider.getTopicDao();
@@ -192,9 +191,7 @@ public class TopicServiceImpl implements TopicService {
             topicDtos.add(topicDto);
 
         }
-        System.out.println("this is is 2= " + topicDtos.size());
         this.noOfRecords = topicDao.getNoOfRecords();
-        System.out.println("this is is= " + this.noOfRecords);
         return topicDtos;
 
     }
@@ -202,9 +199,9 @@ public class TopicServiceImpl implements TopicService {
 
     @Override
     public TopicDto getTopicDtoById(Long id) throws ServiceException {
-        Topic topic = null;
-        User speaker = null;
-        Event event = null;
+        Topic topic;
+        User speaker;
+        Event event;
 
         DAOProvider daoProvider = DAOProvider.getInstance();
 
@@ -265,9 +262,6 @@ public class TopicServiceImpl implements TopicService {
         try {
             topicDao.insertEntity(topic);
 
-        } catch (EntityAlreadyExistsDAOException e) {
-            log.error("already exist topic", e);
-            throw new EntityAlreadyExistsServiceException("already exist topic", e);
         } catch (DAOException e) {
             log.error("problem with creating topic", e);
             throw new ServiceException("problem with creating topic", e);

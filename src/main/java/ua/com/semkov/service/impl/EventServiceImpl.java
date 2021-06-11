@@ -33,13 +33,10 @@ public class EventServiceImpl implements EventService {
 
         try {
             events = eventDao.getAll();
-        } catch (EntityAlreadyExistsDAOException e) {
-            log.error("problem with getting events", e);
-            throw new EntityAlreadyExistsServiceException("problem with getting events", e);
         } catch (DAOException e) {
-            throw new ServiceException(e);
+            log.error("problem with getting events", e);
+            throw new NoSuchEntityException("problem with getting events", e);
         }
-
         return events;
     }
 
@@ -55,7 +52,7 @@ public class EventServiceImpl implements EventService {
             this.noOfRecords = eventDao.getNoOfRecords();
         } catch (DAOException e) {
             log.error("problem with getting events", e);
-            throw new ServiceException(e);
+            throw new NoSuchEntityException(e);
         }
         return events;
     }
@@ -72,7 +69,7 @@ public class EventServiceImpl implements EventService {
             event = eventDao.getById(id);
         } catch (DAOException e) {
             log.error("problem with getting event", e);
-            throw new ServiceException("problem with getting event", e);
+            throw new NoSuchEntityException("problem with getting event", e);
         }
         return event;
     }
@@ -86,9 +83,6 @@ public class EventServiceImpl implements EventService {
 
         try {
             eventDao.insertEntity(event);
-        } catch (EntityAlreadyExistsDAOException e) {
-            log.error("already exist event", e);
-            throw new EntityAlreadyExistsServiceException("already exist event", e);
         } catch (DAOException e) {
             log.error("problem with creating event", e);
             throw new ServiceException("problem with creating event", e);

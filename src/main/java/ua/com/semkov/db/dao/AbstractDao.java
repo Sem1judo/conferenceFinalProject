@@ -4,6 +4,7 @@ package ua.com.semkov.db.dao;
 import org.apache.log4j.Logger;
 import ua.com.semkov.db.DBManager;
 import ua.com.semkov.exceptions.DAOException;
+import ua.com.semkov.exceptions.EntityNotFoundDAOException;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -62,7 +63,7 @@ public abstract class AbstractDao<K> implements InterfaceDao<K> {
                 entities.add(mapRow(rs));
         } catch (SQLException ex) {
             log.error("Cannot obtain a list from the database", ex);
-            throw new DAOException("Getting list from database failed", ex);
+            throw new EntityNotFoundDAOException("Getting list from database failed", ex);
         }
         return entities;
     }
@@ -91,7 +92,7 @@ public abstract class AbstractDao<K> implements InterfaceDao<K> {
                 this.noOfRecords = rs.getInt(1);
         } catch (SQLException ex) {
             log.error("Cannot obtain a list from the database", ex);
-            throw new DAOException("Getting list from database failed", ex);
+            throw new EntityNotFoundDAOException("Getting list from database failed", ex);
         } finally {
             DBManager.getInstance().close(rs);
         }
@@ -122,7 +123,7 @@ public abstract class AbstractDao<K> implements InterfaceDao<K> {
             }
         } catch (SQLException ex) {
             log.error("Getting by id failed", ex);
-            throw new DAOException("Getting by id failed", ex);
+            throw new EntityNotFoundDAOException("Getting by id failed", ex);
         } finally {
             DBManager.getInstance().close(rs);
         }
@@ -153,7 +154,7 @@ public abstract class AbstractDao<K> implements InterfaceDao<K> {
             }
         } catch (SQLException ex) {
             log.error("Getting by name failed", ex);
-            throw new DAOException("Getting by name failed", ex);
+            throw new EntityNotFoundDAOException("Getting by name failed", ex);
         } finally {
             DBManager.getInstance().close(rs);
         }
