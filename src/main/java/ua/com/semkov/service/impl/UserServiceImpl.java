@@ -19,6 +19,8 @@ public class UserServiceImpl implements UserService {
     private static final Logger log = Logger.getLogger(UserServiceImpl.class);
 
     private UserDaoImpl userDao;
+    DAOProvider daoProvider = DAOProvider.getInstance();
+
 
 
     public boolean isEmpty(String login, String password) {
@@ -29,7 +31,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUser(String login) throws ServiceException {
 
-        DAOProvider daoProvider = DAOProvider.getInstance();
         userDao = daoProvider.getUserDao();
 
         User user;
@@ -47,7 +48,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUserById(Long id) throws ServiceException {
 
-        DAOProvider daoProvider = DAOProvider.getInstance();
         userDao = daoProvider.getUserDao();
         User user;
 
@@ -63,7 +63,6 @@ public class UserServiceImpl implements UserService {
     public boolean updateUser(User user) throws ServiceException {
         log.trace("entered user ---> " + user);
 
-        DAOProvider daoProvider = DAOProvider.getInstance();
         userDao = daoProvider.getUserDao();
 
         try {
@@ -78,7 +77,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User registration(User data) throws ServiceException {
-        DAOProvider daoProvider = DAOProvider.getInstance();
         userDao = daoProvider.getUserDao();
         User user;
 
@@ -108,7 +106,6 @@ public class UserServiceImpl implements UserService {
     public List<User> getUsers() throws ServiceException {
         List<User> allUsers;
 
-        DAOProvider daoProvider = DAOProvider.getInstance();
         userDao = daoProvider.getUserDao();
 
         try {
@@ -125,7 +122,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean updateUserPassword(Long userID, String oldPassword, String newPassword) throws ServiceException {
-        DAOProvider daoProvider = DAOProvider.getInstance();
         userDao = daoProvider.getUserDao();
 
         try {

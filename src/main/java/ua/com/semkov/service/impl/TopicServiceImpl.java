@@ -23,6 +23,7 @@ public class TopicServiceImpl implements TopicService {
     private TopicDaoImpl topicDao;
     private UserDaoImpl userDao;
     private EventDaoImpl eventDao;
+    DAOProvider daoProvider = DAOProvider.getInstance();
     private int noOfRecords;
 
 
@@ -34,7 +35,7 @@ public class TopicServiceImpl implements TopicService {
 
         List<TopicDto> topicDtos = new ArrayList<>();
 
-        DAOProvider daoProvider = DAOProvider.getInstance();
+
         topicDao = daoProvider.getTopicDao();
         userDao = daoProvider.getUserDao();
         eventDao = daoProvider.getEventDao();
@@ -75,7 +76,7 @@ public class TopicServiceImpl implements TopicService {
     public List<Topic> getTopicsPagination(int start, int noOfRecords) throws ServiceException {
         List<Topic> topics;
 
-        DAOProvider daoProvider = DAOProvider.getInstance();
+
         topicDao = daoProvider.getTopicDao();
 
         try {
@@ -93,7 +94,6 @@ public class TopicServiceImpl implements TopicService {
     public List<Topic> getTopics() throws ServiceException {
         List<Topic> topics;
 
-        DAOProvider daoProvider = DAOProvider.getInstance();
         topicDao = daoProvider.getTopicDao();
 
         try {
@@ -111,7 +111,6 @@ public class TopicServiceImpl implements TopicService {
         List<Topic> topics = getTopics();
         List<TopicDto> topicDtos = new ArrayList<>();
 
-        DAOProvider daoProvider = DAOProvider.getInstance();
         userDao = daoProvider.getUserDao();
         eventDao = daoProvider.getEventDao();
 
@@ -152,7 +151,6 @@ public class TopicServiceImpl implements TopicService {
         List<Topic> topics;
         List<TopicDto> topicDtos = new ArrayList<>();
 
-        DAOProvider daoProvider = DAOProvider.getInstance();
         topicDao = daoProvider.getTopicDao();
         try {
             topics = topicDao.getAllPagination(start, noOfRecords);
@@ -203,7 +201,6 @@ public class TopicServiceImpl implements TopicService {
         User speaker;
         Event event;
 
-        DAOProvider daoProvider = DAOProvider.getInstance();
 
         topicDao = daoProvider.getTopicDao();
         userDao = daoProvider.getUserDao();
@@ -237,7 +234,6 @@ public class TopicServiceImpl implements TopicService {
         log.trace("entered topic id---> " + id);
         Topic topic;
 
-        DAOProvider daoProvider = DAOProvider.getInstance();
         topicDao = daoProvider.getTopicDao();
 
 
@@ -256,7 +252,6 @@ public class TopicServiceImpl implements TopicService {
 
         log.trace("entered topic ---> " + topic);
 
-        DAOProvider daoProvider = DAOProvider.getInstance();
         topicDao = daoProvider.getTopicDao();
 
         try {
@@ -273,7 +268,6 @@ public class TopicServiceImpl implements TopicService {
     public boolean removeTopic(Long id) throws ServiceException {
         log.trace("entered event id---> " + id);
 
-        DAOProvider daoProvider = DAOProvider.getInstance();
         topicDao = daoProvider.getTopicDao();
 
         try {
@@ -289,7 +283,6 @@ public class TopicServiceImpl implements TopicService {
     public boolean updateTopic(Topic topic) throws ServiceException {
         log.trace("entered topic ---> " + topic);
 
-        DAOProvider daoProvider = DAOProvider.getInstance();
         topicDao = daoProvider.getTopicDao();
 
         try {

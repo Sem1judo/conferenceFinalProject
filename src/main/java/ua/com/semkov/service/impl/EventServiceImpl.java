@@ -15,6 +15,8 @@ public class EventServiceImpl implements EventService {
     private static final Logger log = Logger.getLogger(EventServiceImpl.class);
 
     private AbstractDao<Event> eventDao;
+    DAOProvider daoProvider = DAOProvider.getInstance();
+
 
     private int noOfRecords;
 
@@ -28,7 +30,6 @@ public class EventServiceImpl implements EventService {
     public List<Event> getEvents() throws ServiceException {
         List<Event> events;
 
-        DAOProvider daoProvider = DAOProvider.getInstance();
         eventDao = daoProvider.getEventDao();
 
         try {
@@ -44,7 +45,6 @@ public class EventServiceImpl implements EventService {
     public List<Event> getEventsPagination(int start, int noOfRecords) throws ServiceException {
         List<Event> events;
 
-        DAOProvider daoProvider = DAOProvider.getInstance();
         eventDao = daoProvider.getEventDao();
 
         try {
@@ -62,7 +62,6 @@ public class EventServiceImpl implements EventService {
         log.trace("entered event id---> " + id);
         Event event;
 
-        DAOProvider daoProvider = DAOProvider.getInstance();
         eventDao = daoProvider.getEventDao();
 
         try {
@@ -78,7 +77,6 @@ public class EventServiceImpl implements EventService {
     public Event createEvent(Event event) throws ServiceException {
         log.trace("entered event ---> " + event);
 
-        DAOProvider daoProvider = DAOProvider.getInstance();
         eventDao = daoProvider.getEventDao();
 
         try {
@@ -94,7 +92,6 @@ public class EventServiceImpl implements EventService {
     public boolean removeEvent(Long id) throws ServiceException {
         log.trace("entered event id---> " + id);
 
-        DAOProvider daoProvider = DAOProvider.getInstance();
         eventDao = daoProvider.getEventDao();
 
         try {
@@ -109,7 +106,6 @@ public class EventServiceImpl implements EventService {
     public boolean updateEvent(Event event) throws ServiceException {
         log.trace("entered event ---> " + event);
 
-        DAOProvider daoProvider = DAOProvider.getInstance();
         eventDao = daoProvider.getEventDao();
 
         try {

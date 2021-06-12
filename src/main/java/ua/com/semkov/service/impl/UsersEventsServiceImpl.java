@@ -15,12 +15,13 @@ public class UsersEventsServiceImpl {
     private static final Logger log = Logger.getLogger(UsersEventsServiceImpl.class);
 
     private UsersEventsDaoImpl usersEventsDao;
+    DAOProvider daoProvider = DAOProvider.getInstance();
+
 
 
     public List<Event> getEventsEventsByUser(User user) throws ServiceException {
         List<Event> events;
 
-        DAOProvider daoProvider = DAOProvider.getInstance();
         usersEventsDao = daoProvider.getUsersEventsDao();
 
         try {
@@ -35,7 +36,6 @@ public class UsersEventsServiceImpl {
     }
 
     public void setEventsForUser(User user, Event... events) throws ServiceException {
-        DAOProvider daoProvider = DAOProvider.getInstance();
         usersEventsDao = daoProvider.getUsersEventsDao();
 
         try {
@@ -51,7 +51,6 @@ public class UsersEventsServiceImpl {
 
         List<User> users;
 
-        DAOProvider daoProvider = DAOProvider.getInstance();
         usersEventsDao = daoProvider.getUsersEventsDao();
 
         try {
@@ -68,7 +67,6 @@ public class UsersEventsServiceImpl {
 
     public boolean isUserJoinedToEvent(Event event, User user) throws ServiceException {
 
-        DAOProvider daoProvider = DAOProvider.getInstance();
         usersEventsDao = daoProvider.getUsersEventsDao();
 
         boolean isJoined;
@@ -86,7 +84,6 @@ public class UsersEventsServiceImpl {
 
     public boolean removeJoinedEvent(Long eventId, Long userId) throws ServiceException {
 
-        DAOProvider daoProvider = DAOProvider.getInstance();
         usersEventsDao = daoProvider.getUsersEventsDao();
 
         try {
