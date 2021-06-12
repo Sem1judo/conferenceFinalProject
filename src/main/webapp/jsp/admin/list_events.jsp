@@ -45,15 +45,16 @@
                 <th><fmt:message key="list_jsp.table.header.status"/></th>
 
                 <div class="sort ">
-                    <a class="link-warning" href="controller?command=listEvents&sort=byStartTime"> <fmt:message
-                            key="sort.time"/> | </a>
-                    <a class="link-warning" href="controller?command=listEvents&sort=byTopics"> <fmt:message
+                    <a class="link-warning" href="controller?command=listEvents&sort=byStartTime&page=${currentPage}">
+                        <fmt:message
+                                key="sort.time"/> | </a>
+                    <a class="link-warning" href="controller?command=listEvents&sort=byTopics&page=${currentPage}"> <fmt:message
                             key="sort.topics"/> | </a>
-                    <a class="link-warning" href="controller?command=listEvents&sort=byUsers"> <fmt:message
+                    <a class="link-warning" href="controller?command=listEvents&sort=byUsers&page=${currentPage}"> <fmt:message
                             key="sort.participants"/> | </a>
-                    <a class="link-warning" href="controller?command=listEvents&sort=byStatus"> <fmt:message
+                    <a class="link-warning" href="controller?command=listEvents&sort=byStatus&page=${currentPage}"> <fmt:message
                             key="list_jsp.table.header.status"/> | </a>
-                    <a class="link-warning" href="controller?command=listEvents&sort=byId">
+                    <a class="link-warning" href="controller?command=listEvents&sort=byId&page=${currentPage}">
                         #ID</a>
                 </div>
             </tr>
@@ -168,7 +169,7 @@
                             <td>${i}</td>
                         </c:when>
                         <c:otherwise>
-                            <td><a href="controller?command=listEvents&page=${i}">${i}</a></td>
+                            <td><a href="controller?command=listEvents&page=${i}&sort=${sort}">${i}</a></td>
                         </c:otherwise>
                     </c:choose>
                 </c:forEach>
@@ -177,13 +178,13 @@
 
         <%--For displaying Previous link except for the 1st page --%>
         <c:if test="${currentPage != 1}">
-            <td><a href="controller?command=listEvents&page=${currentPage - 1}"><fmt:message
+            <td><a href="controller?command=listEvents&page=${currentPage - 1}&sort=${sort}"><fmt:message
                     key="list.pagination.previous"/></a></td>
         </c:if>
 
         <%--For displaying Next link --%>
         <c:if test="${currentPage lt noOfPages}">
-            <td><a href="controller?command=listEvents&page=${currentPage + 1}"><fmt:message
+            <td><a href="controller?command=listEvents&page=${currentPage + 1}&sort=${sort}"><fmt:message
                     key="list.pagination.next"/></a></td>
         </c:if>
     </c:otherwise>
